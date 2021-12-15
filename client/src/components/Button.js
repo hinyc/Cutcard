@@ -15,6 +15,10 @@ const ButtonStyle = styled.button`
     cursor: pointer;
     opacity: 80%;
   }
+  &:active {
+    cursor: pointer;
+    opacity: 95%;
+  }
 `;
 
 function Button({ text }) {
