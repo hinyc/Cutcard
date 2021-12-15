@@ -99,7 +99,7 @@ export const SubHead = styled.div`
 `;
 export const AddOutcome = styled.div`
   border: solid 2px black;
-  height: 430px;
+  height: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -123,7 +123,7 @@ export const InputButton = styled.button`
   font-size: 24px;
 `;
 
-export const MainOutcomes = () => {
+export const MainOutcomes = ({ mainStateHandler }) => {
   const [leftMoney, setLeftMoney] = useState(100000);
   const [livingExpenses, setLivingExpenses] = useState(500000);
   const [utilityBills, setUtilityBills] = useState(500000);
@@ -136,16 +136,28 @@ export const MainOutcomes = () => {
       <MainContainer>
         <LeftContainer>
           <ButtonContainer>
-            <ChangeButton>수입</ChangeButton>
-            <ChangeButton>지출</ChangeButton>
+            <ChangeButton
+              onClick={() => {
+                mainStateHandler('income');
+              }}
+            >
+              수입
+            </ChangeButton>
+            <ChangeButton
+              onClick={() => {
+                mainStateHandler('outcome');
+              }}
+            >
+              지출
+            </ChangeButton>
           </ButtonContainer>
           <OutcomeList>
             <OutcomeMoney>{`생활비: ${livingExpenses}`}</OutcomeMoney>
             <OutcomeMoney>{`공과금: ${utilityBills}`}</OutcomeMoney>
             <OutcomeMoney>{`보험료: ${premium}`}</OutcomeMoney>
             <OutcomeMoney>{`추가지출: ${etcExpenses}`}</OutcomeMoney>
-            <TotalMoney>{`지출합계: ${totalMoney}`}</TotalMoney>
           </OutcomeList>
+          <TotalMoney>{`지출합계: ${totalMoney}`}</TotalMoney>
         </LeftContainer>
         <CenterContainer>
           <LeftMoney>{`남은돈: ${leftMoney} 원`}</LeftMoney>
@@ -161,8 +173,8 @@ export const MainOutcomes = () => {
             <InputOption></InputOption>
             <InputMoney></InputMoney>
             <InputOption></InputOption>
-            <InputButton>추가하기</InputButton>
           </AddOutcome>
+          <InputButton>추가하기</InputButton>
         </RigthContainer>
       </MainContainer>
     </>
