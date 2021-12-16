@@ -4,7 +4,19 @@ import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Input from "./components/Input";
 
+import { MainOutcomes } from "./components/MainOutcomes";
+import { MainIncomes } from "./components/MainIncomse";
+import "./App.css";
+import { useState } from "react";
+import { Calendar } from "./components/Calendar";
+
 function App() {
+  const [mainState, setMainState] = useState("income");
+
+  const mainStateHandler = (target) => {
+    setMainState(target);
+  };
+
   return (
     <>
       <Navbar />
@@ -15,6 +27,13 @@ function App() {
         text={"플레이스홀더"}
         readOnly={false}
       />
+      <div className="App">
+        {mainState === "outcome" ? (
+          <MainOutcomes mainStateHandler={mainStateHandler} />
+        ) : (
+          <MainIncomes mainStateHandler={mainStateHandler} />
+        )}
+      </div>
       <Footer />
     </>
   );
