@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import Calendar from './Calendar';
+import Input from '../Input';
+import Select from '../Select';
 
 export const MainContainer = styled.div`
   width: 1130px;
@@ -41,6 +44,7 @@ export const OutcomeList = styled.div`
   height: 350px;
   display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
   justify-content: center;
   align-content: center;
 `;
@@ -69,19 +73,11 @@ export const CenterContainer = styled.div`
   align-items: center;
 `;
 
-export const LeftMoney = styled.div`
+export const ResidualAmount = styled.div`
   // border: solid 2px black;
   font-size: 36px;
   height: 70px;
   line-height: 70px;
-`;
-
-export const Calendar = styled.div`
-  border: solid 2px black;
-  width: 450px;
-  height: 400px;
-  margin: auto;
-  position: relarive;
 `;
 
 //! Right
@@ -123,13 +119,30 @@ export const InputButton = styled.button`
   font-size: 24px;
 `;
 
-export const MainOutcomes = ({ mainStateHandler }) => {
-  const [leftMoney, setLeftMoney] = useState(100000);
-  const [livingExpenses, setLivingExpenses] = useState(500000);
-  const [utilityBills, setUtilityBills] = useState(500000);
-  const [premium, setPremium] = useState(500000);
-  const [etcExpenses, setEtcExpenses] = useState(300000);
-  const [totalMoney, setTotalMoney] = useState(livingExpenses + utilityBills + premium + etcExpenses);
+export const MainIncomes = ({ mainStateHandler, inComes }) => {
+  const [residualAmount, setResidualAmount] = useState(100000);
+  // const [etc, setEtc] = useState(300000);
+  // const [totalMoney, setTotalMoney] = useState(salary + bonus + etc);
+
+  const salaries = inComes.map((income) => {
+    if (income.category === 'salary') {
+      return income.money;
+    }
+    return 0;
+  });
+
+  const bonuses = inComes.map((income) => {
+    if (income.category === 'bonus') {
+      return income.money;
+    }
+    return 0;
+  });
+
+  const salary = salaries.reduce((acc, cur) => acc + cur);
+  const bonus = bonuses.reduce((acc, cur) => acc + cur);
+  const etc = 0;
+
+  const totalMoney = salary + bonus + etc;
 
   return (
     <>
@@ -152,27 +165,22 @@ export const MainOutcomes = ({ mainStateHandler }) => {
             </ChangeButton>
           </ButtonContainer>
           <OutcomeList>
-            <OutcomeMoney>{`생활비: ${livingExpenses}`}</OutcomeMoney>
-            <OutcomeMoney>{`공과금: ${utilityBills}`}</OutcomeMoney>
-            <OutcomeMoney>{`보험료: ${premium}`}</OutcomeMoney>
-            <OutcomeMoney>{`추가지출: ${etcExpenses}`}</OutcomeMoney>
+            <OutcomeMoney>{`월급: ${salary}`}</OutcomeMoney>
+            <OutcomeMoney>{`보너스: ${bonus}`}</OutcomeMoney>
+            <OutcomeMoney>{`기타수익: ${etc}`}</OutcomeMoney>
           </OutcomeList>
-          <TotalMoney>{`지출합계: ${totalMoney}`}</TotalMoney>
+          <TotalMoney>{`수입합계: ${totalMoney}`}</TotalMoney>
         </LeftContainer>
         <CenterContainer>
-          <LeftMoney>{`남은돈: ${leftMoney} 원`}</LeftMoney>
-          <Calendar>{`달력!!!`}</Calendar>
+          <ResidualAmount>{`잔여 금액: ${residualAmount} 원`}</ResidualAmount>
+          <Calendar inComes={inComes} />
         </CenterContainer>
         <RigthContainer>
-          <SubHead>지출 추가</SubHead>
+          <SubHead>수입 추가</SubHead>
           <AddOutcome>
-            <InputDate></InputDate>
-
-            <InputOption></InputOption>
-            <InputOption></InputOption>
-            <InputOption></InputOption>
-            <InputMoney></InputMoney>
-            <InputOption></InputOption>
+            <Input text={`날짜`} />
+            <Select text={'수입 카테고리'} options={['월급', '보너스', '기타']}></Select>
+            <Input text={`금액을 입력해주세요`} />
           </AddOutcome>
           <InputButton>추가하기</InputButton>
         </RigthContainer>
