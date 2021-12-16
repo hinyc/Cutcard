@@ -2,6 +2,7 @@ import { MainOutcomes } from './components/MainOutcomes';
 import { MainIncomes } from './components/MainIncomse';
 import './App.css';
 import { useState } from 'react';
+import { Calendar } from './components/Calendar';
 
 function App() {
   const [mainState, setMainState] = useState('income');

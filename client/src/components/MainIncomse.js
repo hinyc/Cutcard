@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { Calendar, Calendar as Calendar2 } from './Calendar';
 
 export const MainContainer = styled.div`
   width: 1130px;
@@ -74,14 +75,6 @@ export const LeftMoney = styled.div`
   font-size: 36px;
   height: 70px;
   line-height: 70px;
-`;
-
-export const Calendar = styled.div`
-  border: solid 2px black;
-  width: 450px;
-  height: 400px;
-  margin: auto;
-  position: relarive;
 `;
 
 //! Right
@@ -159,7 +152,7 @@ export const MainIncomes = ({ mainStateHandler }) => {
         </LeftContainer>
         <CenterContainer>
           <LeftMoney>{`들어온 돈: ${leftMoney} 원`}</LeftMoney>
-          <Calendar>{`달력!!!`}</Calendar>
+          <Calendar></Calendar>
         </CenterContainer>
         <RigthContainer>
           <SubHead>수입 추가</SubHead>
