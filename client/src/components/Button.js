@@ -2,27 +2,35 @@ import React from "react";
 import styled from "styled-components";
 
 const ButtonStyle = styled.button`
-  color: white;
+  color: ${(props) => props.background || "white"};
+  width: ${(props) => props.width || "190px"};
+  height: ${(props) => props.height || "40px"};
   outline: 0;
   border: 0;
-  background-color: grey;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem 3rem;
+  background-color: ${(props) => props.background || "#97BFB4"};
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 700;
+  border-radius: 5px;
+
   &:hover {
     cursor: pointer;
     opacity: 80%;
   }
+
   &:active {
     cursor: pointer;
     opacity: 95%;
   }
 `;
 
-function Button({ text }) {
+export function SmallButton({ text }) {
   return <ButtonStyle>{text}</ButtonStyle>;
 }
 
-export default Button;
+export function BigButton({ text }) {
+  return (
+    <ButtonStyle width="335px" height="48px">
+      {text}
+    </ButtonStyle>
+  );
+}
