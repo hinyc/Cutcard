@@ -9,12 +9,11 @@ const port = 4000
 app.use(cors())
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+app.use('/', indexRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
-
-app.post('/users/')
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`)
