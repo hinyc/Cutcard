@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import styled from 'styled-components';
+import { useState } from "react";
+import styled from "styled-components";
 
 export const MainContainer = styled.div`
   width: 1130px;
@@ -129,7 +129,9 @@ export const MainOutcomes = ({ mainStateHandler }) => {
   const [utilityBills, setUtilityBills] = useState(500000);
   const [premium, setPremium] = useState(500000);
   const [etcExpenses, setEtcExpenses] = useState(300000);
-  const [totalMoney, setTotalMoney] = useState(livingExpenses + utilityBills + premium + etcExpenses);
+  const [totalMoney, setTotalMoney] = useState(
+    livingExpenses + utilityBills + premium + etcExpenses
+  );
 
   return (
     <>
@@ -138,14 +140,14 @@ export const MainOutcomes = ({ mainStateHandler }) => {
           <ButtonContainer>
             <ChangeButton
               onClick={() => {
-                mainStateHandler('income');
+                mainStateHandler("income");
               }}
             >
               수입
             </ChangeButton>
             <ChangeButton
               onClick={() => {
-                mainStateHandler('outcome');
+                mainStateHandler("outcome");
               }}
             >
               지출
