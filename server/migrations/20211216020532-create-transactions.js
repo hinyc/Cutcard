@@ -8,24 +8,28 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      date: {
+        type: Sequelize.STRING
+      },
       incomeCategory: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       incomePrice: {
         type: Sequelize.INTEGER,
-        allowNull: true
+        allowNull: true,
       },
       outcomeCategory: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       outcomePrice: {
         type: Sequelize.INTEGER,
-        allowNull: true
+        allowNull: true,
       },
       outcomeIsCash: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,
