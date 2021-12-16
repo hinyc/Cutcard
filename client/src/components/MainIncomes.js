@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import { Calendar, Calendar as Calendar2 } from './Calendar';
+import { useState } from "react";
+import styled from "styled-components";
+import { Calendar, Calendar as Calendar2 } from "./Calendar";
 
 export const MainContainer = styled.div`
   width: 1130px;
@@ -121,7 +121,9 @@ export const MainIncomes = ({ mainStateHandler }) => {
   const [fixedIncomes, setFixedIncomes] = useState(500000);
   const [additionalIncomes, setAdditionalIncomes] = useState(500000);
   const [etcIncomes, setEtcIncomes] = useState(300000);
-  const [totalMoney, setTotalMoney] = useState(fixedIncomes + additionalIncomes + etcIncomes);
+  const [totalMoney, setTotalMoney] = useState(
+    fixedIncomes + additionalIncomes + etcIncomes
+  );
 
   return (
     <>
@@ -130,14 +132,14 @@ export const MainIncomes = ({ mainStateHandler }) => {
           <ButtonContainer>
             <ChangeButton
               onClick={() => {
-                mainStateHandler('income');
+                mainStateHandler("income");
               }}
             >
               수입
             </ChangeButton>
             <ChangeButton
               onClick={() => {
-                mainStateHandler('outcome');
+                mainStateHandler("outcome");
               }}
             >
               지출
