@@ -3,6 +3,7 @@ import { SmallButton, BigButton } from "./components/Button";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import { Input, LoginInput } from "./components/Input";
+import { CardList, AddCard } from "./components/CardList";
 
 import { MainOutcomes } from "./components/MainOutcomes";
 import { MainIncomes } from "./components/MainIncomes";
@@ -34,6 +35,9 @@ function App() {
         text={"플레이스홀더"}
         readOnly={false}
       />
+      <CardList text={"신한카드"} />
+      <AddCard />
+
       <div className="App">
         {mainState === "outcome" ? (
           <MainOutcomes mainStateHandler={mainStateHandler} />
