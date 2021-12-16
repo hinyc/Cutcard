@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { Calendar, Calendar as Calendar2 } from './Calendar';
+import Calendar from './Calendar';
+import Input from '../Input';
+import Select from '../Select';
+import ViewContainer from './ViewContainer';
+import SubmitContainer from './SubmitContainer';
 
 export const MainContainer = styled.div`
   width: 1130px;
@@ -42,6 +46,7 @@ export const OutcomeList = styled.div`
   height: 350px;
   display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
   justify-content: center;
   align-content: center;
 `;
@@ -70,7 +75,7 @@ export const CenterContainer = styled.div`
   align-items: center;
 `;
 
-export const LeftMoney = styled.div`
+export const ResidualAmount = styled.div`
   // border: solid 2px black;
   font-size: 36px;
   height: 70px;
@@ -116,56 +121,19 @@ export const InputButton = styled.button`
   font-size: 24px;
 `;
 
-export const MainIncomes = ({ mainStateHandler }) => {
-  const [leftMoney, setLeftMoney] = useState(100000);
-  const [fixedIncomes, setFixedIncomes] = useState(500000);
-  const [additionalIncomes, setAdditionalIncomes] = useState(500000);
-  const [etcIncomes, setEtcIncomes] = useState(300000);
-  const [totalMoney, setTotalMoney] = useState(fixedIncomes + additionalIncomes + etcIncomes);
-
+const Main = ({ mainStateHandler, inComes }) => {
+  const [residualAmount, setResidualAmount] = useState(100000);
   return (
     <>
       <MainContainer>
-        <LeftContainer>
-          <ButtonContainer>
-            <ChangeButton
-              onClick={() => {
-                mainStateHandler('income');
-              }}
-            >
-              수입
-            </ChangeButton>
-            <ChangeButton
-              onClick={() => {
-                mainStateHandler('outcome');
-              }}
-            >
-              지출
-            </ChangeButton>
-          </ButtonContainer>
-          <OutcomeList>
-            <OutcomeMoney>{`고정수익: ${fixedIncomes}`}</OutcomeMoney>
-            <OutcomeMoney>{`추가수익: ${additionalIncomes}`}</OutcomeMoney>
-            <OutcomeMoney>{`기타수익: ${etcIncomes}`}</OutcomeMoney>
-          </OutcomeList>
-          <TotalMoney>{`수입합계: ${totalMoney}`}</TotalMoney>
-        </LeftContainer>
+        <ViewContainer />
         <CenterContainer>
-          <LeftMoney>{`들어온 돈: ${leftMoney} 원`}</LeftMoney>
-          <Calendar></Calendar>
+          <Calendar inComes={inComes} />
         </CenterContainer>
-        <RigthContainer>
-          <SubHead>수입 추가</SubHead>
-          <AddOutcome>
-            <InputDate></InputDate>
-
-            <InputOption></InputOption>
-
-            <InputMoney></InputMoney>
-          </AddOutcome>
-          <InputButton>추가하기</InputButton>
-        </RigthContainer>
+        <SubmitContainer />
       </MainContainer>
     </>
   );
 };
+
+export default Main;

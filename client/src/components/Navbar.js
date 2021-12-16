@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 const HeaderStyle = styled.div`
   display: flex;
@@ -70,12 +70,10 @@ function Navbar() {
     <>
       <HeaderStyle>
         <Logo>Cut Card</Logo>
-        <LoginOrUser onClick={Login}>
-          {isLogin ? "ㅇㅇ님 환영합니다" : "회원가입/로그인"}
-        </LoginOrUser>
+        <LoginOrUser onClick={Login}>{isLogin ? 'ㅇㅇ님 환영합니다' : '회원가입/로그인'}</LoginOrUser>
       </HeaderStyle>
       <NavbarStyle>
-        <Menu style={{ marginLeft: "15%" }}>Menu 1</Menu>
+        <Menu style={{ marginLeft: '15%' }}>Menu 1</Menu>
         <Menu>Menu 2</Menu>
       </NavbarStyle>
     </>
