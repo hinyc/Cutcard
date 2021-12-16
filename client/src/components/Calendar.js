@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 export const CelandarContainer = styled.div`
   border: 2px solid black;
   width: 462px;
+  height: 420px;
   margin: auto;
 `;
 export const Head = styled.div`
@@ -33,60 +34,76 @@ export const Dates = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
 `;
 export const Adate = styled.div`
   // border: 2px solid black;
   box-sizing: border-box;
 
   width: 66px;
-  height: 55px;
+  height: 50px;
 `;
+const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export const Calendar = () => {
-  const [date, setDate] = useState(new Date());
+  const [targetYear, setTargetYear] = useState(new Date().getFullYear());
+  const [targetMonth, setTargetMonth] = useState(new Date().getMonth() + 1);
 
-  const [viewYear, setViewYear] = useState(date.getFullYear());
-  const [viewMonth, setViewMonth] = useState(date.getMonth() + 1);
+  const date = new Date(targetYear, targetMonth, 0);
+  console.log(date);
 
-  const [preLast, setPreLast] = useState(new Date(viewYear, viewMonth, 0));
-  const [thisLast, setThisLast] = useState(new Date(viewYear, viewMonth + 1, 0));
+  const viewYear = date.getFullYear();
+  const viewMonth = date.getMonth() + 1;
+  console.log(viewMonth);
 
-  const [PLDate, setPLDate] = useState(preLast.getDate());
-  const [PLDay, setPLDay] = useState(preLast.getDay());
+  const preLastInfo = new Date(viewYear, viewMonth - 1, 0);
+  const thisLastInfo = new Date(viewYear, viewMonth, 0);
 
-  const [TLDate, setTLDate] = useState(thisLast.getDate());
-  const [TLDay, setTLDay] = useState(thisLast.getDay());
+  const preLastDate = preLastInfo.getDate();
+  const preLastDay = preLastInfo.getDay();
+  const thisLastDate = thisLastInfo.getDate();
+  const thisLastDay = thisLastInfo.getDay();
 
-  const [prevDates, setPrevDates] = useState([]);
-  const [thisDates, setThisDates] = useState([...Array(TLDate + 1).keys()].slice(1));
-  const [nextDates, setNextDate] = useState([]);
+  const prevDates = [];
+  const thisDates = [...Array(thisLastDate + 1).keys()].slice(1);
+  const nextDates = [];
 
-  for (let i = 1; i < 7 - TLDay; i++) {
-    nextDates.push(i);
+  for (let i = 1; i < 7 - thisLastDay; i++) {
+    prevDates.push(i);
   }
 
-  const [dates, setDates] = useState(prevDates.concat(thisDates, nextDates));
-  console.log(dates);
+  for (let i = preLastDate; i > preLastDate - preLastDay - 1; i--) {
+    prevDates.unshift(i);
+  }
 
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const dates = prevDates.concat(thisDates, nextDates);
+
+  const prevMonthHandler = () => {
+    setTargetMonth(targetMonth - 1);
+  };
+
+  const nextMonthHandler = () => {
+    setTargetMonth(targetMonth + 1);
+  };
+
   return (
     <>
       <CelandarContainer>
         <Head>
           <YearMonth>{`${viewYear}년 ${viewMonth}월`}</YearMonth>
           <Nav>
-            <Pre>&lt;</Pre>
+            <Pre onClick={prevMonthHandler}>&lt;</Pre>
             <Today>Today</Today>
-            <Next>&gt;</Next>
+            <Next onClick={nextMonthHandler}>&gt;</Next>
           </Nav>
         </Head>
+
         <Days>
-          <Days>
-            {days.map((day, index) => (
-              <Day key={index}>{day}</Day>
-            ))}
-          </Days>
+          {days.map((day, index) => (
+            <Day key={index}>{day}</Day>
+          ))}
         </Days>
+
         <Dates>{dates.map((day, index) => (day === 10 ? <Adate key={index}>{`${day}ggg`}</Adate> : <Adate key={index}>{day}</Adate>))}</Dates>
       </CelandarContainer>
     </>
