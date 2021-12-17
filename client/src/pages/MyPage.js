@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 function MyPage() {
   return <div>MyPage 입니다.</div>;

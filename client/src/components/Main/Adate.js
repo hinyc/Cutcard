@@ -4,10 +4,14 @@ import styled from 'styled-components';
 const AdateContainer = styled.div`
   box-sizing: border-box;
   border-radius: 10px;
-  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
   width: 66px;
   height: 50px;
   transition: 0.2s;
+
   &:hover {
     cursor: pointer;
     background-color: #97bfb4;
@@ -130,55 +134,5 @@ const Adate = (props) => {
     </>
   );
 };
-//   const [inComeState, setInComeState] = useState(false);
-//   const [outComeState, setOutComeState] = useState(false);
-//   return (
-//     <>
-//       {index < 10 && date - 10 > 0 ? ( //
-//         <AdateContainer
-//           onClick={() => {
-//             dateHandler(year, month - 1, date);
-//           }}
-//         >
-//           {
-//             //
-//             (index + 1) % 7 === 0 ? (
-//               <DateNumSat>{date}</DateNumSat> //
-//             ) : index % 7 === 0 ? (
-//               <DateNumSun>{date}</DateNumSun>
-//             ) : (
-//               <DateNum>{date}</DateNum>
-//             )
-//           }
-//           <StateContainer>
-//             {inComeState ? <IncomeStateTrue /> : <IncomeState />}
-//             {outComeState ? <OutcomeStateTrue /> : <OutcomeState />}
-//           </StateContainer>
-//         </AdateContainer>
-//       ) : (
-//         <AdateContainer
-//           onClick={() => {
-//             dateHandler(year, month, date);
-//           }}
-//         >
-//           {
-//             //
-//             (index + 1) % 7 === 0 ? (
-//               <DateNumSat>{date}</DateNumSat> //
-//             ) : index % 7 === 0 ? (
-//               <DateNumSun>{date}</DateNumSun>
-//             ) : (
-//               <DateNum>{date}</DateNum>
-//             )
-//           }
-//           <StateContainer>
-//             {inComeState ? <IncomeStateTrue /> : <IncomeState />}
-//             {outComeState ? <OutcomeStateTrue /> : <OutcomeState />}
-//           </StateContainer>
-//         </AdateContainer>
-//       )}
-//     </>
-//   );
-// };
 
 export default Adate;
