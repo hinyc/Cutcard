@@ -1,22 +1,25 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const LabelStyle = styled.div`
-  padding: 9px 13px;
+  padding: 9px;
   font-size: 16px;
   font-weight: 700;
   color: #7c8986;
+  margin: ${(props) => props.marginLabel || "18px 270px 0 0"};
 `;
 
 const InputStyle = styled.input`
   box-sizing: border-box;
-  height: ${(props) => props.height || '40px'};
-  width: ${(props) => props.width || '335px'};
+  display: block;
+  height: ${(props) => props.height || "40px"};
+  width: ${(props) => props.width || "335px"};
   padding-left: 13px;
   font-size: 16px;
   border: 1px solid #bfc5c4;
   border-radius: 5px;
   color: #7c8986;
+  margin: ${(props) => props.margin || "0"};
 
   ::-webkit-input-placeholder {
     color: #bfc5c4;
@@ -36,32 +39,43 @@ const InputStyle = styled.input`
   }
 `;
 
-export function Input({ label, type, text, readOnly, width, height }) {
+export function Input({
+  label,
+  type,
+  placeholder,
+  readOnly,
+  width,
+  height,
+  margin,
+  marginLabel,
+}) {
   return (
     <>
-      <LabelStyle>{label}</LabelStyle>
+      <LabelStyle marginLabel={marginLabel}>{label}</LabelStyle>
       <InputStyle
         type={type}
-        placeholder={text}
+        placeholder={placeholder}
         spellCheck="false" // always
         readOnly={readOnly}
         width={width}
         height={height}
+        margin={margin}
       />
     </>
   );
 }
 
-export function LoginInput({ label, type, text, readOnly }) {
+export function LoginInput({ label, type, placeholder, readOnly, margin }) {
   return (
     <>
       <LabelStyle>{label}</LabelStyle>
       <InputStyle
         type={type}
-        placeholder={text}
+        placeholder={placeholder}
         spellCheck="false" // always
         readOnly={readOnly}
         height="50px"
+        margin={margin}
       />
     </>
   );

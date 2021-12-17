@@ -1,24 +1,7 @@
-// import React, { useState } from "react";
+import React from "react";
 
-// import { MainOutcomes } from "../components/MainOutcomes";
-// import { MainIncomes } from "../components/MainIncomes";
+function MainPage() {
+  return <div>메인페이지 입니다.</div>;
+}
 
-// function MainPage() {
-//   const [mainState, setMainState] = useState("income");
-
-//   const mainStateHandler = (target) => {
-//     setMainState(target);
-//   };
-
-//   return (
-//     <div className="App">
-//       {mainState === "outcome" ? (
-//         <MainOutcomes mainStateHandler={mainStateHandler} />
-//       ) : (
-//         <MainIncomes mainStateHandler={mainStateHandler} />
-//       )}
-//     </div>
-//   );
-// }
-
-// export default MainPage;
+export default MainPage;
