@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Header = styled.header`
   box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.07);
@@ -37,8 +38,8 @@ const Menu = styled.button`
   box-sizing: border-box;
   font-size: 1rem;
   margin-left: 50px;
-  margin-right: ${(props) => props.marginRight || '90px'};
-  padding-top: ${(props) => props.paddingTop || '8px'};
+  margin-right: ${(props) => props.marginRight || "90px"};
+  padding-top: ${(props) => props.paddingTop || "8px"};
 
   &:hover {
     cursor: pointer;
@@ -50,22 +51,36 @@ const Menu = styled.button`
 function Navbar() {
   const [isLogin, setIsLogin] = useState(false);
   const Login = () => {
-    setIsLogin(!isLogin);
+    // setIsLogin(!isLogin);
+    setIsLogin(true);
+  };
+
+  const Logout = () => {
+    // setIsLogin(!isLogin);
+    setIsLogin(false);
   };
 
   return (
     <Header>
       <Nav>
-        <Logo>Cut Card</Logo>
-        <Menu paddingTop="0px">소개</Menu>
+        <Link to="/main">
+          <Logo>Cut Card</Logo>
+        </Link>
+        <Link to="/about">
+          <Menu paddingTop="0px">소개</Menu>
+        </Link>
       </Nav>
       {isLogin ? (
         <>
-          <Menu marginRight="20px">마이페이지</Menu>
-          <Menu onClick={Login}>로그아웃</Menu>
+          <Link to="/mypage">
+            <Menu marginRight="20px">마이페이지</Menu>
+          </Link>
+          <Menu onClick={Logout}>로그아웃</Menu>
         </>
       ) : (
-        <Menu onClick={Login}>회원가입 / 로그인</Menu>
+        <Link to="/login">
+          <Menu onClick={Login}>회원가입 / 로그인</Menu>
+        </Link>
       )}
     </Header>
   );

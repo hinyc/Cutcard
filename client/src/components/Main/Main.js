@@ -49,18 +49,13 @@ export const Amount = styled.div`
 
 const Main = () => {
   const [leftMoney, setLeftMoney] = useState(1000000);
-
-  const [targetYear, setTargetYear] = useState(new Date().getFullYear());
-  const [targetMonth, setTargetMonth] = useState(new Date().getMonth() + 1);
-  const [targetDate, setTargetDate] = useState(new Date().getDate());
-
-  //날짜선택용
-  const [selectYear, setSelectYear] = useState(targetYear);
-  const [selectMonth, setSelectMonth] = useState(targetMonth);
-  const [selectDate, setSelectDate] = useState(targetDate);
-
-  // main pages ; income, outcome, detail changer
   const [mainState, setMainState] = useState('outcome');
+
+  const [pickDate, setPickDate] = useState(new Date());
+
+  const targetYear = pickDate.getFullYear();
+  const targetMonth = pickDate.getMonth() + 1;
+  const [targetDate, setTargetDate] = useState(pickDate.getDate());
 
   const getDate = `${targetYear}-${targetMonth}-${targetDate}`;
   // const getDate = `${selectYear}-${selectMonth}-${selectDate}`;
@@ -71,16 +66,13 @@ const Main = () => {
     setMainState(target);
   };
 
-  const dateHandler = (targetYear, targetMonth, targetDate) => {
-    setTargetYear(targetYear);
-    setTargetMonth(targetMonth);
-    setTargetDate(targetDate);
+  const pickDateHandler = (year, month, date) => {
+    setPickDate(new Date(year, month, date));
   };
 
-  const selectDateHandler = (year, month, date) => {
-    setSelectYear(year);
-    setSelectMonth(month);
-    setSelectDate(date);
+  const dateHandler = (year, month, date) => {
+    setPickDate(new Date(year, month, 0));
+    setTargetDate(date);
   };
 
   //! dumyData
@@ -105,10 +97,7 @@ const Main = () => {
             dateHandler={dateHandler}
             targetYear={targetYear}
             targetMonth={targetMonth}
-            targetDate={targetDate}
-            setTargetYear={setTargetYear}
-            setTargetMonth={setTargetMonth}
-            setTargetDate={setTargetDate}
+            pickDateHandler={pickDateHandler}
           />
         </CenterContainer>
         <Submit mainState={mainState} getDate={getDate} />
