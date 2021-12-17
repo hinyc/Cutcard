@@ -68,6 +68,12 @@ const Main = () => {
 
   //! dumyData
 
+  //? view로 전달할 정보
+
+  //? calendar로 전달할 정보
+
+  //? submit에서 받아올 정보
+
   return (
     <>
       <MainContainer>
