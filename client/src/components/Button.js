@@ -5,6 +5,8 @@ const ButtonStyle = styled.button`
   color: ${(props) => props.background || 'white'};
   width: ${(props) => props.width || '190px'};
   height: ${(props) => props.height || '40px'};
+  margin: ${(props) => props.margin || '0'};
+  box-sizing: border-box;
   outline: 0;
   border: 0;
   background-color: ${(props) => props.background || '#97BFB4'};
@@ -23,9 +25,9 @@ const ButtonStyle = styled.button`
   }
 `;
 
-export function SmallButton({ text, width, height, handler, state }) {
+export function SmallButton({ text, width, height, handler, state, margin }) {
   return (
-    <ButtonStyle width={width} height={height} onClick={() => handler(state)}>
+    <ButtonStyle width={width} height={height} margin={margin} onClick={() => handler(state)}>
       {text}
     </ButtonStyle>
   );

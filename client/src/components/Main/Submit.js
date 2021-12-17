@@ -36,7 +36,7 @@ const AddInCome = () => {
         <Input text="날짜" width={`200px`} />
         <Select text="수입 카테고리" width={`200px`} options={['월급', '보너스', '기타']} />
         <Input text="금액을 입력해주세요" width={`200px`} />
-        <SmallButton text="입력" width={`200px`} />
+        <SmallButton text="입력" width={`200px`} margin={`18px 0 0 0 `} />
       </InputContainer>
     </>
   );
@@ -51,7 +51,7 @@ const AddOutCome = () => {
         <Select text="현금, 카드" width={`200px`} options={['현금', '카드']} />
         <Select text="사용 카드" width={`200px`} options={['삼성', '하나']} />
         <Input text="금액을 입력해주세요" width={`200px`} />
-        <SmallButton text="입력" width={`200px`} />
+        <SmallButton text="입력" margin={`18px 0 0 0 `} width={`200px`} />
       </InputContainer>
     </>
   );

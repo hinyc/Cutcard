@@ -7,6 +7,7 @@ const Header = styled.header`
   justify-content: space-around;
   align-items: center;
   padding: 30px 10%;
+  margin-bottom: 40px;
 `;
 
 const Nav = styled.span`
