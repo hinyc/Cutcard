@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
   };
   userCards.init({
     isCut: DataTypes.BOOLEAN,
-    remainValue: DataTypes.INTEGER
+    remainValue: DataTypes.INTEGER,
+    repaymentDay: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'userCards',
