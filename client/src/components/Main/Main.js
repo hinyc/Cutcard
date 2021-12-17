@@ -49,8 +49,15 @@ export const Amount = styled.div`
 
 const Main = () => {
   const [leftMoney, setLeftMoney] = useState(1000000);
-  const [year, setYear] = useState(2021);
+  const [year, setYear] = useState(1900);
   const [month, setMonth] = useState(12);
+  const [date, setDate] = useState(0);
+
+  const [testdate, setTestdate] = useState({
+    year: 2021,
+    month: 12,
+    date: 11,
+  });
 
   // main pages ; income, outcome, detail changer
   const [mainState, setMainState] = useState('outcome');
@@ -61,9 +68,11 @@ const Main = () => {
 
   console.log(mainState);
 
-  const dateHandler = (year, month) => {
+  const dateHandler = (year, month, date) => {
+    // console.log(`준비중 ${year}.${month}.${date}`);
     setYear(year);
     setMonth(month);
+    setDate(date);
   };
 
   //! dumyData

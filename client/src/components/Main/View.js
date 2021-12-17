@@ -85,7 +85,6 @@ export const MoneyContainer = styled.div`
 `;
 
 export const Item = ({ item }) => {
-  console.log(`item ${item}`);
   return <ItemContainer>{item}</ItemContainer>;
 };
 

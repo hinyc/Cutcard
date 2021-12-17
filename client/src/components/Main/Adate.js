@@ -3,9 +3,22 @@ import styled from 'styled-components';
 
 const AdateContainer = styled.div`
   box-sizing: border-box;
+  border-radius: 10px;
   color: black;
   width: 66px;
   height: 50px;
+  transition: 0.2s;
+  &:hover {
+    cursor: pointer;
+    background-color: #97bfb4;
+    opacity: 60%;
+  }
+
+  &:active {
+    cursor: pointer;
+    background-color: #97bfb4;
+    opacity: 95%;
+  }
 `;
 const DateNum = styled.div`
   color: black;
@@ -44,11 +57,11 @@ const OutcomeStateTrue = styled.div`
   height: 20px;
   margin: 1px;
 `;
-const clickHandler = () => {
-  console.log('준비중');
+const clickHandler = (year, month, date) => {
+  console.log(`준비중 ${year}.${month}.${date}`);
 };
 const Adate = (props) => {
-  const { day, index, inComes, outComes, inComesDate } = props;
+  const { date, year, month, index, inComes, outComes, inComesDate, dateHandler } = props;
 
   const [inComeState, setInComeState] = useState(false);
   const [outComeState, setOutComeState] = useState(false);
@@ -57,25 +70,29 @@ const Adate = (props) => {
   // console.log('inComesDate', inComesDate);
   // console.log('outComes', outComes);
   // console.log(inComes[0].date.split('-')[2]);
-  // console.log(day);
+  // console.log(date);
 
   // for (let i = 0; i < inComes.length; i++) {
-  //   if (inComes[i].date.split('-')[2] === day) {
+  //   if (inComes[i].date.split('-')[2] === date) {
   //     setInComeState(true);
   //   }
   // }
 
   return (
     <>
-      <AdateContainer onClick={clickHandler}>
+      <AdateContainer
+        onClick={() => {
+          dateHandler(year, month, date);
+        }}
+      >
         {
           //
           (index + 1) % 7 === 0 ? (
-            <DateNumSat>{day}</DateNumSat> //
+            <DateNumSat>{date}</DateNumSat> //
           ) : index % 7 === 0 ? (
-            <DateNumSun>{day}</DateNumSun>
+            <DateNumSun>{date}</DateNumSun>
           ) : (
-            <DateNum>{day}</DateNum>
+            <DateNum>{date}</DateNum>
           )
         }
         <StateContainer>

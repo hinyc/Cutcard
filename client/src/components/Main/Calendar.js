@@ -73,7 +73,7 @@ const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const Calendar = (props) => {
   const { inComes, outComes, dateHandler } = props;
-  console.log('s', inComes);
+
   const [targetYear, setTargetYear] = useState(new Date().getFullYear());
   const [targetMonth, setTargetMonth] = useState(new Date().getMonth() + 1);
 
@@ -83,7 +83,7 @@ const Calendar = (props) => {
   const viewMonth = date.getMonth() + 1;
 
   // Main에서 날짜 상태 확인
-  dateHandler(viewYear, viewMonth);
+  // dateHandler(viewYear, viewMonth);
 
   const preLastInfo = new Date(viewYear, viewMonth - 1, 0);
   const thisLastInfo = new Date(viewYear, viewMonth, 0);
@@ -144,13 +144,16 @@ const Calendar = (props) => {
         </Days>
 
         <Dates>
-          {dates.map((day, index) => (
+          {dates.map((date, index) => (
             <Adate //
               key={index}
-              day={day}
+              date={date}
+              year={viewYear}
+              month={viewMonth}
               index={index}
               inComes={inComes}
               outComes={outComes}
+              dateHandler={dateHandler}
               // inComesDate={inComesDate}
             />
           ))}
