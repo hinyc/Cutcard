@@ -39,16 +39,20 @@ const InputStyle = styled.input`
   }
 `;
 
-export function Input({
-  label,
-  type,
-  placeholder,
-  readOnly,
-  width,
-  height,
-  margin,
-  marginLabel,
-}) {
+export function Input(props) {
+  const {
+    label,
+    type,
+    placeholder,
+    readOnly,
+    width,
+    height,
+    value,
+    margin,
+    marginLabel,
+    onChange,
+  } = props;
+
   return (
     <>
       <LabelStyle marginLabel={marginLabel}>{label}</LabelStyle>
@@ -60,6 +64,8 @@ export function Input({
         width={width}
         height={height}
         margin={margin}
+        value={value}
+        onChange={onChange}
       />
     </>
   );

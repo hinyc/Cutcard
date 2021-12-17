@@ -33,17 +33,18 @@ const ButtonStyle = styled.button`
   }
 `;
 
-export function SmallButton({
-  text,
-  width,
-  height,
-  handler,
-  state,
-  margin,
-  background,
-  color,
-  border,
-}) {
+export function SmallButton(props) {
+  const {
+    text,
+    width,
+    height,
+    handler,
+    state,
+    margin,
+    background,
+    color,
+    border,
+  } = props;
   return (
     <ButtonStyle
       width={width}

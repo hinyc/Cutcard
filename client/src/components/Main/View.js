@@ -4,7 +4,7 @@ import { SmallButton } from '../Button';
 
 export const ViewContainer = styled.div`
   box-sizing: border-box;
-  border: solid 2px #97bfb4;
+  /* border: solid 2px #97bfb4; */
   width: 330px;
   display: flex;
   flex-direction: column;
@@ -17,6 +17,7 @@ export const ButtonContainer = styled.div`
   width: 230px;
   height: 70px;
   display: flex;
+  margin: 30px 0 0 0;
   justify-content: space-evenly;
   align-items: center;
 `;
@@ -84,7 +85,6 @@ export const MoneyContainer = styled.div`
 `;
 
 export const Item = ({ item }) => {
-  console.log(`item ${item}`);
   return <ItemContainer>{item}</ItemContainer>;
 };
 
@@ -151,8 +151,8 @@ const View = ({ year, month, mainStateHandler, mainState, data }) => {
     <>
       <ViewContainer>
         <ButtonContainer>
-          <SmallButton text={`수입`} width="80px" handler={mainStateHandler} state="income" />
-          <SmallButton text={`지출`} width="80px" handler={mainStateHandler} state="outcome" />
+          <SmallButton text={`수입`} width="80px" onClick={() => mainStateHandler('income')} />
+          <SmallButton text={`지출`} width="80px" onClick={() => mainStateHandler('outcome')} />
         </ButtonContainer>
         {mainState === 'income' ? ( //
           <InComeList year={year} month={month} inComes={inComes} />
