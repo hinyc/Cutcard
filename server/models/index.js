@@ -43,6 +43,6 @@ transactions.belongsTo(userCards);
 users.hasMany(userCards);
 userCards.belongsTo(users);
 cards.hasMany(userCards);
-userCards.belongsTo(cards);234
+userCards.belongsTo(cards);
 
 module.exports = db;
