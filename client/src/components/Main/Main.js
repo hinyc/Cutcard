@@ -5,7 +5,7 @@ import Input from '../Input';
 import Select from '../Select';
 import View from './View';
 import Submit from './Submit';
-import dumy from '../../dumyData';
+import dumyData from '../../dumyData';
 
 export const MainContainer = styled.div`
   width: 1130px;
@@ -46,13 +46,13 @@ export const Amount = styled.div`
   font-size: 26px; ;
 `;
 
-const Main = ({ inComes }) => {
+const Main = () => {
   const [leftMoney, setLeftMoney] = useState(1000000);
   const [year, setYear] = useState(2021);
   const [month, setMonth] = useState(12);
 
-  // main pages ; income, outcome changer
-  const [mainState, setMainState] = useState('income');
+  // main pages ; income, outcome, detail changer
+  const [mainState, setMainState] = useState('outcome');
 
   const mainStateHandler = (target) => {
     setMainState(target);
@@ -64,18 +64,19 @@ const Main = ({ inComes }) => {
     setYear(year);
     setMonth(month);
   };
+
   return (
     <>
       <MainContainer>
-        <View year={year} month={month} mainStateHandler={mainStateHandler} />
+        <View year={year} month={month} mainStateHandler={mainStateHandler} mainState={mainState} data={dumyData} />
         <CenterContainer>
           <LeftMoney>
             <SubTitle>잔여 금액</SubTitle>
             <Amount>{`${leftMoney.toLocaleString('ko-KR')} 원`}</Amount>
           </LeftMoney>
-          <Calendar inComes={inComes} dateHandler={dateHandler} />
+          <Calendar data={dumyData} dateHandler={dateHandler} />
         </CenterContainer>
-        <Submit />
+        <Submit mainState={mainState} />
       </MainContainer>
     </>
   );

@@ -2,8 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 const SelectStyle = styled.select`
-  height: 2.2rem;
-  width: 16rem;
+  box-sizing: border-box;
+  height: ${(props) => props.height || '40px'};
+  width: ${(props) => props.width || '335px'};
   padding: 0.5rem;
   font-size: 1rem;
   border: 1px solid #dbdbdb;
@@ -21,11 +22,11 @@ const LabelStyle = styled.div`
 
 const Option = styled.option``;
 
-function Select({ label, text, readOnly, options }) {
+function Select({ label, text, readOnly, options, width, height }) {
   return (
     <>
       <LabelStyle>{label}</LabelStyle>
-      <SelectStyle>
+      <SelectStyle width={width} hidden={height}>
         <Option value="value" defaultValue>
           {text}
         </Option>
