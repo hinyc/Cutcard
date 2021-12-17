@@ -151,8 +151,8 @@ const View = ({ year, month, mainStateHandler, mainState, data }) => {
     <>
       <ViewContainer>
         <ButtonContainer>
-          <SmallButton text={`수입`} width="80px" handler={mainStateHandler} state="income" />
-          <SmallButton text={`지출`} width="80px" handler={mainStateHandler} state="outcome" />
+          <SmallButton text={`수입`} width="80px" onClick={() => mainStateHandler('income')} />
+          <SmallButton text={`지출`} width="80px" onClick={() => mainStateHandler('outcome')} />
         </ButtonContainer>
         {mainState === 'income' ? ( //
           <InComeList year={year} month={month} inComes={inComes} />

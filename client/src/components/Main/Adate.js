@@ -21,13 +21,13 @@ const AdateContainer = styled.div`
   }
 `;
 const DateNum = styled.div`
-  color: black;
+  color: ${(props) => props.color || 'black'};
 `;
 const DateNumSat = styled.div`
-  color: blue;
+  color: ${(props) => props.color || 'blue'};
 `;
 const DateNumSun = styled.div`
-  color: red;
+  color: ${(props) => props.color || 'red'};
 `;
 
 const StateContainer = styled.div`
@@ -57,51 +57,128 @@ const OutcomeStateTrue = styled.div`
   height: 20px;
   margin: 1px;
 `;
-const clickHandler = (year, month, date) => {
-  console.log(`준비중 ${year}.${month}.${date}`);
+
+const gray = '#BFC5C4';
+const DateMaker = (props) => {
+  const {
+    date, //
+    index,
+    inComeState,
+    outComeState,
+    onClick,
+    color,
+  } = props;
+  return (
+    <AdateContainer onClick={onClick}>
+      {
+        //
+        (index + 1) % 7 === 0 ? (
+          <DateNumSat color={color}>{date}</DateNumSat> //
+        ) : index % 7 === 0 ? (
+          <DateNumSun color={color}>{date}</DateNumSun>
+        ) : (
+          <DateNum color={color}>{date}</DateNum>
+        )
+      }
+      <StateContainer>
+        {inComeState ? <IncomeStateTrue /> : <IncomeState />}
+        {outComeState ? <OutcomeStateTrue /> : <OutcomeState />}
+      </StateContainer>
+    </AdateContainer>
+  );
 };
+
 const Adate = (props) => {
-  const { date, year, month, index, inComes, outComes, inComesDate, dateHandler } = props;
-
-  const [inComeState, setInComeState] = useState(false);
-  const [outComeState, setOutComeState] = useState(false);
-
-  // console.log('inComes', inComes);
-  // console.log('inComesDate', inComesDate);
-  // console.log('outComes', outComes);
-  // console.log(inComes[0].date.split('-')[2]);
-  // console.log(date);
-
-  // for (let i = 0; i < inComes.length; i++) {
-  //   if (inComes[i].date.split('-')[2] === date) {
-  //     setInComeState(true);
-  //   }
-  // }
-
+  const {
+    date, //
+    year,
+    month,
+    index,
+    inComes,
+    outComes,
+    dateHandler,
+  } = props;
   return (
     <>
-      <AdateContainer
-        onClick={() => {
-          dateHandler(year, month, date);
-        }}
-      >
-        {
-          //
-          (index + 1) % 7 === 0 ? (
-            <DateNumSat>{date}</DateNumSat> //
-          ) : index % 7 === 0 ? (
-            <DateNumSun>{date}</DateNumSun>
-          ) : (
-            <DateNum>{date}</DateNum>
-          )
-        }
-        <StateContainer>
-          {inComeState ? <IncomeStateTrue /> : <IncomeState />}
-          {outComeState ? <OutcomeStateTrue /> : <OutcomeState />}
-        </StateContainer>
-      </AdateContainer>
+      {index < 6 && date - 10 > 0 ? ( //
+        <DateMaker //
+          date={date}
+          year={year}
+          month={month}
+          index={index}
+          color={gray}
+          onClick={() => dateHandler(year, month - 1, date)}
+        />
+      ) : index > 20 && 10 - date > 0 ? (
+        <DateMaker //
+          date={date}
+          year={year}
+          month={month}
+          index={index}
+          color={gray}
+          onClick={() => dateHandler(year, month + 1, date)}
+        />
+      ) : (
+        <DateMaker //
+          date={date}
+          year={year}
+          month={month}
+          index={index}
+          onClick={() => dateHandler(year, month, date)}
+        />
+      )}
     </>
   );
 };
+//   const [inComeState, setInComeState] = useState(false);
+//   const [outComeState, setOutComeState] = useState(false);
+//   return (
+//     <>
+//       {index < 10 && date - 10 > 0 ? ( //
+//         <AdateContainer
+//           onClick={() => {
+//             dateHandler(year, month - 1, date);
+//           }}
+//         >
+//           {
+//             //
+//             (index + 1) % 7 === 0 ? (
+//               <DateNumSat>{date}</DateNumSat> //
+//             ) : index % 7 === 0 ? (
+//               <DateNumSun>{date}</DateNumSun>
+//             ) : (
+//               <DateNum>{date}</DateNum>
+//             )
+//           }
+//           <StateContainer>
+//             {inComeState ? <IncomeStateTrue /> : <IncomeState />}
+//             {outComeState ? <OutcomeStateTrue /> : <OutcomeState />}
+//           </StateContainer>
+//         </AdateContainer>
+//       ) : (
+//         <AdateContainer
+//           onClick={() => {
+//             dateHandler(year, month, date);
+//           }}
+//         >
+//           {
+//             //
+//             (index + 1) % 7 === 0 ? (
+//               <DateNumSat>{date}</DateNumSat> //
+//             ) : index % 7 === 0 ? (
+//               <DateNumSun>{date}</DateNumSun>
+//             ) : (
+//               <DateNum>{date}</DateNum>
+//             )
+//           }
+//           <StateContainer>
+//             {inComeState ? <IncomeStateTrue /> : <IncomeState />}
+//             {outComeState ? <OutcomeStateTrue /> : <OutcomeState />}
+//           </StateContainer>
+//         </AdateContainer>
+//       )}
+//     </>
+//   );
+// };
 
 export default Adate;

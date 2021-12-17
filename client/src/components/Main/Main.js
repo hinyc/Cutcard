@@ -49,30 +49,38 @@ export const Amount = styled.div`
 
 const Main = () => {
   const [leftMoney, setLeftMoney] = useState(1000000);
-  const [year, setYear] = useState(1900);
-  const [month, setMonth] = useState(12);
-  const [date, setDate] = useState(0);
 
-  const [testdate, setTestdate] = useState({
-    year: 2021,
-    month: 12,
-    date: 11,
-  });
+  const [targetYear, setTargetYear] = useState(new Date().getFullYear());
+  const [targetMonth, setTargetMonth] = useState(new Date().getMonth() + 1);
+  const [targetDate, setTargetDate] = useState(new Date().getDate());
+
+  //날짜선택용
+  const [selectYear, setSelectYear] = useState(targetYear);
+  const [selectMonth, setSelectMonth] = useState(targetMonth);
+  const [selectDate, setSelectDate] = useState(targetDate);
 
   // main pages ; income, outcome, detail changer
   const [mainState, setMainState] = useState('outcome');
+
+  const getDate = `${targetYear}-${targetMonth}-${targetDate}`;
+  // const getDate = `${selectYear}-${selectMonth}-${selectDate}`;
+
+  console.log(`Render! mainState:"${mainState}" date:${getDate}`);
 
   const mainStateHandler = (target) => {
     setMainState(target);
   };
 
-  console.log(mainState);
+  const dateHandler = (targetYear, targetMonth, targetDate) => {
+    setTargetYear(targetYear);
+    setTargetMonth(targetMonth);
+    setTargetDate(targetDate);
+  };
 
-  const dateHandler = (year, month, date) => {
-    // console.log(`준비중 ${year}.${month}.${date}`);
-    setYear(year);
-    setMonth(month);
-    setDate(date);
+  const selectDateHandler = (year, month, date) => {
+    setSelectYear(year);
+    setSelectMonth(month);
+    setSelectDate(date);
   };
 
   //! dumyData
@@ -86,15 +94,24 @@ const Main = () => {
   return (
     <>
       <MainContainer>
-        <View year={year} month={month} mainStateHandler={mainStateHandler} mainState={mainState} data={dumyData} />
+        <View year={targetYear} month={targetMonth} mainStateHandler={mainStateHandler} mainState={mainState} data={dumyData} />
         <CenterContainer>
           <LeftMoney>
             <SubTitle>잔여 금액</SubTitle>
             <Amount>{`${leftMoney.toLocaleString('ko-KR')} 원`}</Amount>
           </LeftMoney>
-          <Calendar data={dumyData} dateHandler={dateHandler} />
+          <Calendar //
+            data={dumyData}
+            dateHandler={dateHandler}
+            targetYear={targetYear}
+            targetMonth={targetMonth}
+            targetDate={targetDate}
+            setTargetYear={setTargetYear}
+            setTargetMonth={setTargetMonth}
+            setTargetDate={setTargetDate}
+          />
         </CenterContainer>
-        <Submit mainState={mainState} />
+        <Submit mainState={mainState} getDate={getDate} />
       </MainContainer>
     </>
   );

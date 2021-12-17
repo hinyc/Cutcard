@@ -35,6 +35,10 @@ export const Arrow = styled.button`
   font-size: large;
   outline: 0;
   border: 0;
+  &:hover {
+    cursor: pointer;
+    opacity: 80%;
+  }
 `;
 export const Today = styled.button``;
 
@@ -72,10 +76,17 @@ export const Dates = styled.div`
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const Calendar = (props) => {
-  const { inComes, outComes, dateHandler } = props;
-
-  const [targetYear, setTargetYear] = useState(new Date().getFullYear());
-  const [targetMonth, setTargetMonth] = useState(new Date().getMonth() + 1);
+  const {
+    inComes, //
+    outComes,
+    dateHandler,
+    targetYear,
+    targetMonth,
+    targetDate,
+    setTargetYear,
+    setTargetMonth,
+    setTargetDate,
+  } = props;
 
   const date = new Date(targetYear, targetMonth, 0);
 
@@ -110,11 +121,16 @@ const Calendar = (props) => {
   const dates = prevDates.concat(thisDates, nextDates);
 
   const prevMonthHandler = () => {
-    setTargetMonth(targetMonth - 1);
+    const date = new Date(targetYear, targetMonth - 1, 0);
+
+    setTargetYear(date.getFullYear());
+    setTargetMonth(date.getMonth() + 1);
   };
 
   const nextMonthHandler = () => {
-    setTargetMonth(targetMonth + 1);
+    const date = new Date(targetYear, targetMonth + 1, 0);
+    setTargetYear(date.getFullYear());
+    setTargetMonth(date.getMonth() + 1);
   };
 
   // const inComesDate = inComes.map((inCome) => inCome.date.split('-')[2]);
