@@ -22,7 +22,7 @@ export const MainContainer = styled.div`
 export const CenterContainer = styled.div`
   box-sizing: border-box;
 
-  border: solid 2px #97bfb4;
+  /* border: solid 2px #97bfb4; */
   width: 500px;
   display: flex;
   flex-direction: column;
@@ -35,6 +35,7 @@ export const LeftMoney = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 15px 0 0 0;
   color: #7c8986;
   height: 70px;
 `;
@@ -48,35 +49,69 @@ export const Amount = styled.div`
 
 const Main = () => {
   const [leftMoney, setLeftMoney] = useState(1000000);
-  const [year, setYear] = useState(2021);
-  const [month, setMonth] = useState(12);
+
+  const [targetYear, setTargetYear] = useState(new Date().getFullYear());
+  const [targetMonth, setTargetMonth] = useState(new Date().getMonth() + 1);
+  const [targetDate, setTargetDate] = useState(new Date().getDate());
+
+  //날짜선택용
+  const [selectYear, setSelectYear] = useState(targetYear);
+  const [selectMonth, setSelectMonth] = useState(targetMonth);
+  const [selectDate, setSelectDate] = useState(targetDate);
 
   // main pages ; income, outcome, detail changer
   const [mainState, setMainState] = useState('outcome');
+
+  const getDate = `${targetYear}-${targetMonth}-${targetDate}`;
+  // const getDate = `${selectYear}-${selectMonth}-${selectDate}`;
+
+  console.log(`Render! mainState:"${mainState}" date:${getDate}`);
 
   const mainStateHandler = (target) => {
     setMainState(target);
   };
 
-  console.log(mainState);
-
-  const dateHandler = (year, month) => {
-    setYear(year);
-    setMonth(month);
+  const dateHandler = (targetYear, targetMonth, targetDate) => {
+    setTargetYear(targetYear);
+    setTargetMonth(targetMonth);
+    setTargetDate(targetDate);
   };
+
+  const selectDateHandler = (year, month, date) => {
+    setSelectYear(year);
+    setSelectMonth(month);
+    setSelectDate(date);
+  };
+
+  //! dumyData
+
+  //? view로 전달할 정보
+
+  //? calendar로 전달할 정보
+
+  //? submit에서 받아올 정보
 
   return (
     <>
       <MainContainer>
-        <View year={year} month={month} mainStateHandler={mainStateHandler} mainState={mainState} data={dumyData} />
+        <View year={targetYear} month={targetMonth} mainStateHandler={mainStateHandler} mainState={mainState} data={dumyData} />
         <CenterContainer>
           <LeftMoney>
             <SubTitle>잔여 금액</SubTitle>
             <Amount>{`${leftMoney.toLocaleString('ko-KR')} 원`}</Amount>
           </LeftMoney>
-          <Calendar data={dumyData} dateHandler={dateHandler} />
+          <Calendar //
+            data={dumyData}
+            dateHandler={dateHandler}
+            targetYear={targetYear}
+            targetMonth={targetMonth}
+            targetDate={targetDate}
+            setTargetYear={setTargetYear}
+            setTargetMonth={setTargetMonth}
+            setTargetDate={setTargetDate}
+          />
         </CenterContainer>
-        <Submit mainState={mainState} />
+        <Submit mainState={mainState} getDate={getDate} />
       </MainContainer>
     </>
   );

@@ -36,7 +36,18 @@ const InputStyle = styled.input`
   }
 `;
 
-export function Input({ label, type, text, readOnly, width, height }) {
+export function Input(props) {
+  const {
+    label, //
+    type,
+    text,
+    readOnly,
+    width,
+    height,
+    value,
+    onChange,
+  } = props;
+
   return (
     <>
       <LabelStyle>{label}</LabelStyle>
@@ -47,6 +58,8 @@ export function Input({ label, type, text, readOnly, width, height }) {
         readOnly={readOnly}
         width={width}
         height={height}
+        value={value}
+        onChange={onChange}
       />
     </>
   );

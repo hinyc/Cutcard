@@ -25,9 +25,16 @@ const ButtonStyle = styled.button`
   }
 `;
 
-export function SmallButton({ text, width, height, handler, state, margin }) {
+export function SmallButton(props) {
+  const {
+    text, //
+    width,
+    height,
+    onClick,
+    margin,
+  } = props;
   return (
-    <ButtonStyle width={width} height={height} margin={margin} onClick={() => handler(state)}>
+    <ButtonStyle width={width} height={height} margin={margin} onClick={onClick}>
       {text}
     </ButtonStyle>
   );
