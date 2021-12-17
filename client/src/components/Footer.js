@@ -4,7 +4,7 @@ import styled from "styled-components";
 const FooterStyle = styled.footer`
   display: flex;
   background-color: ${(props) => props.color || "white"};
-  height: 32px;
+  height: 40px;
   padding: ${(props) => props.padding || "0px"};
 `;
 
@@ -18,8 +18,8 @@ const Member = styled.li`
 function Footer() {
   return (
     <>
-      <FooterStyle padding="150px 0 150px 200px">
-        <ul>
+      <FooterStyle padding="100px 0">
+        <ul style={{ marginLeft: "150px" }}>
           <Member size="24px">Cut Card</Member>
           <Member>류현</Member>
           <Member>곽예찬</Member>
