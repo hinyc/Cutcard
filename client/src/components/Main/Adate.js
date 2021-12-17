@@ -53,11 +53,11 @@ const Adate = (props) => {
   const [inComeState, setInComeState] = useState(false);
   const [outComeState, setOutComeState] = useState(false);
 
-  console.log('inComes', inComes);
-  console.log('inComesDate', inComesDate);
-  console.log('outComes', outComes);
+  // console.log('inComes', inComes);
+  // console.log('inComesDate', inComesDate);
+  // console.log('outComes', outComes);
   // console.log(inComes[0].date.split('-')[2]);
-  console.log(day);
+  // console.log(day);
 
   // for (let i = 0; i < inComes.length; i++) {
   //   if (inComes[i].date.split('-')[2] === day) {
