@@ -7,7 +7,7 @@ import Select from '../Select';
 //! Right
 export const SubmitContainer = styled.div`
   box-sizing: border-box;
-  border: solid 2px #97bfb4;
+  /* border: solid 2px #97bfb4; */
   width: 300px;
   position: relative;
 `;
@@ -30,6 +30,10 @@ export const InputContainer = styled.div`
 `;
 
 const AddInCome = () => {
+  const [Year, setYear] = useState(2021);
+  const [Month, setMonth] = useState(12);
+  const [date, setDate] = useState(5);
+
   return (
     <>
       <InputContainer>

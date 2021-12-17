@@ -22,7 +22,7 @@ export const MainContainer = styled.div`
 export const CenterContainer = styled.div`
   box-sizing: border-box;
 
-  border: solid 2px #97bfb4;
+  /* border: solid 2px #97bfb4; */
   width: 500px;
   display: flex;
   flex-direction: column;
@@ -35,6 +35,7 @@ export const LeftMoney = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 15px 0 0 0;
   color: #7c8986;
   height: 70px;
 `;
@@ -64,6 +65,8 @@ const Main = () => {
     setYear(year);
     setMonth(month);
   };
+
+  //! dumyData
 
   return (
     <>

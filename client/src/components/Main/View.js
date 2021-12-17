@@ -4,7 +4,7 @@ import { SmallButton } from '../Button';
 
 export const ViewContainer = styled.div`
   box-sizing: border-box;
-  border: solid 2px #97bfb4;
+  /* border: solid 2px #97bfb4; */
   width: 330px;
   display: flex;
   flex-direction: column;
@@ -17,6 +17,7 @@ export const ButtonContainer = styled.div`
   width: 230px;
   height: 70px;
   display: flex;
+  margin: 30px 0 0 0;
   justify-content: space-evenly;
   align-items: center;
 `;
