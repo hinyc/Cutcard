@@ -70,6 +70,7 @@ const testIncomeSubmiter = (getDate, category, price) => {
     }`
   );
 };
+
 const testOutComeSubmiter = (getDate, category, cash, card, price) => {
   console.log(
     `{
@@ -84,22 +85,22 @@ const testOutComeSubmiter = (getDate, category, cash, card, price) => {
   );
 };
 
-const AddInCome = ({ getDate }) => {
-  const [category, setCategory] = useState('미선택');
-  const [price, setPrice] = useState(0);
-
-  const addValueHandler = (e) => {
-    setPrice(e.target.value);
-  };
-
+const AddInCome = (props) => {
+  const {
+    getDate, //
+    category,
+    categoryHandler,
+    price,
+    priceHandler,
+  } = props;
   return (
     <>
       <InputContainer>
         <InputDate text="날짜" width={`200px`}>
           {getDate}
         </InputDate>
-        <Select text="수입 카테고리" width={`200px`} options={['월급', '보너스', '기타']} />
-        <Input text="금액을 입력해주세요" width={`200px`} onChange={addValueHandler} />
+        <Select text="수입 카테고리" width={`200px`} options={['월급', '보너스', '기타']} onChange={categoryHandler} />
+        <Input text="금액을 입력해주세요" width={`200px`} onChange={priceHandler} />
         <SmallButton //
           text="입력"
           width={`200px`}
@@ -111,26 +112,33 @@ const AddInCome = ({ getDate }) => {
   );
 };
 
-const AddOutCome = ({ getDate }) => {
-  const [category, setCategory] = useState('미선택');
-  const [card, setCard] = useState('미선택');
-  const [cash, setCash] = useState('true/false');
-  const [price, setPrice] = useState(0);
+const AddOutCome = (props) => {
+  const {
+    getDate, //
+    category,
+    categoryHandler,
+    cash,
+    cashHandler,
+    card,
+    cardHandler,
+    price,
+    priceHandler,
+  } = props;
   return (
     <>
       <InputContainer>
         <InputDate text="날짜" width={`200px`}>
           {getDate}
         </InputDate>
-        <Select text="지출 카테고리" width={`200px`} options={['식비', '공과금', '기타']} />
-        <Select text="현금, 카드" width={`200px`} options={['현금', '카드']} />
-        <Select text="사용 카드" width={`200px`} options={['삼성', '하나']} />
-        <Input text="금액을 입력해주세요" width={`200px`} />
+        <Select text="지출 카테고리" width={`200px`} options={['식비', '공과금', '기타']} onChange={categoryHandler} />
+        <Select text="현금, 카드" width={`200px`} onChange={cashHandler} options={['현금', '카드']} />
+        <Select text="사용 카드" width={`200px`} onChange={cardHandler} options={['삼성', '하나']} />
+        <Input text="금액을 입력해주세요" width={`200px`} onChange={priceHandler} />
         <SmallButton //
           text="입력"
           margin={`18px 0 0 0 `}
           width={`200px`}
-          onClick={() => testOutComeSubmiter(getDate, category, card, cash, price)}
+          onClick={() => testOutComeSubmiter(getDate, category, cash, card, price)}
         />
       </InputContainer>
     </>
@@ -138,13 +146,47 @@ const AddOutCome = ({ getDate }) => {
 };
 
 const Submit = ({ mainState, getDate }) => {
+  const [category, setCategory] = useState('미선택');
+  const [price, setPrice] = useState(0);
+  const [card, setCard] = useState('미선택');
+  const [cash, setCash] = useState('true/false');
+
+  const priceHandler = (e) => {
+    setPrice(e.target.value);
+  };
+  const categoryHandler = (e) => {
+    setCategory(e.target.value);
+  };
+  const cardHandler = (e) => {
+    setCard(e.target.value);
+  };
+  const cashHandler = (e) => {
+    setCash(e.target.value);
+  };
+
   return (
     <>
       <SubmitContainer>
         {mainState === 'income' ? ( //
-          <AddInCome getDate={getDate} />
+          <AddInCome //
+            getDate={getDate}
+            category={category}
+            categoryHandler={categoryHandler}
+            price={price}
+            priceHandler={priceHandler}
+          />
         ) : mainState === 'outcome' ? (
-          <AddOutCome getDate={getDate} />
+          <AddOutCome //
+            getDate={getDate}
+            category={category}
+            categoryHandler={categoryHandler}
+            cash={cash}
+            cashHandler={cashHandler}
+            card={card}
+            cardHandler={cardHandler}
+            price={price}
+            priceHandler={priceHandler}
+          />
         ) : null}
       </SubmitContainer>
     </>
