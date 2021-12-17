@@ -1,24 +1,24 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
 
-import { MainOutcomes } from "../components/MainOutcomes";
-import { MainIncomes } from "../components/MainIncomes";
+// import { MainOutcomes } from "../components/MainOutcomes";
+// import { MainIncomes } from "../components/MainIncomes";
 
-function MainPage() {
-  const [mainState, setMainState] = useState("income");
+// function MainPage() {
+//   const [mainState, setMainState] = useState("income");
 
-  const mainStateHandler = (target) => {
-    setMainState(target);
-  };
+//   const mainStateHandler = (target) => {
+//     setMainState(target);
+//   };
 
-  return (
-    <div className="App">
-      {mainState === "outcome" ? (
-        <MainOutcomes mainStateHandler={mainStateHandler} />
-      ) : (
-        <MainIncomes mainStateHandler={mainStateHandler} />
-      )}
-    </div>
-  );
-}
+//   return (
+//     <div className="App">
+//       {mainState === "outcome" ? (
+//         <MainOutcomes mainStateHandler={mainStateHandler} />
+//       ) : (
+//         <MainIncomes mainStateHandler={mainStateHandler} />
+//       )}
+//     </div>
+//   );
+// }
 
-export default MainPage;
+// export default MainPage;

@@ -5,12 +5,27 @@ const SelectStyle = styled.select`
   box-sizing: border-box;
   height: ${(props) => props.height || '40px'};
   width: ${(props) => props.width || '335px'};
-  padding: 0.5rem;
-  font-size: 1rem;
-  border: 1px solid #dbdbdb;
-  border-radius: 0.25em;
+  padding-left: 13px;
+  font-size: 16px;
+  border: 1px solid #bfc5c4;
+  border-radius: 5px;
+  color: #7c8986;
+
+  ::-webkit-input-placeholder {
+    color: #bfc5c4;
+  } /* Chrome/Opera/Safari */
+  ::-moz-placeholder {
+    color: #bfc5c4;
+  } /* Firefox 19+ */
+  :-ms-input-placeholder {
+    color: #bfc5c4;
+  } /* IE 10+ */
+  :-moz-placeholder {
+    color: #bfc5c4;
+  } /* Firefox 18- */
+
   &:focus {
-    outline: 1px solid #191919;
+    outline: 1px solid #7c8986;
   }
 `;
 
@@ -20,7 +35,9 @@ const LabelStyle = styled.div`
   font-weight: 600;
 `;
 
-const Option = styled.option``;
+const Option = styled.option`
+  color: #bfc5c4;
+`;
 
 function Select({ label, text, readOnly, options, width, height }) {
   return (

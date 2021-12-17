@@ -9,13 +9,13 @@ const LabelStyle = styled.div`
 `;
 
 const InputStyle = styled.input`
+  box-sizing: border-box;
   height: ${(props) => props.height || '40px'};
   width: ${(props) => props.width || '335px'};
-  box-sizing: border-box;
   padding-left: 13px;
   font-size: 16px;
   border: 1px solid #bfc5c4;
-  border-radius: 0.25em;
+  border-radius: 5px;
   color: #7c8986;
 
   ::-webkit-input-placeholder {
