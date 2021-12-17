@@ -39,11 +39,20 @@ const Option = styled.option`
   color: #bfc5c4;
 `;
 
-function Select({ label, text, readOnly, options, width, height }) {
+function Select(props) {
+  const {
+    label, //
+    text,
+    readOnly,
+    options,
+    width,
+    height,
+    onChange,
+  } = props;
   return (
     <>
       <LabelStyle>{label}</LabelStyle>
-      <SelectStyle width={width} hidden={height}>
+      <SelectStyle width={width} hidden={height} onChange={onChange}>
         <Option value="value" defaultValue>
           {text}
         </Option>
