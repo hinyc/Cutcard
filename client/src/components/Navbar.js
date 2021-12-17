@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 const Header = styled.header`
   box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.07);
@@ -37,8 +37,8 @@ const Menu = styled.button`
   box-sizing: border-box;
   font-size: 1rem;
   margin-left: 50px;
-  margin-right: ${(props) => props.marginRight || "90px"};
-  padding-top: ${(props) => props.paddingTop || "8px"};
+  margin-right: ${(props) => props.marginRight || '90px'};
+  padding-top: ${(props) => props.paddingTop || '8px'};
 
   &:hover {
     cursor: pointer;

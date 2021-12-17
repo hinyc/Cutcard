@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const LabelStyle = styled.div`
   padding: 9px 13px;
@@ -9,8 +9,9 @@ const LabelStyle = styled.div`
 `;
 
 const InputStyle = styled.input`
-  height: ${(props) => props.height || "40px"};
-  width: 335px;
+  height: ${(props) => props.height || '40px'};
+  width: ${(props) => props.width || '335px'};
+  box-sizing: border-box;
   padding-left: 13px;
   font-size: 16px;
   border: 1px solid #bfc5c4;
@@ -35,7 +36,7 @@ const InputStyle = styled.input`
   }
 `;
 
-export function Input({ label, type, text, readOnly }) {
+export function Input({ label, type, text, readOnly, width, height }) {
   return (
     <>
       <LabelStyle>{label}</LabelStyle>
@@ -44,6 +45,8 @@ export function Input({ label, type, text, readOnly }) {
         placeholder={text}
         spellCheck="false" // always
         readOnly={readOnly}
+        width={width}
+        height={height}
       />
     </>
   );
