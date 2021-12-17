@@ -35,10 +35,14 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 //associations
-const { users, cards, usercards } = sequelize.models
-users.belongsToMany(usercards, { through: 'transactions' })
-usercards.belongsToMany(users, { through: 'transactions' })
-users.belongsToMany(cards, { through: 'userCards' })
-cards.belongsToMany(users, { through: 'userCards' })
+const { users, cards, userCards, transactions } = sequelize.models
+users.hasMany(transactions);
+transactions.belongsTo(users);
+userCards.hasMany(transactions);
+transactions.belongsTo(userCards);
+users.hasMany(userCards);
+userCards.belongsTo(users);
+cards.hasMany(userCards);
+userCards.belongsTo(cards);234
 
 module.exports = db;

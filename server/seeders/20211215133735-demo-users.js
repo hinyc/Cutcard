@@ -19,7 +19,43 @@ module.exports = {
       address: 'https://www.shinhancard.com/mob/MOBFM12101N/MOBFM12101R01.shc',
       createdAt: new Date(),
       updatedAt: new Date()
-    }],
+    },
+    {
+      name: 'bc',
+      phoneNumber: '1566-4000',
+      address: 'https://www.bccard.com/app/card/CstmrCentSubmain.do',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      name: 'hyundai',
+      phoneNumber: '1577-6000',
+      address: 'https://www.hyundaicard.com/cpu/ma/CPUMA0101_01.hc',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      name: 'kb',
+      phoneNumber: '1588-1688',
+      address: 'https://customer.kbcard.com/CXCRSZZC0001.cms?type=',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      name: 'hana',
+      phoneNumber: '1800-1111',
+      address: 'https://www.hanacard.co.kr/OSA60000000D.web?schID=scd&mID=OSA60000000D',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      name: 'woori',
+      phoneNumber: '1588-9955',
+      address: 'https://pc.wooricard.com/dcpc/yh1/cct/cct01/H1CCT201S00.do',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+  ],
     { returning: ["id"] }
     );
     const userCardsId = await queryInterface.bulkInsert('userCards', [{
