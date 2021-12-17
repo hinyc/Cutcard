@@ -14,6 +14,9 @@ module.exports = {
       remainValue: {
         type: Sequelize.INTEGER
       },
+      repaymentDay: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
