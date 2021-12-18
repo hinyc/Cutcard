@@ -92,20 +92,24 @@ const AddInCome = (props) => {
     categoryHandler,
     price,
     priceHandler,
+    inputResetHandler,
   } = props;
   return (
     <>
       <InputContainer>
-        <InputDate text="날짜" width={`200px`}>
+        <InputDate placeholder="날짜" width={`200px`}>
           {getDate}
         </InputDate>
-        <Select text="수입 카테고리" width={`200px`} options={['월급', '보너스', '기타']} onChange={categoryHandler} />
-        <Input text="금액을 입력해주세요" width={`200px`} onChange={priceHandler} />
+        <Select text="수입 카테고리" width={`200px`} options={['월급', '보너스', '기타']} onChange={categoryHandler} value={category} />
+        <Input placeholder="금액을 입력해주세요" width={`200px`} onChange={priceHandler} value={price} />
         <SmallButton //
           text="입력"
           width={`200px`}
           margin={`18px 0 0 0 `}
-          onClick={() => testIncomeSubmiter(getDate, category, price)}
+          onClick={() => {
+            testIncomeSubmiter(getDate, category, price);
+            inputResetHandler();
+          }}
         />
       </InputContainer>
     </>
@@ -123,46 +127,46 @@ const AddOutCome = (props) => {
     cardHandler,
     price,
     priceHandler,
+    inputResetHandler,
   } = props;
   return (
     <>
       <InputContainer>
-        <InputDate text="날짜" width={`200px`}>
+        <InputDate placeholder="날짜" width={`200px`}>
           {getDate}
         </InputDate>
-        <Select text="지출 카테고리" width={`200px`} options={['식비', '공과금', '기타']} onChange={categoryHandler} />
-        <Select text="현금, 카드" width={`200px`} onChange={cashHandler} options={['현금', '카드']} />
-        <Select text="사용 카드" width={`200px`} onChange={cardHandler} options={['삼성', '하나']} />
-        <Input text="금액을 입력해주세요" width={`200px`} onChange={priceHandler} />
+        <Select text="지출 카테고리" width={`200px`} options={['식비', '공과금', '기타']} onChange={categoryHandler} value={category} />
+        <Select text="현금, 카드" width={`200px`} onChange={cashHandler} options={['현금', '카드']} value={cash} />
+        <Select text="카드를 선택하세요" width={`200px`} onChange={cardHandler} options={['삼성', '하나']} value={card} />
+        <Input placeholder="금액을 입력해주세요" width={`200px`} onChange={priceHandler} value={price} />
         <SmallButton //
           text="입력"
           margin={`18px 0 0 0 `}
           width={`200px`}
-          onClick={() => testOutComeSubmiter(getDate, category, cash, card, price)}
+          onClick={() => {
+            testOutComeSubmiter(getDate, category, cash, card, price);
+            inputResetHandler();
+          }}
         />
       </InputContainer>
     </>
   );
 };
 
-const Submit = ({ mainState, getDate }) => {
-  const [category, setCategory] = useState('미선택');
-  const [price, setPrice] = useState(0);
-  const [card, setCard] = useState('미선택');
-  const [cash, setCash] = useState('true/false');
-
-  const priceHandler = (e) => {
-    setPrice(e.target.value);
-  };
-  const categoryHandler = (e) => {
-    setCategory(e.target.value);
-  };
-  const cardHandler = (e) => {
-    setCard(e.target.value);
-  };
-  const cashHandler = (e) => {
-    setCash(e.target.value);
-  };
+const Submit = (props) => {
+  const {
+    mainState, //
+    getDate,
+    category,
+    categoryHandler,
+    cash,
+    cashHandler,
+    card,
+    cardHandler,
+    price,
+    priceHandler,
+    inputResetHandler,
+  } = props;
 
   return (
     <>
@@ -174,6 +178,7 @@ const Submit = ({ mainState, getDate }) => {
             categoryHandler={categoryHandler}
             price={price}
             priceHandler={priceHandler}
+            inputResetHandler={inputResetHandler}
           />
         ) : mainState === 'outcome' ? (
           <AddOutCome //
@@ -186,6 +191,7 @@ const Submit = ({ mainState, getDate }) => {
             cardHandler={cardHandler}
             price={price}
             priceHandler={priceHandler}
+            inputResetHandler={inputResetHandler}
           />
         ) : null}
       </SubmitContainer>

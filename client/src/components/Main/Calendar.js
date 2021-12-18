@@ -115,11 +115,11 @@ const Calendar = (props) => {
   //! -----------
 
   const prevMonthHandler = () => {
-    pickDateHandler(targetYear, targetMonth - 1, 0);
+    pickDateHandler(targetYear, targetMonth - 1);
   };
 
   const nextMonthHandler = () => {
-    pickDateHandler(targetYear, targetMonth + 1, 0);
+    pickDateHandler(targetYear, targetMonth + 1);
   };
 
   return (

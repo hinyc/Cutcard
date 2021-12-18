@@ -10,11 +10,11 @@ import dumyData from '../../dumyData';
 export const MainContainer = styled.div`
   width: 1130px;
   height: 550px;
-
+  border-radius: 15px;
   display: flex;
   align-content: flex-start;
   justify-content: space-between;
-  border: solid 2px #97bfb4;
+  border: solid 3px #97bfb4;
   margin: auto;
 `;
 
@@ -50,29 +50,55 @@ export const Amount = styled.div`
 const Main = () => {
   const [leftMoney, setLeftMoney] = useState(1000000);
   const [mainState, setMainState] = useState('outcome');
-
+  // Calendar
   const [pickDate, setPickDate] = useState(new Date());
-
   const targetYear = pickDate.getFullYear();
   const targetMonth = pickDate.getMonth() + 1;
   const [targetDate, setTargetDate] = useState(pickDate.getDate());
-
   const getDate = `${targetYear}-${targetMonth}-${targetDate}`;
-  // const getDate = `${selectYear}-${selectMonth}-${selectDate}`;
+
+  //Submit
+  const [category, setCategory] = useState('');
+  const [price, setPrice] = useState('');
+  const [card, setCard] = useState('');
+  const [cash, setCash] = useState('');
 
   console.log(`Render! mainState:"${mainState}" date:${getDate}`);
 
   const mainStateHandler = (target) => {
     setMainState(target);
+    inputResetHandler();
   };
 
-  const pickDateHandler = (year, month, date) => {
-    setPickDate(new Date(year, month, date));
+  //Calendar
+  const pickDateHandler = (year, month) => {
+    setPickDate(new Date(year, month, 0));
   };
 
   const dateHandler = (year, month, date) => {
     setPickDate(new Date(year, month, 0));
     setTargetDate(date);
+  };
+
+  //Submit
+  const priceHandler = (e) => {
+    setPrice(e.target.value);
+  };
+  const categoryHandler = (e) => {
+    setCategory(e.target.value);
+  };
+  const cardHandler = (e) => {
+    setCard(e.target.value);
+  };
+  const cashHandler = (e) => {
+    setCash(e.target.value);
+  };
+
+  const inputResetHandler = () => {
+    setCategory('');
+    setPrice('');
+    setCard('');
+    setCash('');
   };
 
   //! dumyData
@@ -86,7 +112,13 @@ const Main = () => {
   return (
     <>
       <MainContainer>
-        <View year={targetYear} month={targetMonth} mainStateHandler={mainStateHandler} mainState={mainState} data={dumyData} />
+        <View
+          year={targetYear} //
+          month={targetMonth}
+          mainStateHandler={mainStateHandler}
+          mainState={mainState}
+          data={dumyData}
+        />
         <CenterContainer>
           <LeftMoney>
             <SubTitle>잔여 금액</SubTitle>
@@ -100,7 +132,19 @@ const Main = () => {
             pickDateHandler={pickDateHandler}
           />
         </CenterContainer>
-        <Submit mainState={mainState} getDate={getDate} />
+        <Submit
+          mainState={mainState} //
+          getDate={getDate}
+          category={category}
+          categoryHandler={categoryHandler}
+          cash={cash}
+          cashHandler={cashHandler}
+          card={card}
+          cardHandler={cardHandler}
+          price={price}
+          priceHandler={priceHandler}
+          inputResetHandler={inputResetHandler}
+        />
       </MainContainer>
     </>
   );

@@ -143,7 +143,14 @@ const InComeList = ({ year, month, inComes }) => {
   );
 };
 
-const View = ({ year, month, mainStateHandler, mainState, data }) => {
+const View = (props) => {
+  const {
+    year, //
+    month,
+    mainStateHandler,
+    mainState,
+    data,
+  } = props;
   const inComes = data.inComes;
   const outComes = data.outComes;
 
