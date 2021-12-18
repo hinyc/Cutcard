@@ -151,8 +151,8 @@ const View = (props) => {
     mainState,
     data,
   } = props;
-  const inComes = data.inComes;
-  const outComes = data.outComes;
+
+  const { inComes, outComes } = data;
 
   return (
     <>

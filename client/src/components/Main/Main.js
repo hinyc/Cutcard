@@ -5,7 +5,10 @@ import Input from '../Input';
 import Select from '../Select';
 import View from './View';
 import Submit from './Submit';
-import dumyData from '../../dumyData';
+
+// dumydata
+import dumyData, { newdumy } from '../../dumyData';
+import { contained } from 'sequelize/dist/lib/operators';
 
 export const MainContainer = styled.div`
   width: 1130px;
@@ -47,7 +50,7 @@ export const Amount = styled.div`
   font-size: 26px; ;
 `;
 
-const Main = () => {
+const Main = ({ isLogin }) => {
   const [leftMoney, setLeftMoney] = useState(1000000);
   const [mainState, setMainState] = useState('outcome');
   // Calendar
@@ -62,9 +65,10 @@ const Main = () => {
   const [price, setPrice] = useState('');
   const [card, setCard] = useState('');
   const [cash, setCash] = useState('');
-
+  //! console tets 영역
   console.log(`Render! mainState:"${mainState}" date:${getDate}`);
-
+  console.log(isLogin);
+  //!
   const mainStateHandler = (target) => {
     setMainState(target);
     inputResetHandler();
@@ -101,13 +105,54 @@ const Main = () => {
     setCash('');
   };
 
-  //! dumyData
+  //! mainpage
+  // targetYear, target Month 해당 데이터의 income, outcome data를 모두 받아온다. 기준달 앞, 뒤 달의 데이터도 포함
+  // 잔여금액은 해당 월의 수입이 지출이전에 발생하지 않는다면 수입전 항상 마이너스 금액을 나타낸다 ?
+  console.log(newdumy);
 
   //? view로 전달할 정보
+  // targetYear. targetMonth 해당 => 서버로 부터 받아온 데이터가 조건 충족!
+  // income data => 카테고리별 합계, 총계
+  // outcome data => 카테고리별 합계, 총계
 
   //? calendar로 전달할 정보
 
-  //? submit에서 받아올 정보
+  const inOutDate = {};
+
+  newdumy.transaction.map((el) => {
+    const date = `${el.year}.${el.month}.${el.day}`;
+    if (inOutDate[date] === undefined) {
+      // 값이 없으면 추가
+      if (el.isIncome) {
+        inOutDate[date] = 1;
+      } else {
+        inOutDate[date] = 2;
+      }
+    } else {
+      //값이 있다면
+      if (inOutDate[date] === 1 && el.isIncome === false) {
+        inOutDate[date] = 3;
+      } else if (inOutDate[date] === 2 && el.isIncome === true) {
+        inOutDate[date] = 3;
+      }
+    }
+  });
+
+  console.log('만드거', inOutDate);
+  console.log('tans', newdumy.transaction);
+  // console.log(newdumy.transaction[0].month);
+  // console.log(newdumy.transaction[0].day);
+  // console.log(newdumy.transaction[0].isIncome);
+
+  console.log(inOutDate);
+  //
+  //@ 날짜별 지출 수입내역 수입만true 1, 지출만 2, 지출 수입 모두 3.
+  // 그중, 지출이 있는 날짜, 수입이 있는 날짜 정보만 필요 => main page에서 가공해서 props로 전달  => 배열형식 데이터로 인자는 객체, {year, month, date, 수입지출 상태}
+
+  const calendardata = {};
+
+  //? detail view는 보류중
+  // 진행한다면 선택된 날짜에 지출 수입 내역을 뷰창에 표시되로독한다.
 
   return (
     <>
@@ -130,6 +175,7 @@ const Main = () => {
             targetYear={targetYear}
             targetMonth={targetMonth}
             pickDateHandler={pickDateHandler}
+            inOutDate={inOutDate}
           />
         </CenterContainer>
         <Submit
