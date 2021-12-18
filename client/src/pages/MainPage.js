@@ -1,9 +1,9 @@
 import React from 'react';
 import Main from '../components/Main/Main';
-function MainPage() {
+function MainPage({ isLogin }) {
   return (
     <div>
-      <Main />
+      <Main isLogin={isLogin} />
     </div>
   );
 }

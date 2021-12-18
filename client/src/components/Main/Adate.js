@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 const AdateContainer = styled.div`
   box-sizing: border-box;
+
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -45,7 +46,8 @@ const IncomeState = styled.div`
   margin: 1px;
 `;
 const IncomeStateTrue = styled.div`
-  background-color: green;
+  color: blue;
+  text-align: right;
   width: 20px;
   height: 20px;
   margin: 1px;
@@ -56,22 +58,29 @@ const OutcomeState = styled.div`
   margin: 1px;
 `;
 const OutcomeStateTrue = styled.div`
-  background-color: royalblue;
+  color: red;
+  text-align: left;
   width: 20px;
   height: 20px;
   margin: 1px;
 `;
 
 const gray = '#BFC5C4';
+
 const DateMaker = (props) => {
   const {
-    date, //
+    year, //
+    month,
+    date,
     index,
-    inComeState,
-    outComeState,
     onClick,
     color,
+    inOutDate,
   } = props;
+
+  //!console!
+  console.log(`${year} ${month} ${date}`);
+  console.log(inOutDate);
   return (
     <AdateContainer onClick={onClick}>
       {
@@ -85,8 +94,16 @@ const DateMaker = (props) => {
         )
       }
       <StateContainer>
-        {inComeState ? <IncomeStateTrue /> : <IncomeState />}
-        {outComeState ? <OutcomeStateTrue /> : <OutcomeState />}
+        {inOutDate[`${year}.${month}.${date}`] === 1 || inOutDate[`${year}.${month}.${date}`] === 3 ? ( //
+          <IncomeStateTrue>+</IncomeStateTrue>
+        ) : (
+          <IncomeState />
+        )}
+        {inOutDate[`${year}.${month}.${date}`] === 2 || inOutDate[`${year}.${month}.${date}`] === 3 ? ( //
+          <OutcomeStateTrue>-</OutcomeStateTrue>
+        ) : (
+          <OutcomeState />
+        )}
       </StateContainer>
     </AdateContainer>
   );
@@ -101,33 +118,38 @@ const Adate = (props) => {
     inComes,
     outComes,
     dateHandler,
+    inOutDate,
   } = props;
+
   return (
     <>
       {index < 6 && date - 10 > 0 ? ( //
         <DateMaker //
+          year={new Date(year, month, 0).getFullYear()}
+          month={new Date(year, month - 1, 0).getMonth() + 1}
           date={date}
-          year={year}
-          month={month}
           index={index}
           color={gray}
+          inOutDate={inOutDate}
           onClick={() => dateHandler(year, month - 1, date)}
         />
       ) : index > 20 && 10 - date > 0 ? (
         <DateMaker //
+          year={new Date(year, month, 0).getFullYear()}
+          month={new Date(year, month + 1, 0).getMonth() + 1}
           date={date}
-          year={year}
-          month={month}
           index={index}
           color={gray}
+          inOutDate={inOutDate}
           onClick={() => dateHandler(year, month + 1, date)}
         />
       ) : (
         <DateMaker //
-          date={date}
           year={year}
           month={month}
+          date={date}
           index={index}
+          inOutDate={inOutDate}
           onClick={() => dateHandler(year, month, date)}
         />
       )}

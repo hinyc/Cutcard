@@ -80,14 +80,21 @@ const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const Calendar = (props) => {
   const {
-    inComes, //
-    outComes,
+    data, //
     dateHandler,
     targetYear,
     targetMonth,
     pickDateHandler,
+    inOutDate,
   } = props;
+  //!
 
+  // console.log(`달력 데이터 테스트`);
+  // console.log(`${data}`);
+  // console.dir(data);
+  // console.log(data);
+
+  //!
   //! calendar array generate
   const preLastInfo = new Date(targetYear, targetMonth - 1, 0);
   const thisLastInfo = new Date(targetYear, targetMonth, 0);
@@ -154,9 +161,9 @@ const Calendar = (props) => {
               year={targetYear}
               month={targetMonth}
               index={index}
-              inComes={inComes}
-              outComes={outComes}
+              data={data}
               dateHandler={dateHandler}
+              inOutDate={inOutDate}
             />
           ))}
         </Dates>
