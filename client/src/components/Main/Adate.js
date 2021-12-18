@@ -125,7 +125,7 @@ const Adate = (props) => {
     <>
       {index < 6 && date - 10 > 0 ? ( //
         <DateMaker //
-          year={new Date(year, month, 0).getFullYear()}
+          year={new Date(year, month - 1, 0).getFullYear()}
           month={new Date(year, month - 1, 0).getMonth() + 1}
           date={date}
           index={index}
@@ -135,7 +135,7 @@ const Adate = (props) => {
         />
       ) : index > 20 && 10 - date > 0 ? (
         <DateMaker //
-          year={new Date(year, month, 0).getFullYear()}
+          year={new Date(year, month + 1, 0).getFullYear()}
           month={new Date(year, month + 1, 0).getMonth() + 1}
           date={date}
           index={index}
