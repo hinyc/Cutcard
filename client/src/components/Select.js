@@ -48,14 +48,13 @@ function Select(props) {
     width,
     height,
     onChange,
+    value,
   } = props;
   return (
     <>
       <LabelStyle>{label}</LabelStyle>
-      <SelectStyle width={width} hidden={height} onChange={onChange}>
-        <Option value="value" defaultValue>
-          {text}
-        </Option>
+      <SelectStyle width={width} hidden={height} onChange={onChange} value={value}>
+        <Option>{text}</Option>
         {options.map((option, index) => (
           <Option key={index} value={option}>
             {option}
