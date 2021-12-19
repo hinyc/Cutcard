@@ -3,11 +3,12 @@ import styled from 'styled-components';
 
 const AdateContainer = styled.div`
   box-sizing: border-box;
+  border: 3px solid rgba(255, 0, 0, 0);
 
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   align-items: center;
   width: 66px;
   height: 50px;
@@ -16,7 +17,9 @@ const AdateContainer = styled.div`
   &:hover {
     cursor: pointer;
     background-color: #97bfb4;
-    opacity: 60%;
+    /* border: 3px solid #97bfb4; */
+    font-weight: 700;
+    opacity: 65%;
   }
 
   &:active {
@@ -37,31 +40,38 @@ const DateNumSun = styled.div`
 
 const StateContainer = styled.div`
   width: 60px;
+  height: 20px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 `;
 const IncomeState = styled.div`
-  width: 20px;
-  height: 20px;
+  width: 23px;
+  height: 7px;
   margin: 1px;
 `;
 const IncomeStateTrue = styled.div`
+  background-color: skyblue;
+  border-radius: 3px;
   color: blue;
   text-align: right;
-  width: 20px;
-  height: 20px;
+  width: 23px;
+  height: 7px;
   margin: 1px;
 `;
 const OutcomeState = styled.div`
-  width: 20px;
-  height: 20px;
+  width: 23px;
+  height: 7px;
   margin: 1px;
 `;
 const OutcomeStateTrue = styled.div`
+  background-color: pink;
+  border-radius: 3px;
   color: red;
   text-align: left;
-  width: 20px;
-  height: 20px;
+  width: 23px;
+  height: 7px;
   margin: 1px;
 `;
 
@@ -78,9 +88,6 @@ const DateMaker = (props) => {
     inOutDate,
   } = props;
 
-  //!console!
-  console.log(`${year} ${month} ${date}`);
-  console.log(inOutDate);
   return (
     <AdateContainer onClick={onClick}>
       {
@@ -95,12 +102,12 @@ const DateMaker = (props) => {
       }
       <StateContainer>
         {inOutDate[`${year}.${month}.${date}`] === 1 || inOutDate[`${year}.${month}.${date}`] === 3 ? ( //
-          <IncomeStateTrue>+</IncomeStateTrue>
+          <IncomeStateTrue></IncomeStateTrue>
         ) : (
           <IncomeState />
         )}
         {inOutDate[`${year}.${month}.${date}`] === 2 || inOutDate[`${year}.${month}.${date}`] === 3 ? ( //
-          <OutcomeStateTrue>-</OutcomeStateTrue>
+          <OutcomeStateTrue></OutcomeStateTrue>
         ) : (
           <OutcomeState />
         )}
@@ -115,10 +122,9 @@ const Adate = (props) => {
     year,
     month,
     index,
-    inComes,
-    outComes,
     dateHandler,
     inOutDate,
+    mainStateHandler,
   } = props;
 
   return (
@@ -131,7 +137,11 @@ const Adate = (props) => {
           index={index}
           color={gray}
           inOutDate={inOutDate}
-          onClick={() => dateHandler(year, month - 1, date)}
+          mainStateHandler={mainStateHandler}
+          onClick={() => {
+            dateHandler(year, month - 1, date);
+            mainStateHandler('detail');
+          }}
         />
       ) : index > 20 && 10 - date > 0 ? (
         <DateMaker //
@@ -141,7 +151,11 @@ const Adate = (props) => {
           index={index}
           color={gray}
           inOutDate={inOutDate}
-          onClick={() => dateHandler(year, month + 1, date)}
+          mainStateHandler={mainStateHandler}
+          onClick={() => {
+            dateHandler(year, month + 1, date);
+            mainStateHandler('detail');
+          }}
         />
       ) : (
         <DateMaker //
@@ -150,7 +164,11 @@ const Adate = (props) => {
           date={date}
           index={index}
           inOutDate={inOutDate}
-          onClick={() => dateHandler(year, month, date)}
+          mainStateHandler={mainStateHandler}
+          onClick={() => {
+            dateHandler(year, month, date);
+            mainStateHandler('detail');
+          }}
         />
       )}
     </>

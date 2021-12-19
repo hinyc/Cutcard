@@ -180,7 +180,7 @@ const Submit = (props) => {
             priceHandler={priceHandler}
             inputResetHandler={inputResetHandler}
           />
-        ) : mainState === 'outcome' ? (
+        ) : mainState === 'outcome' || mainState === 'detail' ? (
           <AddOutCome //
             getDate={getDate}
             category={category}
