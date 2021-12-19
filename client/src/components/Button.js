@@ -10,47 +10,38 @@ const ButtonStyle = styled.button`
   outline: 0;
   border: ${(props) => props.border || 0};
   background-color: ${(props) => props.background || "#97BFB4"};
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 700;
   border-radius: 5px;
   display: block;
-  text-decoration: none;
+  /* text-decoration: none; */
 
   &:hover {
     cursor: pointer;
     opacity: 80%;
-    text-decoration: none;
+    /* text-decoration: none; */
   }
 
   &:active {
     cursor: pointer;
     opacity: 95%;
-    text-decoration: none;
+    /* text-decoration: none; */
   }
 
   &:visited {
-    text-decoration: none;
+    /* text-decoration: none; */
   }
 `;
 
 export function SmallButton(props) {
-  const {
-    text,
-    width,
-    height,
-    handler,
-    state,
-    margin,
-    background,
-    color,
-    border,
-  } = props;
+  const { text, width, height, onClick, margin, background, color, border } =
+    props;
   return (
     <ButtonStyle
       width={width}
       height={height}
       margin={margin}
-      onClick={() => handler(state)}
+      onClick={onClick}
       background={background}
       color={color}
       border={border}
