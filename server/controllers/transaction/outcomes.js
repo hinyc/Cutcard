@@ -5,12 +5,12 @@ module.exports = async (req, res) => {
   // accessToken 확인
   const accessTokenData = isAuthorized(req, res);
   if(!accessTokenData) {
-    return res.status(401).json({ data: null, message: "Invalid access token!" })
+    return res.status(401).json({ data: null, message: "invalid access token!" })
   } else {
     const { id } = accessTokenData;
-    const { year, month, day, category, outcomeIsCash, userCardId, price, isIncome } = req.body; // 요청 API cash -> isCash로 수정
+    const { year, month, day, category, outcomeIsCash, userCardId, price, isIncome } = req.body;
     let userCard
-    if(!isCash && card !== undefined) {
+    if(!outcomeIsCash && card !== undefined) {
       userCard = await userCards.findOne({
         where: {
           cardId: userCardId
@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
           category,
           price,
           isIncome,
-          outcomeIsCash: isCash,
+          outcomeIsCash: outcomeIsCash,
           userId: id,
           userCardId: userCard.dataValues.cardId
         })
@@ -53,7 +53,7 @@ module.exports = async (req, res) => {
           category,
           price,
           isIncome,
-          outcomeIsCash: isCash,
+          outcomeIsCash: outcomeIsCash,
           userId: id,
           userCardId: userCard.dataValues.cardId
         })
@@ -75,7 +75,7 @@ module.exports = async (req, res) => {
         category,
         price,
         isIncome,
-        outcomeIsCash: isCash, // 응답 API outcomeCash -> outcomeIsCash로 수정
+        outcomeIsCash: outcomeIsCash, 
         userId: id,
         userCardId: null,
         createdAt: new Date(),

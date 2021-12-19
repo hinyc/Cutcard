@@ -9,10 +9,10 @@ module.exports = async (req, res) => {
     const { id } = accessTokenData;
     const { year, month, day, newYear, newMonth, newDay, category, newCategory, price, newPrice, isIncome, outcomeIsCash, userCardId } = req.body;
     let userCard
-    if(!cash) {
+    if(!outcomeIsCash) {
       userCard = await userCards.findOne({
         where: {
-          cardId: card
+          cardId: userCardId
         }
       })
       userCard.dataValues.remainValue = userCard.dataValues.remainValue - price + newPrice;
@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
         remainValue: userCard.dataValues.remainValue
       },{
         where: {
-          cardId: card
+          cardId: userCardId
         }
       })
       await transactions.update({
