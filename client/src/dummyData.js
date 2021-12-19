@@ -1,39 +1,50 @@
-// dumy data
-const dumy = {
+// dummy data
+const dummy = {
   inComes: [
     {
-      date: '2021-12-14',
-      category: '월급',
+      date: "2021-12-14",
+      category: "월급",
       money: 5000000,
     },
     {
-      date: '2021-12-14',
-      category: '보너스',
+      date: "2021-12-14",
+      category: "보너스",
       money: 1000000,
     },
   ],
   outComes: [
     {
-      date: '2021-12-3',
-      category: '식비',
+      date: "2021-12-3",
+      category: "식비",
       isCash: false,
-      card: 'shinhan',
+      card: "shinhan",
       money: 50000,
     },
     {
-      date: '2021-12-14',
-      category: '공과금',
+      date: "2021-12-14",
+      category: "공과금",
       isCash: true,
       card: null,
       money: 400000,
     },
     {
-      date: '2021-12-26',
-      category: '식비',
+      date: "2021-12-26",
+      category: "식비",
       isCash: false,
-      card: 'samsung',
+      card: "samsung",
       money: 53000,
     },
+  ],
+  cards: [
+    { id: 1, name: "비씨카드" },
+    { id: 2, name: "국민카드" },
+    { id: 3, name: "삼성카드" },
+    { id: 4, name: "신한카드" },
+    { id: 5, name: "우리카드" },
+    { id: 6, name: "하나카드" },
+    { id: 7, name: "롯데카드" },
+    { id: 8, name: "현대카드" },
+    { id: 9, name: "농협카드" },
   ],
 };
 
@@ -69,4 +80,4 @@ const dumy = {
 //     },
 //   ]
 // }
-export default dumy;
+export default dummy;
