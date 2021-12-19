@@ -58,7 +58,7 @@ module.exports = {
   ],
     { returning: ["id"] }
     );
-    const userCardsId = await queryInterface.bulkInsert('userCards', [{
+    const userCardId = await queryInterface.bulkInsert('userCards', [{
       isCut: true,
       remainValue: 400000,
       repaymentDay: 25,
@@ -73,13 +73,12 @@ module.exports = {
       year: 2021,
       month: 12,
       day: 17,
-      incomeCategory: 'pay',
-      incomePrice: 2500000,
-      outcomeCategory: null,
-      outcomePrice: null,
+      category: 'pay',
+      price: 2500000,
+      isIncome: true,
       outcomeIsCash: false,
       userId,
-      userCardsId,
+      userCardId: null,
       createdAt: new Date(),
       updatedAt: new Date()
     }]);

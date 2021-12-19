@@ -17,21 +17,14 @@ module.exports = {
       day: {
         type: Sequelize.INTEGER
       },
-      incomeCategory: {
-        type: Sequelize.STRING,
-        allowNull: true,
+      category: {
+        type: Sequelize.STRING
       },
-      incomePrice: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
+      price: {
+        type: Sequelize.INTEGER
       },
-      outcomeCategory: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      outcomePrice: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
+      isIncome: {
+        type: Sequelize.BOOLEAN
       },
       outcomeIsCash: {
         type: Sequelize.BOOLEAN,
