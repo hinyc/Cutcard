@@ -53,11 +53,12 @@ export const Amount = styled.div`
 const Main = ({ isLogin }) => {
   const [leftMoney, setLeftMoney] = useState(1000000);
   const [mainState, setMainState] = useState('outcome');
+  const [resData, setResData] = useState(newdumy);
   // Calendar
   const [pickDate, setPickDate] = useState(new Date());
+  const [targetDate, setTargetDate] = useState(pickDate.getDate());
   const targetYear = pickDate.getFullYear();
   const targetMonth = pickDate.getMonth() + 1;
-  const [targetDate, setTargetDate] = useState(pickDate.getDate());
   const getDate = `${targetYear}-${targetMonth}-${targetDate}`;
 
   //Submit
@@ -65,10 +66,26 @@ const Main = ({ isLogin }) => {
   const [price, setPrice] = useState('');
   const [card, setCard] = useState('');
   const [cash, setCash] = useState('');
-  //! console tets 영역
-  console.log(`Render! mainState:"${mainState}" date:${getDate}`);
-  console.log(isLogin);
-  //!
+
+  const categoryList = {
+    inCome: {
+      월급: 0,
+      보너스: 0,
+      기타: 0,
+    },
+    outCome: {
+      식비: 0,
+      '공과금/보험': 0,
+      '주거/통신': 0,
+      생활용품: 0,
+      '의복/미용': 0,
+      '건강/문화': 0,
+      '교육/육아': 0,
+      '교통/차량': 0,
+      기타: 0,
+    },
+  };
+
   const mainStateHandler = (target) => {
     setMainState(target);
     inputResetHandler();
@@ -105,21 +122,34 @@ const Main = ({ isLogin }) => {
     setCash('');
   };
 
+  //! console tets 영역
+
+  console.log(`Render! mainState:"${mainState}" date:${getDate}`);
+  console.log(isLogin);
+  console.log(resData.transaction);
+  console.log(Object.keys(categoryList.inCome));
+
   //! mainpage
   // targetYear, target Month 해당 데이터의 income, outcome data를 모두 받아온다. 기준달 앞, 뒤 달의 데이터도 포함
   // 잔여금액은 해당 월의 수입이 지출이전에 발생하지 않는다면 수입전 항상 마이너스 금액을 나타낸다 ?
-  console.log(newdumy);
 
   //? view로 전달할 정보
   // targetYear. targetMonth 해당 => 서버로 부터 받아온 데이터가 조건 충족!
-  // income data => 카테고리별 합계, 총계
-  // outcome data => 카테고리별 합계, 총계
+  // incomeList => 카테고리별 합계, 총계
+  // outcomeList => 카테고리별 합계, 총계
+
+  //target month 기준, 객체 복사
+  const inOutDataList = {
+    inComes: { ...categoryList.inCome, categorys: Object.keys(categoryList.inCome) },
+    outComes: { ...categoryList.outCome, categorys: Object.keys(categoryList.outCome) },
+  };
 
   //? calendar로 전달할 정보
 
   const inOutDate = {};
 
-  newdumy.transaction.map((el) => {
+  resData.transaction.map((el) => {
+    //inOut data 생성
     const date = `${el.year}.${el.month}.${el.day}`;
     if (inOutDate[date] === undefined) {
       // 값이 없으면 추가
@@ -136,16 +166,22 @@ const Main = ({ isLogin }) => {
         inOutDate[date] = 3;
       }
     }
+
+    // inComeList outComtList 생성
+    if (el.month === targetMonth) {
+      if (el.isIncome) {
+        inOutDataList.inComes[el.category] += el.price;
+      } else {
+        inOutDataList.outComes[el.category] += el.price;
+      }
+    }
   });
 
-  console.log('만드거', inOutDate);
-  console.log('tans', newdumy.transaction);
-  // console.log(newdumy.transaction[0].month);
-  // console.log(newdumy.transaction[0].day);
-  // console.log(newdumy.transaction[0].isIncome);
+  console.log(inOutDataList.inComes);
+  console.log(inOutDataList.outComes);
 
-  console.log(inOutDate);
-  //
+  // [{category:"", Price:234325}]
+
   //@ 날짜별 지출 수입내역 수입만true 1, 지출만 2, 지출 수입 모두 3.
   // 그중, 지출이 있는 날짜, 수입이 있는 날짜 정보만 필요 => main page에서 가공해서 props로 전달  => 배열형식 데이터로 인자는 객체, {year, month, date, 수입지출 상태}
 
@@ -162,7 +198,7 @@ const Main = ({ isLogin }) => {
           month={targetMonth}
           mainStateHandler={mainStateHandler}
           mainState={mainState}
-          data={dumyData}
+          data={inOutDataList}
         />
         <CenterContainer>
           <LeftMoney>

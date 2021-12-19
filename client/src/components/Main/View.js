@@ -117,8 +117,8 @@ const OutComeList = ({ year, month, outComes }) => {
       <ListContainer>
         <SubTitle title={`${year}.${month} 지출 내역`} />
         <ContentsContainer>
-          {outComes.map((come, index) => (
-            <Content key={index} item={come.category} money={come.money} />
+          {outComes.categorys.map((category, index) => (
+            <Content key={index} item={category} money={outComes[category]} />
           ))}
         </ContentsContainer>
         <TotalMoney totalMoney={33333} />
@@ -133,9 +133,9 @@ const InComeList = ({ year, month, inComes }) => {
       <ListContainer>
         <SubTitle title={`${year}.${month} 수입 내역`} />
         <ContentsContainer>
-          {inComes.map((come, index) => {
-            return <Content key={index} item={come.category} money={come.money} />;
-          })}
+          {inComes.categorys.map((category, index) => (
+            <Content key={index} item={category} money={inComes[category]} />
+          ))}
         </ContentsContainer>
         <TotalMoney totalMoney={33333} />
       </ListContainer>

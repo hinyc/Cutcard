@@ -6,7 +6,7 @@ export const CelandarContainer = styled.div`
   border: 2px solid #97bfb4;
   border-radius: 15px;
   width: 462px;
-  height: 430px;
+  height: 405px;
   margin: auto;
 `;
 export const Head = styled.div`
