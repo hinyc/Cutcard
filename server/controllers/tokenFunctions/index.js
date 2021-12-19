@@ -11,7 +11,7 @@ module.exports = {
   isAuthorized: (req, res) => {
     const authorization = req.headers["cookie"]
     if(!authorization) {
-      return res.status(401).json({ data: null, message: "Access token not provided!" })
+      return res.status(401).json({ data: null, message: "access token not provided!" })
     } else {
       const token = authorization.split(";")[0].split("=")[1];
 

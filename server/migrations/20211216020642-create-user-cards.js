@@ -12,7 +12,8 @@ module.exports = {
         type: Sequelize.BOOLEAN
       },
       remainValue: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       repaymentDay: {
         type: Sequelize.INTEGER
