@@ -29,7 +29,7 @@ module.exports = async (req, res) => {
       outcomePrice: price,
       outcomeIsCash: cash, // 응답 API outcomeCash -> outcomeIsCash로 수정
       userId: id,
-      userCardsId: null,
+      userCardId: null,
       createdAt: new Date(),
       updatedAt: new Date()
     })

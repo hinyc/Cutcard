@@ -1,3 +1,3 @@
 module.exports = (req, res) => {
-    res.status(500).send('test')
+    res.status(200).clearCookie('accessToken').json( {"message": "logout successfully"} )
 }

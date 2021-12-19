@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
       outcomePrice: null,
       outcomeIsCash: null,
       userId: id,
-      userCardsId: null,
+      userCardId: null,
       createdAt: new Date(),
       updatedAt: new Date()
     })
