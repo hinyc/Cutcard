@@ -3,11 +3,11 @@ import { Input, EmailInput, Notification } from "../components/Input";
 import { BigButton } from "../components/Button";
 import { Container, Title } from "../components/Common";
 import { Link } from "react-router-dom";
-import Select from "../components/Select";
+import { CardSelect } from "../components/Select";
 import CardList from "../components/CardList";
 import { FlexContainer } from "../components/Common";
 
-import dummy from "../dummyData";
+import { dummy } from "../dummyData";
 
 function SignUpPage() {
   const [email, setEmail] = useState("");
@@ -138,7 +138,7 @@ function SignUpPage() {
       {/* 
       // TODO: 카드 선택한 후에 디폴트값으로 가게끔
       */}
-      <Select
+      <CardSelect
         label="카드 등록"
         text="카드를 선택해주세요"
         options={cards.map((obj) => obj.name)}

@@ -34,17 +34,18 @@ const ButtonStyle = styled.button`
 `;
 
 export function SmallButton(props) {
-  const { text, width, height, onClick, margin, background, color, border } =
+  const { text, width, height, margin, background, color, border, onClick } =
     props;
   return (
     <ButtonStyle
-      width={width}
+      width={width} //
       height={height}
       margin={margin}
       onClick={onClick}
       background={background}
       color={color}
       border={border}
+      onClick={onClick}
     >
       {text}
     </ButtonStyle>
