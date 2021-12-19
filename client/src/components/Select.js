@@ -9,8 +9,8 @@ const SelectStyle = styled.select`
   font-size: 16px;
   border: 1px solid #bfc5c4;
   border-radius: 5px;
-  color: #bfc5c4;
-  margin-bottom: 27px;
+  color: #7c8986;
+  margin: ${(props) => props.margin || "0 0 27px 0"};
 
   &:focus {
     outline: 1px solid #7c8986;
@@ -22,16 +22,20 @@ const LabelStyle = styled.div`
   padding: 27px 250px 9px 0;
   font-size: 16px;
   font-weight: 700;
-  /* margin: "100px 270px 0 0"; */
 `;
 
 const Option = styled.option``;
 
-function Select({ label, text, options, width, height }) {
+function Select({ label, text, options, width, height, onChange, margin }) {
   return (
     <>
       <LabelStyle>{label}</LabelStyle>
-      <SelectStyle width={width} hidden={height}>
+      <SelectStyle
+        width={width}
+        hidden={height}
+        onChange={onChange}
+        margin={margin}
+      >
         <Option value="value" defaultValue>
           {text}
         </Option>

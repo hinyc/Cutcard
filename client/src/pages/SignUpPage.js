@@ -4,8 +4,12 @@ import { BigButton } from "../components/Button";
 import { Container, Title } from "../components/Common";
 import { Link } from "react-router-dom";
 import Select from "../components/Select";
+import CardList from "../components/CardList";
+import { FlexContainer } from "../components/Common";
 
-function SignInPage() {
+import dummy from "../dummyData";
+
+function SignUpPage() {
   const [email, setEmail] = useState("");
   const [emailFocused, setEmailFocused] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
@@ -14,16 +18,20 @@ function SignInPage() {
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
 
+  const cardList = dummy.cards;
+  const [cards, setCards] = useState(cardList);
+  const [userCardList, setUserCardList] = useState([]);
+  const [selected, setSelected] = useState("");
+
   const onEmailChange = (e) => {
     const emailValidator =
       /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     const result = emailValidator.test(e.target.value);
-    console.log("이메일 유효성 검사", result);
     setIsEmail(result);
     setEmail(e.target.value);
   };
 
-  const onEmailFocus = (e) => {
+  const onEmailFocus = () => {
     setEmailFocused(true);
   };
 
@@ -39,15 +47,27 @@ function SignInPage() {
     setPasswordCheck(e.target.value);
   };
 
+  const onCardChange = (e) => {
+    setSelected(e.target.value);
+    const newCards = cards.filter((obj) => e.target.value !== obj.kor);
+    setCards(newCards);
+
+    const selectedData = cards.filter((obj) => obj.kor === e.target.value);
+    const newUserCardList = userCardList.concat(selectedData);
+    console.log(newUserCardList);
+    setUserCardList(newUserCardList);
+  };
+
   return (
     <Container>
-      <Title margin="66px 0 px 0" text="회원가입" />
+      <Title margin="66px 0 50px 0" text="회원가입" />
       <Input
         label="닉네임"
         type="text"
         placeholder="닉네임을 입력해주세요"
         margin="auto"
       />
+      {/* Email */}
       <EmailInput
         label="이메일"
         type="text"
@@ -57,6 +77,10 @@ function SignInPage() {
         onChange={onEmailChange}
         onFocus={onEmailFocus}
         onClick={emailExistsCheck}
+        disabled={!isEmail && "true"}
+        opacity={!isEmail && "50%"}
+        hoverOpacity={!isEmail && "50%"}
+        cursor={!isEmail && "default"}
       />
       {emailFocused ? (
         email !== "" && isEmail ? (
@@ -73,6 +97,7 @@ function SignInPage() {
           </Notification>
         )
       ) : null}
+      {/* Password */}
       <Input
         marginLabel="18px 255px 0 0"
         label="비밀번호"
@@ -91,7 +116,7 @@ function SignInPage() {
         value={passwordCheck}
         onChange={onPasswordChangeCheck}
       />
-      {password !== "" && password === passwordCheck ? (
+      {password === "" ? null : password === passwordCheck ? (
         <Notification margin="4px 186px 0 0">
           * 비밀번호가 일치합니다.
         </Notification>
@@ -100,23 +125,25 @@ function SignInPage() {
           * 비밀번호가 일치하지 않습니다.
         </Notification>
       )}
+      {/* Card */}
       <Select
         label="카드 등록"
         text="카드를 선택해주세요"
-        options={[
-          "BC카드",
-          "KB국민카드",
-          "삼성카드",
-          "신한카드",
-          "우리카드",
-          "하나카드",
-          "롯데카드",
-          "현대카드",
-          "NH농협카드",
-        ]}
+        options={cards.map((obj) => obj.kor)}
+        onChange={onCardChange}
+        margin="0"
       />
+      {/* 
+      // TODO: x 버튼 누르면 삭제
+      */}
+      <FlexContainer>
+        {userCardList.map((obj) => (
+          <CardList text={obj.kor} />
+        ))}
+      </FlexContainer>
+      {/* Button */}
       <Link to="/login">
-        <BigButton text="가입하기" margin="12px auto" />
+        <BigButton text="가입하기" margin="28px auto 12px auto" />
       </Link>
       <Link to="/">
         <BigButton
@@ -131,4 +158,4 @@ function SignInPage() {
   );
 }
 
-export default SignInPage;
+export default SignUpPage;

@@ -49,10 +49,11 @@ const EmailExist = styled.button`
   background-color: #97bfb4;
   font-size: 16px;
   border-radius: 5px;
+  opacity: ${(props) => props.opacity || "100%"};
 
   &:hover {
-    cursor: pointer;
-    opacity: 80%;
+    cursor: ${(props) => props.cursor || "pointer"};
+    opacity: ${(props) => props.hoverOpacity || "80%"};
   }
 
   &:active {
@@ -89,6 +90,10 @@ export function EmailInput(props) {
     onChange,
     onFocus,
     onClick,
+    disabled,
+    opacity,
+    hoverOpacity,
+    cursor,
   } = props;
 
   return (
@@ -107,7 +112,15 @@ export function EmailInput(props) {
           onChange={onChange}
           onFocus={onFocus}
         />
-        <EmailExist onClick={onClick}>중복 확인</EmailExist>
+        <EmailExist
+          onClick={onClick}
+          disabled={disabled}
+          opacity={opacity}
+          hoverOpacity={hoverOpacity}
+          cursor={cursor}
+        >
+          중복 확인
+        </EmailExist>
       </EmailContainer>
     </>
   );

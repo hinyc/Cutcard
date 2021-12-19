@@ -23,7 +23,7 @@ function LoginPage() {
       <Link to="/">
         <BigButton text="로그인" margin="12px auto" />
       </Link>
-      <Link to="/signin">
+      <Link to="/signup">
         <BigButton
           text="회원가입"
           background="white"
