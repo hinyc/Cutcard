@@ -8,5 +8,7 @@ const transactionDelete = require('./../controllers/transaction/delete')
 router.post('/incomes', transactionIncomes);
 router.post('/outcomes', transactionOutcomes);
 router.post('/date', transactionDate);
+router.post('/correct', transactionCorrect);
+router.post('/delete', transactionDelete);
 
 module.exports = router;
