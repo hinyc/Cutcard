@@ -9,6 +9,7 @@ const CardStyle = styled.div`
   border-radius: 5px;
   background-color: ${(props) => props.background || "white"};
   margin: 10px 5px 0 5px;
+  cursor: default;
 `;
 
 const Text = styled.span`
@@ -27,11 +28,11 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-function CardList({ text }) {
+function CardList({ text, onClick }) {
   return (
     <CardStyle>
       <Text>{text}</Text>
-      <Button>
+      <Button onClick={onClick}>
         <Cancel />
       </Button>
     </CardStyle>

@@ -6,8 +6,15 @@ import { Link } from "react-router-dom";
 import Select from "../components/Select";
 import CardList from "../components/CardList";
 import { FlexContainer } from "../components/Common";
+import styled from "styled-components";
 
 import dummy from "../dummyData";
+
+const Text = styled.div`
+  font-size: 14px;
+  color: #7c8986;
+  text-decoration: underline;
+`;
 
 function MyPage() {
   const [password, setPassword] = useState("");
@@ -28,18 +35,27 @@ function MyPage() {
 
   const onCardChange = (e) => {
     setSelected(e.target.value);
-    const newCards = cards.filter((obj) => e.target.value !== obj.kor);
+    const newCards = cards.filter((obj) => e.target.value !== obj.name);
     setCards(newCards);
 
-    const selectedData = cards.filter((obj) => obj.kor === e.target.value);
+    const selectedData = cards.filter((obj) => obj.name === e.target.value);
     const newUserCardList = userCardList.concat(selectedData);
-    console.log(newUserCardList);
     setUserCardList(newUserCardList);
+  };
+
+  const onCardDelete = (id) => {
+    const deletedCard = userCardList.filter((obj) => obj.id === id);
+    const updateCards = cards.concat(deletedCard);
+    updateCards.sort((a, b) => a.id - b.id);
+    setCards(updateCards);
+
+    const updateUserCardList = userCardList.filter((obj) => obj.id !== id);
+    setUserCardList(updateUserCardList);
   };
 
   return (
     <Container>
-      <Title margin="66px 0 50px 0" text="회원가입" />
+      <Title margin="66px 0 50px 0" text="회원정보 수정" />
       <Input
         label="닉네임"
         type="text"
@@ -79,13 +95,17 @@ function MyPage() {
       <Select
         label="카드 등록"
         text="카드를 선택해주세요"
-        options={cards.map((obj) => obj.kor)}
+        options={cards.map((obj) => obj.name)}
         onChange={onCardChange}
         margin="0"
       />
       <FlexContainer>
         {userCardList.map((obj) => (
-          <CardList text={obj.kor} />
+          <CardList
+            key={obj.id}
+            text={obj.name}
+            onClick={() => onCardDelete(obj.id)}
+          />
         ))}
       </FlexContainer>
       {/* Button */}
@@ -101,6 +121,11 @@ function MyPage() {
           margin="0 auto 50px auto"
         />
       </Link>
+      <Container>
+        <Link to="/">
+          <Text>회원탈퇴</Text>
+        </Link>
+      </Container>
     </Container>
   );
 }

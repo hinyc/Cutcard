@@ -49,13 +49,22 @@ function SignUpPage() {
 
   const onCardChange = (e) => {
     setSelected(e.target.value);
-    const newCards = cards.filter((obj) => e.target.value !== obj.kor);
+    const newCards = cards.filter((obj) => e.target.value !== obj.name);
     setCards(newCards);
 
-    const selectedData = cards.filter((obj) => obj.kor === e.target.value);
+    const selectedData = cards.filter((obj) => obj.name === e.target.value);
     const newUserCardList = userCardList.concat(selectedData);
-    console.log(newUserCardList);
     setUserCardList(newUserCardList);
+  };
+
+  const onCardDelete = (id) => {
+    const deletedCard = userCardList.filter((obj) => obj.id === id);
+    const updateCards = cards.concat(deletedCard);
+    updateCards.sort((a, b) => a.id - b.id);
+    setCards(updateCards);
+
+    const updateUserCardList = userCardList.filter((obj) => obj.id !== id);
+    setUserCardList(updateUserCardList);
   };
 
   return (
@@ -126,19 +135,23 @@ function SignUpPage() {
         </Notification>
       )}
       {/* Card */}
+      {/* 
+      // TODO: 카드 선택한 후에 디폴트값으로 가게끔
+      */}
       <Select
         label="카드 등록"
         text="카드를 선택해주세요"
-        options={cards.map((obj) => obj.kor)}
+        options={cards.map((obj) => obj.name)}
         onChange={onCardChange}
         margin="0"
       />
-      {/* 
-      // TODO: x 버튼 누르면 삭제
-      */}
       <FlexContainer>
         {userCardList.map((obj) => (
-          <CardList text={obj.kor} />
+          <CardList
+            key={obj.id}
+            text={obj.name}
+            onClick={() => onCardDelete(obj.id)}
+          />
         ))}
       </FlexContainer>
       {/* Button */}
