@@ -53,6 +53,7 @@ const IncomeState = styled.div`
 `;
 const IncomeStateTrue = styled.div`
   background-color: skyblue;
+  border-radius: 3px;
   color: blue;
   text-align: right;
   width: 23px;
@@ -66,6 +67,7 @@ const OutcomeState = styled.div`
 `;
 const OutcomeStateTrue = styled.div`
   background-color: pink;
+  border-radius: 3px;
   color: red;
   text-align: left;
   width: 23px;
@@ -122,6 +124,7 @@ const Adate = (props) => {
     index,
     dateHandler,
     inOutDate,
+    mainStateHandler,
   } = props;
 
   return (
@@ -134,7 +137,11 @@ const Adate = (props) => {
           index={index}
           color={gray}
           inOutDate={inOutDate}
-          onClick={() => dateHandler(year, month - 1, date)}
+          mainStateHandler={mainStateHandler}
+          onClick={() => {
+            dateHandler(year, month - 1, date);
+            mainStateHandler('detail');
+          }}
         />
       ) : index > 20 && 10 - date > 0 ? (
         <DateMaker //
@@ -144,7 +151,11 @@ const Adate = (props) => {
           index={index}
           color={gray}
           inOutDate={inOutDate}
-          onClick={() => dateHandler(year, month + 1, date)}
+          mainStateHandler={mainStateHandler}
+          onClick={() => {
+            dateHandler(year, month + 1, date);
+            mainStateHandler('detail');
+          }}
         />
       ) : (
         <DateMaker //
@@ -153,7 +164,11 @@ const Adate = (props) => {
           date={date}
           index={index}
           inOutDate={inOutDate}
-          onClick={() => dateHandler(year, month, date)}
+          mainStateHandler={mainStateHandler}
+          onClick={() => {
+            dateHandler(year, month, date);
+            mainStateHandler('detail');
+          }}
         />
       )}
     </>

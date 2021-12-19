@@ -140,8 +140,9 @@ const Main = ({ isLogin }) => {
 
   //target month 기준, 객체 복사
   const inOutDataList = {
-    inComes: { ...categoryList.inCome, categorys: Object.keys(categoryList.inCome) },
-    outComes: { ...categoryList.outCome, categorys: Object.keys(categoryList.outCome) },
+    inComes: { ...categoryList.inCome, categorys: Object.keys(categoryList.inCome), totalPrice: 0 },
+    outComes: { ...categoryList.outCome, categorys: Object.keys(categoryList.outCome), totalPrice: 0 },
+    detail: { ㅁㄴㅇㄹ: 13 },
   };
 
   //? calendar로 전달할 정보
@@ -171,8 +172,10 @@ const Main = ({ isLogin }) => {
     if (el.month === targetMonth) {
       if (el.isIncome) {
         inOutDataList.inComes[el.category] += el.price;
+        inOutDataList.inComes.totalPrice += el.price;
       } else {
         inOutDataList.outComes[el.category] += el.price;
+        inOutDataList.outComes.totalPrice += el.price;
       }
     }
   });
@@ -196,6 +199,7 @@ const Main = ({ isLogin }) => {
         <View
           year={targetYear} //
           month={targetMonth}
+          date={targetDate}
           mainStateHandler={mainStateHandler}
           mainState={mainState}
           data={inOutDataList}
@@ -212,6 +216,7 @@ const Main = ({ isLogin }) => {
             targetMonth={targetMonth}
             pickDateHandler={pickDateHandler}
             inOutDate={inOutDate}
+            mainStateHandler={mainStateHandler}
           />
         </CenterContainer>
         <Submit

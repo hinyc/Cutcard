@@ -86,6 +86,7 @@ const Calendar = (props) => {
     targetMonth,
     pickDateHandler,
     inOutDate,
+    mainStateHandler,
   } = props;
   //!
 
@@ -164,6 +165,7 @@ const Calendar = (props) => {
               data={data}
               dateHandler={dateHandler}
               inOutDate={inOutDate}
+              mainStateHandler={mainStateHandler}
             />
           ))}
         </Dates>
