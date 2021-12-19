@@ -128,7 +128,11 @@ const AddOutCome = (props) => {
     price,
     priceHandler,
     inputResetHandler,
+    cards,
   } = props;
+
+  const cardsList = cards.map((el) => el.name);
+
   return (
     <>
       <InputContainer>
@@ -137,7 +141,7 @@ const AddOutCome = (props) => {
         </InputDate>
         <Select text="지출 카테고리" width={`200px`} options={['식비', '공과금', '기타']} onChange={categoryHandler} value={category} />
         <Select text="현금, 카드" width={`200px`} onChange={cashHandler} options={['현금', '카드']} value={cash} />
-        <Select text="카드를 선택하세요" width={`200px`} onChange={cardHandler} options={['삼성', '하나']} value={card} />
+        <Select text="카드를 선택하세요" width={`200px`} onChange={cardHandler} options={cardsList} value={card} />
         <Input placeholder="금액을 입력해주세요" width={`200px`} onChange={priceHandler} value={price} />
         <SmallButton //
           text="입력"
@@ -166,6 +170,7 @@ const Submit = (props) => {
     price,
     priceHandler,
     inputResetHandler,
+    cards,
   } = props;
 
   return (
@@ -192,6 +197,7 @@ const Submit = (props) => {
             price={price}
             priceHandler={priceHandler}
             inputResetHandler={inputResetHandler}
+            cards={cards}
           />
         ) : null}
       </SubmitContainer>
