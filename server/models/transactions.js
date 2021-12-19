@@ -17,10 +17,9 @@ module.exports = (sequelize, DataTypes) => {
     year: DataTypes.INTEGER,
     month: DataTypes.INTEGER,
     day: DataTypes.INTEGER,
-    incomeCategory: DataTypes.STRING,
-    incomePrice: DataTypes.INTEGER,
-    outcomeCategory: DataTypes.STRING,
-    outcomePrice: DataTypes.INTEGER,
+    category: DataTypes.STRING,
+    price: DataTypes.INTEGER,
+    isIncome: DataTypes.BOOLEAN,
     outcomeIsCash: DataTypes.BOOLEAN
   }, {
     sequelize,

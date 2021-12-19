@@ -5,21 +5,20 @@ module.exports = async (req, res) => {
   // accessToken 확인
   const accessTokenData = await isAuthorized(req, res);
   if(!accessTokenData) {
-    return res.status(401).json({ data: null, message: "Invalid access token!" })
+    return res.status(401).json({ data: null, message: "invalid access token!" })
   } else {
     const { id } = accessTokenData;
-    const { year, month, day, category, price } = req.body;
+    const { year, month, day, category, price, isIncome } = req.body;
     await transactions.create({
       year,
       month,
       day,
-      incomeCategory: category,
-      incomePrice: price,
-      outcomeCategory: null,
-      outcomePrice: null,
+      category,
+      price,
+      isIncome,
       outcomeIsCash: null,
       userId: id,
-      userCardsId: null,
+      userCardId: null,
       createdAt: new Date(),
       updatedAt: new Date()
     })
@@ -27,7 +26,8 @@ module.exports = async (req, res) => {
       where: {
         year,
         month,
-        userId: id
+        userId: id,
+        isIncome
       }
     })
     res.status(201).json({ transaction: incomeData })
