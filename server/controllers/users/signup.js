@@ -1,11 +1,11 @@
-const  { users }  = require('../../models/')
+const { users }  = require('../../models/')
 const { userCards } = require('../../models')
 //회원가입
 module.exports = async (req, res) => {
   const { email, password, nickname, cards } = req.body; // cards: [{"id": 1}, {"id": 2}, {"id": 3}]
   
   if (!email || !password || !nickname || !cards) {
-    return res.status(400).json({ "message": "Bad request!" }) // 유저 정보가 전달되지 않았을 때
+    return res.status(400).json({ "message": "bad request!" }) // 유저 정보가 전달되지 않았을 때
   } else {
     const userInfo = await users.findOne({
       where: {
@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
         nickname: nickname,
       }) // 유저 생성
 
-      card.forEach(async (data) => {
+      card.forEach(async(data) => {
         await userCards.create({
           userId: createUser.id,
           cardId: data,
