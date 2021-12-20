@@ -238,39 +238,46 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   // 그중, 지출이 있는 날짜, 수입이 있는 날짜 정보만 필요 => main page에서 가공해서 props로 전달  => 배열형식 데이터로 인자는 객체, {year, month, date, 수입지출 상태}
 
   //! 이벤트 발생
+
+  const token =
+    'accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5ZWNoYW5AZ21haWwuY29tIiwibmlja25hbWUiOiLsmIjssKwiLCJjcmVhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjIyOjQ0LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjIyOjQ0LjAwMFoiLCJpYXQiOjE2NDAwMDQzMzksImV4cCI6MTY0MDE3NzEzOX0.YGrAFFmW3QpCSu3GKzFazrP_1aYrYwwA8y0PdakAwds; Path = /; HttpOnly; SameSite=None';
+
   // 입력 클릭(in,out) transaction 업데이트 후 받아오기
   const userCardId = cardsId.findIndex((el) => el.name === card) + 1 || null;
   const isOutcomeCash = cash === '현금' ? true : false;
+  const isIncome = mainState === 'income' ? true : mainState === 'outcome' ? false : null;
+
+  const resData = {
+    year: targetYear,
+    month: targetMonth,
+    day: targetDate,
+    category,
+    isOutcomeCash,
+    userCardId,
+    price,
+    isIncome,
+  };
 
   const submitHandler = () => {
-    console.log(
-      `{
-      year: ${getDate.split('-')[0]},
-      month: ${getDate.split('-')[1]},
-      date: ${getDate.split('-')[2]},
-      category: ${category},
-      isOutcomeCash: ${isOutcomeCash},
-      userCardId: ${userCardId},
-      price: ${price}
-    }`
-    );
+    console.log('axios 요청!');
 
-    // const resData = {
-    //   year,
-    //   month,
-    //   day: date,
-    //   category,
-    //   isOutcomeCash,
-    //   userCardId,
-    //   price,
-    //   isIncome
-    // };
-    // axios
-    //   .post('https://localhost:4000/login', { userId, password }, { headers: { 'Content-Type': 'application/json' }, withCredentials: true })
-    //   .then((res) => {
-    //     this.props.loginHandler(res.data);
-    //   })
-    //   .catch((err) => console.log(err));
+    axios
+      .post(
+        'http://localhost:4000/transaction/incomes', //
+        resData,
+        {
+          headers: {
+            'Content-Type': 'application/json', //
+            Cookie: token,
+          },
+          // withCredentials: true,
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        console.log(res.messege);
+      })
+      .catch((err) => console.log(err));
   };
 
   // 달력 화살표 클릭 => 해당 월에 해당하는 transaction 받아오기
