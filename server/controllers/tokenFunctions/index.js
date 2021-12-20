@@ -6,16 +6,21 @@ module.exports = {
     return sign(data, process.env.ACCESS_SECRET, { expiresIn: "2d" });
   },
   sendAccessToken: (res, accessToken) => {
-    res.cookie('accessToken', accessToken, { httpOnly: true, sameSite: 'None' })
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      sameSite: "None",
+    });
   },
   isAuthorized: (req, res) => {
-    const authorization = req.headers["cookie"]
-    if(!authorization) {
-      return res.status(401).json({ data: null, message: "access token not provided!" })
+    const authorization = req.headers.authorization;
+    if (!authorization) {
+      return res
+        .status(401)
+        .json({ data: null, message: "access token not provided!" });
     } else {
       const token = authorization.split(";")[0].split("=")[1];
 
-      return verify(token, process.env.ACCESS_SECRET)
+      return verify(token, process.env.ACCESS_SECRET);
     }
-  }
-}
+  },
+};
