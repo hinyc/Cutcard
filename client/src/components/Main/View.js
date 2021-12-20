@@ -49,6 +49,7 @@ export const TotalMoneyContainer = styled.div`
   text-align: right;
   margin: 30px 0;
   position: absolute;
+  right: 50px;
   top: ${(props) => props.top || '360px'};
 `;
 
@@ -63,28 +64,34 @@ export const SubtitleContainer = styled.div`
 //!Content
 //s!!!
 export const ContentsContainer = styled.div`
-  height: ${(props) => props.height || '250px'};
+  height: ${(props) => props.height || '300px'};
   color: #97bfb4;
-  font-weight: 700;
-  position: absolute;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
   overflow: auto;
+  position: absolute;
   top: ${(props) => props.top || '50px'};
 `;
 
 export const ContentContainer = styled.div`
   margin: 5px 0;
-  display: flex;
-  justify-content: space-between;
+  height: 20px;
+  width: 300px;
+  position: relative;
 `;
 
 export const ItemContainer = styled.div`
   text-align: left;
   width: 100px;
+  left: 50px;
+  position: absolute;
 `;
 export const MoneyContainer = styled.div`
   text-align: right;
-
   width: 100px;
+  right: 50px;
+  position: absolute;
 `;
 
 export const Item = ({ item }) => {
@@ -95,13 +102,29 @@ export const Money = ({ money }) => {
   return <MoneyContainer>{`${money.toLocaleString('ko-KR')} 원`}</MoneyContainer>;
 };
 
-export const Content = ({ item, money }) => {
+export const Content = (props) => {
+  const {
+    item, //
+    money,
+    mainState,
+    isCash,
+    card,
+  } = props;
+  console.log(props);
   return (
     <>
-      <ContentContainer>
-        <Item item={item} />
-        <Money money={money} />
-      </ContentContainer>
+      {mainState === 'detatil' ? ( //
+        <ContentContainer>
+          {isCash ? <span>현금</span> : <span>카드</span>}
+          <Item item={item} />
+          <Money money={money} />
+        </ContentContainer>
+      ) : (
+        <ContentContainer>
+          <Item item={item} />
+          <Money money={money} />
+        </ContentContainer>
+      )}
     </>
   );
 };
@@ -146,32 +169,29 @@ const InComeList = ({ year, month, inComes }) => {
   );
 };
 
-const DetailList = ({ year, month, date, detail }) => {
-  console.log('된다된다', detail);
+const DetailList = (props) => {
+  const { year, month, date, detail } = props;
+  const { inComes, inComesTotal, outComes, outComesTotal } = detail;
+
   return (
     <>
       <ListContainer>
         {/* 수입 */}
         <SubTitle title={`${year}.${month}.${date} 수입 내역`} />
         <ContentsContainer height={`75px`}>
-          <Content item={`수입`} money={123} />
-          <Content item={`수입`} money={123} />
-          <Content item={`수입`} money={123} />
+          {inComes.map((el, index) => (
+            <Content key={index} item={el.category} money={el.price} />
+          ))}
         </ContentsContainer>
-        <TotalMoney totalMoney={`수입 합계`} top={`100px`} color={`skyblue`} />
+        <TotalMoney totalMoney={inComesTotal} top={`100px`} color={`skyblue`} />
         {/* 지출 */}
         <SubTitle title={`${year}.${month}.${date} 지출 내역`} top={`200px`} />
         <ContentsContainer top={`230px`} height={`150px`}>
-          <Content item={`지출`} money={123} />
-          <Content item={`지출`} money={123} />
-          <Content item={`지출`} money={123} />
-          <Content item={`지출`} money={123} />
-          <Content item={`지출`} money={123} />
-          <Content item={`지출`} money={123} />
-          <Content item={`지출`} money={123} />
-          <Content item={`지출`} money={123} />
+          {outComes.map((el, index) => (
+            <Content key={index} item={el.category} money={el.price} isCash={el.isCash} card={el.card} />
+          ))}
         </ContentsContainer>
-        <TotalMoney totalMoney={`지출 합계`} color={`pink`} />
+        <TotalMoney totalMoney={outComesTotal} color={`pink`} />
       </ListContainer>
     </>
   );

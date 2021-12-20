@@ -3,13 +3,11 @@ import { Input, EmailInput, Notification } from "../components/Input";
 import { BigButton } from "../components/Button";
 import { Container, Title } from "../components/Common";
 import { Link } from "react-router-dom";
-import { CardSelect } from "../components/Select";
+import { CardSelect, Select } from "../components/Select";
 import CardList from "../components/CardList";
 import { FlexContainer } from "../components/Common";
 
-import { dummy } from "../dummyData";
-
-function SignUpPage() {
+function SignUpPage({ cardsList }) {
   const [email, setEmail] = useState("");
   const [emailFocused, setEmailFocused] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
@@ -18,10 +16,10 @@ function SignUpPage() {
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
 
-  const cardList = dummy.cards;
-  const [cards, setCards] = useState(cardList);
+  const [cards, setCards] = useState(cardsList);
   const [userCardList, setUserCardList] = useState([]);
   const [selected, setSelected] = useState("");
+  const [wantCut, setWantCut] = useState(false);
 
   const onEmailChange = (e) => {
     const emailValidator =
@@ -51,7 +49,6 @@ function SignUpPage() {
     setSelected(e.target.value);
     const newCards = cards.filter((obj) => e.target.value !== obj.name);
     setCards(newCards);
-
     const selectedData = cards.filter((obj) => obj.name === e.target.value);
     const newUserCardList = userCardList.concat(selectedData);
     setUserCardList(newUserCardList);
@@ -65,6 +62,14 @@ function SignUpPage() {
 
     const updateUserCardList = userCardList.filter((obj) => obj.id !== id);
     setUserCardList(updateUserCardList);
+  };
+
+  const onRepaymentDaySelect = (e) => {
+    console.log(e.target.value);
+  };
+
+  const onWantCutCardSelect = (e) => {
+    setWantCut(!wantCut);
   };
 
   return (
@@ -86,7 +91,7 @@ function SignUpPage() {
         onChange={onEmailChange}
         onFocus={onEmailFocus}
         onClick={emailExistsCheck}
-        disabled={!isEmail && "true"}
+        disabled={!isEmail}
         opacity={!isEmail && "50%"}
         hoverOpacity={!isEmail && "50%"}
         cursor={!isEmail && "default"}
@@ -135,13 +140,10 @@ function SignUpPage() {
         </Notification>
       )}
       {/* Card */}
-      {/* 
-      // TODO: 카드 선택한 후에 디폴트값으로 가게끔
-      */}
       <CardSelect
         label="카드 등록"
         text="카드를 선택해주세요"
-        options={cards.map((obj) => obj.name)}
+        options={cards}
         onChange={onCardChange}
         margin="0"
       />
@@ -150,10 +152,22 @@ function SignUpPage() {
           <CardList
             key={obj.id}
             text={obj.name}
+            onTextClick={onWantCutCardSelect}
             onClick={() => onCardDelete(obj.id)}
+            background={wantCut === true ? "#97bfb4" : "white"}
+            color={wantCut === true ? "white" : "#97bfb4"}
+            btnBackground={wantCut === true ? "#97bfb4" : "white"}
+            xColor={wantCut === true ? "white" : "#97bfb4"}
           />
         ))}
       </FlexContainer>
+      <Select
+        label="카드 상환일"
+        text="카드 상환일을 선택해주세요"
+        options={["1일", "5일", "10일", "15일", "20일", "25일"]}
+        onChange={onRepaymentDaySelect}
+        margin="0"
+      />
       {/* Button */}
       <Link to="/login">
         <BigButton text="가입하기" margin="28px auto 12px auto" />

@@ -3,7 +3,7 @@ import { Input, Notification } from "../components/Input";
 import { BigButton } from "../components/Button";
 import { Container, Title } from "../components/Common";
 import { Link } from "react-router-dom";
-import { CardSelect } from "../components/Select";
+import { CardSelect, Select } from "../components/Select";
 import CardList from "../components/CardList";
 import { FlexContainer } from "../components/Common";
 import styled from "styled-components";
@@ -16,14 +16,20 @@ const Text = styled.div`
   text-decoration: underline;
 `;
 
-function MyPage() {
+function MyPage({ cardsList }) {
+  //? 원본 카드 리스트
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
 
-  const cardList = dummy.cards;
-  const [cards, setCards] = useState(cardList);
+  // const userCards = dummy.userCards; //? cardId, repaymentDay
+  // TODO: 초기 카드 목록은 유저카드 리스트에서 선택 안된 목록
+  const [cards, setCards] = useState(cardsList);
+
+  // TODO: 서버에서 받아온 cardId 값과 원본 카드리스트의 아이디값과 비교하여 있는 값만 출력
+  // const userCards = cardsList.filter((obj) => obj.id === dummy.userCards.cardId)
   const [userCardList, setUserCardList] = useState([]);
   const [selected, setSelected] = useState("");
+  const [wantCut, setWantCut] = useState(false);
 
   const onPasswordChange = (e) => {
     setPassword(e.target.value);
@@ -53,6 +59,14 @@ function MyPage() {
     setUserCardList(updateUserCardList);
   };
 
+  const onRepaymentDaySelect = (e) => {
+    console.log(e.target.value);
+  };
+
+  const onWantCutCardSelect = (e) => {
+    setWantCut(!wantCut);
+  };
+
   return (
     <Container>
       <Title margin="66px 0 50px 0" text="회원정보 수정" />
@@ -62,7 +76,7 @@ function MyPage() {
         placeholder="닉네임을 입력해주세요"
         margin="auto"
       />
-      <Input label="이메일" type="text" margin="auto" readOnly="true" />
+      <Input label="이메일" type="text" margin="auto" readOnly={true} />
       {/* Password */}
       <Input
         marginLabel="18px 226px 0 0"
@@ -95,7 +109,7 @@ function MyPage() {
       <CardSelect
         label="카드 등록"
         text="카드를 선택해주세요"
-        options={cards.map((obj) => obj.name)}
+        options={cards}
         onChange={onCardChange}
         margin="0"
       />
@@ -104,10 +118,22 @@ function MyPage() {
           <CardList
             key={obj.id}
             text={obj.name}
+            onTextClick={onWantCutCardSelect}
             onClick={() => onCardDelete(obj.id)}
+            background={wantCut === true ? "#97bfb4" : "white"}
+            color={wantCut === true ? "white" : "#97bfb4"}
+            btnBackground={wantCut === true ? "#97bfb4" : "white"}
+            xColor={wantCut === true ? "white" : "#97bfb4"}
           />
         ))}
       </FlexContainer>
+      <Select
+        padding="25px 238px 9px 0"
+        label="카드 상환일"
+        text="카드 상환일을 선택해주세요"
+        options={["1일", "5일", "10일", "15일", "20일", "25일"]}
+        onChange={onRepaymentDaySelect}
+      />
       {/* Button */}
       <Link to="/login">
         <BigButton text="수정하기" margin="28px auto 12px auto" />

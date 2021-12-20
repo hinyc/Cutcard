@@ -1,14 +1,13 @@
-import { useState } from "react";
-import styled from "styled-components";
-import Calendar from "./Calendar";
-import Input from "../Input";
-import { Select } from "../Select";
-import View from "./View";
-import Submit from "./Submit";
+import { useState } from 'react';
+import styled from 'styled-components';
+import Calendar from './Calendar';
+import Input from '../Input';
+import { Select } from '../Select';
+import View from './View';
+import Submit from './Submit';
 
-// dummydata
-import { dummy, newDummy } from "../../dummyData";
-import { contained } from "sequelize/dist/lib/operators";
+// dumydata
+import { newdumy } from '../../dummyData';
 
 export const MainContainer = styled.div`
   width: 1130px;
@@ -50,13 +49,21 @@ export const Amount = styled.div`
   font-size: 26px; ;
 `;
 
-const Main = ({ isLogin }) => {
+const Main = ({ isLogin, cardsList }) => {
   const [leftMoney, setLeftMoney] = useState(1000000);
+<<<<<<< HEAD
   const [mainState, setMainState] = useState("outcome");
   const [resData, setResData] = useState(newDummy);
+=======
+  const [mainState, setMainState] = useState('detail');
+  const [transaction, setResData] = useState(newdumy.transaction);
+  const [cards, setCards] = useState(cardsList);
+  const [cardIds, setCardIds] = useState([0, '신한카드', '농협카드', '국민카드']);
+>>>>>>> cfd946a8d89aaa9dd8c13709e7edf307b1b9a9a3
   // Calendar
   const [pickDate, setPickDate] = useState(new Date());
-  const [targetDate, setTargetDate] = useState(pickDate.getDate());
+  // const [targetDate, setTargetDate] = useState(pickDate.getDate());
+  const [targetDate, setTargetDate] = useState(25);
   const targetYear = pickDate.getFullYear();
   const targetMonth = pickDate.getMonth() + 1;
   const getDate = `${targetYear}-${targetMonth}-${targetDate}`;
@@ -122,13 +129,6 @@ const Main = ({ isLogin }) => {
     setCash("");
   };
 
-  //! console tets 영역
-
-  console.log(`Render! mainState:"${mainState}" date:${getDate}`);
-  console.log(isLogin);
-  console.log(resData.transaction);
-  console.log(Object.keys(categoryList.inCome));
-
   //! mainpage
   // targetYear, target Month 해당 데이터의 income, outcome data를 모두 받아온다. 기준달 앞, 뒤 달의 데이터도 포함
   // 잔여금액은 해당 월의 수입이 지출이전에 발생하지 않는다면 수입전 항상 마이너스 금액을 나타낸다 ?
@@ -150,14 +150,23 @@ const Main = ({ isLogin }) => {
       categorys: Object.keys(categoryList.outCome),
       totalPrice: 0,
     },
+<<<<<<< HEAD
     detail: { ㅁㄴㅇㄹ: 13 },
+=======
+    detail: {
+      inComes: [],
+      inComesTotal: 0,
+      outComes: [],
+      outComesTotal: 0,
+    },
+>>>>>>> cfd946a8d89aaa9dd8c13709e7edf307b1b9a9a3
   };
 
   //? calendar로 전달할 정보
 
   const inOutDate = {};
 
-  resData.transaction.map((el) => {
+  transaction.map((el) => {
     //inOut data 생성
     const date = `${el.year}.${el.month}.${el.day}`;
     if (inOutDate[date] === undefined) {
@@ -186,10 +195,44 @@ const Main = ({ isLogin }) => {
         inOutDataList.outComes.totalPrice += el.price;
       }
     }
+
+    // detail
+    if (el.day === targetDate) {
+      if (el.isIncome) {
+        inOutDataList.detail.inComes = [
+          ...inOutDataList.detail.inComes,
+          {
+            category: el.category,
+            price: el.price,
+          },
+        ];
+        inOutDataList.detail.inComesTotal += el.price;
+      } else {
+        inOutDataList.detail.outComes = [
+          ...inOutDataList.detail.outComes,
+          {
+            category: el.category,
+            price: el.price,
+            isCash: el.outcomeIsCash,
+            card: cardIds[el.userCardId],
+          },
+        ];
+        inOutDataList.detail.outComesTotal += el.price;
+      }
+    }
   });
 
-  console.log(inOutDataList.inComes);
-  console.log(inOutDataList.outComes);
+  //! console tets 영역
+
+  // console.log(`Render! mainState:"${mainState}" date:${getDate}`);
+  // console.log(isLogin);
+  // console.log('transaction', transaction);
+  // console.log(Object.keys(categoryList.inCome));
+  // console.log(cards);
+
+  // console.log(inOutDataList.inComes);
+  // console.log(inOutDataList.outComes);
+  // console.log('detail', inOutDataList.detail);
 
   // [{category:"", Price:234325}]
 
@@ -211,6 +254,7 @@ const Main = ({ isLogin }) => {
           mainStateHandler={mainStateHandler}
           mainState={mainState}
           data={inOutDataList}
+          transaction={transaction}
         />
         <CenterContainer>
           <LeftMoney>
@@ -218,7 +262,10 @@ const Main = ({ isLogin }) => {
             <Amount>{`${leftMoney.toLocaleString("ko-KR")} 원`}</Amount>
           </LeftMoney>
           <Calendar //
+<<<<<<< HEAD
             data={dummy}
+=======
+>>>>>>> cfd946a8d89aaa9dd8c13709e7edf307b1b9a9a3
             dateHandler={dateHandler}
             targetYear={targetYear}
             targetMonth={targetMonth}
@@ -239,6 +286,7 @@ const Main = ({ isLogin }) => {
           price={price}
           priceHandler={priceHandler}
           inputResetHandler={inputResetHandler}
+          cards={cards}
         />
       </MainContainer>
     </>
