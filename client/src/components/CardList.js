@@ -48,8 +48,10 @@ function CardList({
   btnBackground,
 }) {
   return (
-    <CardStyle background={background} onClick={onTextClick}>
-      <Text color={color}>{text}</Text>
+    <CardStyle background={background}>
+      <Text color={color} onClick={onTextClick}>
+        {text}
+      </Text>
       <Button xColor={xColor} BtnBackground={btnBackground} onClick={onClick}>
         𝗫
       </Button>

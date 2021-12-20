@@ -16,20 +16,16 @@ const Text = styled.div`
   text-decoration: underline;
 `;
 
-function MyPage({ cardsList }) {
-  //? 원본 카드 리스트
+function MyPage({ cardsList, userCards }) {
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
 
-  // const userCards = dummy.userCards; //? cardId, repaymentDay
-  // TODO: 초기 카드 목록은 유저카드 리스트에서 선택 안된 목록
-  const [cards, setCards] = useState(cardsList);
-
-  // TODO: 서버에서 받아온 cardId 값과 원본 카드리스트의 아이디값과 비교하여 있는 값만 출력
-  // const userCards = cardsList.filter((obj) => obj.id === dummy.userCards.cardId)
-  const [userCardList, setUserCardList] = useState([]);
+  const notSelectedCards = cardsList.filter(
+    (obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === false
+  );
+  const [cards, setCards] = useState(notSelectedCards);
+  const [userCardList, setUserCardList] = useState(userCards);
   const [selected, setSelected] = useState("");
-  const [wantCut, setWantCut] = useState(false);
 
   const onPasswordChange = (e) => {
     setPassword(e.target.value);
@@ -40,31 +36,52 @@ function MyPage({ cardsList }) {
   };
 
   const onCardChange = (e) => {
-    setSelected(e.target.value);
+    //* 카드 옵션에서 선택된 옵션 제외
+    setSelected(e.target.value); // card name
     const newCards = cards.filter((obj) => e.target.value !== obj.name);
     setCards(newCards);
 
+    //* 선택된 카드 유저 리스트에 추가
     const selectedData = cards.filter((obj) => obj.name === e.target.value);
-    const newUserCardList = userCardList.concat(selectedData);
+    const inputData = {
+      id: userCardList.length, //
+      cardId: selectedData[0].id,
+      cardName: selectedData[0].name,
+      isCut: false,
+    };
+    const newUserCardList = userCardList.concat(inputData);
     setUserCardList(newUserCardList);
   };
 
-  const onCardDelete = (id) => {
-    const deletedCard = userCardList.filter((obj) => obj.id === id);
-    const updateCards = cards.concat(deletedCard);
+  const onCardDelete = (cardId) => {
+    const deletedCard = userCardList.filter((obj) => obj.cardId === cardId);
+
+    //* 삭제한 카드 리스트에 추가
+    const updateCards = cards.concat({
+      id: deletedCard[0].cardId,
+      name: deletedCard[0].cardName,
+    });
     updateCards.sort((a, b) => a.id - b.id);
     setCards(updateCards);
 
-    const updateUserCardList = userCardList.filter((obj) => obj.id !== id);
+    //* 삭제한 카드 유저 목록에서 제거
+    const updateUserCardList = userCardList.filter(
+      (obj) => obj.cardId !== cardId
+    );
     setUserCardList(updateUserCardList);
   };
 
   const onRepaymentDaySelect = (e) => {
-    console.log(e.target.value);
+    const value = e.target.value;
+    const repaymentDay = value.slice(0, value.length - 1);
+    userCardList.map((obj) => (obj.repaymentDay = Number(repaymentDay)));
   };
 
-  const onWantCutCardSelect = (e) => {
-    setWantCut(!wantCut);
+  const onWantCutCardSelect = (obj) => {
+    obj.isCut = !obj.isCut;
+    console.log(obj);
+    console.log(userCardList);
+    return setUserCardList(userCardList);
   };
 
   return (
@@ -116,14 +133,14 @@ function MyPage({ cardsList }) {
       <FlexContainer>
         {userCardList.map((obj) => (
           <CardList
-            key={obj.id}
-            text={obj.name}
-            onTextClick={onWantCutCardSelect}
-            onClick={() => onCardDelete(obj.id)}
-            background={wantCut === true ? "#97bfb4" : "white"}
-            color={wantCut === true ? "white" : "#97bfb4"}
-            btnBackground={wantCut === true ? "#97bfb4" : "white"}
-            xColor={wantCut === true ? "white" : "#97bfb4"}
+            key={obj.cardId}
+            text={obj.cardName}
+            onTextClick={() => onWantCutCardSelect(obj)}
+            onClick={() => onCardDelete(obj.cardId)}
+            background={obj.isCut ? "#97bfb4" : "white"}
+            color={obj.isCut ? "white" : "#97bfb4"}
+            btnBackground={obj.isCut ? "#97bfb4" : "white"}
+            xColor={obj.isCut ? "white" : "#97bfb4"}
           />
         ))}
       </FlexContainer>
