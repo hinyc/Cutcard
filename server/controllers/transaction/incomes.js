@@ -1,5 +1,8 @@
-const { transactions } = require('./../../models');
-const { isAuthorized } = require('./../tokenFunctions');
+
+const { transactions } = require("./../../models");
+const { isAuthorized } = require("./../tokenFunctions");
+
+
 
 module.exports = async (req, res) => {
   // accessToken 확인
@@ -8,7 +11,11 @@ module.exports = async (req, res) => {
 
   const accessTokenData = await isAuthorized(req, res);
   if (!accessTokenData) {
-    return res.status(401).json({ data: null, message: 'invalid access token!' });
+
+    return res
+      .status(401)
+      .json({ data: null, message: "invalid access token!" });
+
   } else {
     const { id } = accessTokenData;
     const { year, month, day, category, price, isIncome } = req.body;
