@@ -20,44 +20,56 @@ module.exports = {
     { returning: ["id"] }
     );
     const cardId = await queryInterface.bulkInsert('cards', [{
-      name: 'shinhan',
-      phoneNumber: '1544-7000',
-      address: 'https://www.shinhancard.com/',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      name: 'bc',
-      phoneNumber: '1566-4000',
-      address: 'https://www.bccard.com/',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      name: 'hyundai',
-      phoneNumber: '1577-6000',
-      address: 'https://www.hyundaicard.com/',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      name: 'kb',
+      name: '국민카드',
       phoneNumber: '1588-1688',
-      address: 'https://customer.kbcard.com/',
+      address: 'https://www.kbcard.com',
       createdAt: new Date(),
       updatedAt: new Date()
     },
     {
-      name: 'hana',
+      name: '신한카드',
+      phoneNumber: '1544-7000',
+      address: 'https://www.shinhancard.com',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      name: '하나카드',
       phoneNumber: '1800-1111',
-      address: 'https://www.hanacard.co.kr/',
+      address: 'https://global.hanacard.com',
       createdAt: new Date(),
       updatedAt: new Date()
     },
     {
-      name: 'woori',
-      phoneNumber: '1588-9955',
-      address: 'https://pc.wooricard.com/',
+      name: '롯데카드',
+      phoneNumber: '1588-8100',
+      address: 'https://customer.kbcard.com',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      name: '비씨카드',
+      phoneNumber: '1800-1111',
+      address: 'https://bccard.com',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      name: '농협카드',
+      phoneNumber: '1644-4000',
+      address: 'https://card.nonghyup.com',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },{
+      name: '삼성카드',
+      phoneNumber: '1588-8700',
+      address: 'https://www.samsungcard.com',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },{
+      name: '현대카드',
+      phoneNumber: '1577-6000',
+      address: 'https://www.hyundaicard.com',
       createdAt: new Date(),
       updatedAt: new Date()
     }
@@ -95,12 +107,12 @@ module.exports = {
       year: 2021,
       month: 12,
       day: 17,
-      category: 'pay',
+      category: '월급',
       price: 2500000,
       isIncome: true,
       outcomeIsCash: false,
-      userId,
-      userCardId,
+      userId: 1,
+      userCardId: 1,
       createdAt: new Date(),
       updatedAt: new Date()
     },
@@ -108,26 +120,24 @@ module.exports = {
       year: 2021,
       month: 12,
       day: 17,
-      incomeCategory: null,
-      incomePrice: null,
-      outcomeCategory: 'food',
-      outcomePrice: '10000',
+      category: '식비',
+      price: 50000,
+      isIncome: false,
       outcomeIsCash: false,
-      userId,
-      userCardId,
+      userId: 2,
+      userCardId: 2,
       createdAt: new Date(),
       updatedAt: new Date()
     },{
       year: 2021,
       month: 12,
       day: 17,
-      incomeCategory: null,
-      incomePrice: null,
-      outcomeCategory: 'food',
-      outcomePrice: '20000',
-      outcomeIsCash: false,
-      userId,
-      userCardId,
+      category: '생활용품',
+      price: 25000,
+      isIncome: false,
+      outcomeIsCash: true,
+      userId: 2,
+      userCardId: 3,
       createdAt: new Date(),
       updatedAt: new Date()
     }]);
