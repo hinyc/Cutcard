@@ -1,13 +1,13 @@
-import { useState } from "react";
-import styled from "styled-components";
-import Calendar from "./Calendar";
-import Input from "../Input";
-import { Select } from "../Select";
-import View from "./View";
-import Submit from "./Submit";
+import { useState } from 'react';
+import styled from 'styled-components';
+import Calendar from './Calendar';
+import Input from '../Input';
+import { Select } from '../Select';
+import View from './View';
+import Submit from './Submit';
 
 // dumydata
-import { newdumy } from "../../dummyData";
+import { newdumy } from '../../dummyData';
 
 export const MainContainer = styled.div`
   width: 1130px;
@@ -49,17 +49,12 @@ export const Amount = styled.div`
   font-size: 26px; ;
 `;
 
-const Main = ({ isLogin }) => {
+const Main = ({ isLogin, cardsList }) => {
   const [leftMoney, setLeftMoney] = useState(1000000);
-  const [mainState, setMainState] = useState("detail");
+  const [mainState, setMainState] = useState('detail');
   const [transaction, setResData] = useState(newdumy.transaction);
-  const [cards, setCards] = useState(newdumy.cards);
-  const [cardIds, setCardIds] = useState([
-    0,
-    "신한카드",
-    "농협카드",
-    "국민카드",
-  ]);
+  const [cards, setCards] = useState(cardsList);
+  const [cardIds, setCardIds] = useState([0, '신한카드', '농협카드', '국민카드']);
   // Calendar
   const [pickDate, setPickDate] = useState(new Date());
   // const [targetDate, setTargetDate] = useState(pickDate.getDate());
@@ -69,10 +64,10 @@ const Main = ({ isLogin }) => {
   const getDate = `${targetYear}-${targetMonth}-${targetDate}`;
 
   //Submit
-  const [category, setCategory] = useState("");
-  const [price, setPrice] = useState("");
-  const [card, setCard] = useState("");
-  const [cash, setCash] = useState("");
+  const [category, setCategory] = useState('');
+  const [price, setPrice] = useState('');
+  const [card, setCard] = useState('');
+  const [cash, setCash] = useState('');
 
   const categoryList = {
     inCome: {
@@ -82,13 +77,13 @@ const Main = ({ isLogin }) => {
     },
     outCome: {
       식비: 0,
-      "공과금/보험": 0,
-      "주거/통신": 0,
+      '공과금/보험': 0,
+      '주거/통신': 0,
       생활용품: 0,
-      "의복/미용": 0,
-      "건강/문화": 0,
-      "교육/육아": 0,
-      "교통/차량": 0,
+      '의복/미용': 0,
+      '건강/문화': 0,
+      '교육/육아': 0,
+      '교통/차량': 0,
       기타: 0,
     },
   };
@@ -123,10 +118,10 @@ const Main = ({ isLogin }) => {
   };
 
   const inputResetHandler = () => {
-    setCategory("");
-    setPrice("");
-    setCard("");
-    setCash("");
+    setCategory('');
+    setPrice('');
+    setCard('');
+    setCash('');
   };
 
   //! mainpage
@@ -255,7 +250,7 @@ const Main = ({ isLogin }) => {
         <CenterContainer>
           <LeftMoney>
             <SubTitle>잔여 금액</SubTitle>
-            <Amount>{`${leftMoney.toLocaleString("ko-KR")} 원`}</Amount>
+            <Amount>{`${leftMoney.toLocaleString('ko-KR')} 원`}</Amount>
           </LeftMoney>
           <Calendar //
             dateHandler={dateHandler}
