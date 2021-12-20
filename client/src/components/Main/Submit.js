@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Input } from '../Input';
 import { SmallButton } from '../Button';
 import { Select } from '../Select';
+import CardList from '../CardList';
 
 //! Right
 export const SubmitContainer = styled.div`
@@ -71,20 +72,6 @@ const testIncomeSubmiter = (getDate, category, price) => {
   );
 };
 
-const testOutComeSubmiter = (getDate, category, cash, card, price) => {
-  console.log(
-    `{
-      year: ${getDate.split('-')[0]},
-      month: ${getDate.split('-')[1]},
-      date: ${getDate.split('-')[2]},
-      category: ${category},
-      cash: ${cash},
-      card: ${card},
-      price: ${price}
-    }`
-  );
-};
-
 const AddInCome = (props) => {
   const {
     getDate, //
@@ -94,6 +81,7 @@ const AddInCome = (props) => {
     price,
     priceHandler,
     inputResetHandler,
+    submitHandler,
   } = props;
   return (
     <>
@@ -108,7 +96,7 @@ const AddInCome = (props) => {
           width={`200px`}
           margin={`18px 0 0 0 `}
           onClick={() => {
-            testIncomeSubmiter(getDate, category, price);
+            submitHandler();
             inputResetHandler();
           }}
         />
@@ -130,9 +118,10 @@ const AddOutCome = (props) => {
     price,
     priceHandler,
     inputResetHandler,
-    cards,
+    userCards,
+    submitHandler,
   } = props;
-  const cardsList = cards.map((el) => el.name);
+  const cardsList = userCards.map((el) => el.cardName);
   return (
     <>
       <InputContainer>
@@ -148,7 +137,7 @@ const AddOutCome = (props) => {
           margin={`18px 0 0 0 `}
           width={`200px`}
           onClick={() => {
-            testOutComeSubmiter(getDate, category, cash, card, price);
+            submitHandler();
             inputResetHandler();
           }}
         />
@@ -171,10 +160,12 @@ const Modify = (props) => {
     price,
     priceHandler,
     inputResetHandler,
-    cards,
+    userCards,
     modifyState,
+    submitHandler,
   } = props;
-  const cardsList = cards.map((el) => el.name);
+  const cardsList = userCards.map((el) => el.cardName);
+
   return (
     <>
       {modifyState === 'income' ? (
@@ -190,7 +181,7 @@ const Modify = (props) => {
             width={`200px`}
             margin={`18px 0 0 0 `}
             onClick={() => {
-              testIncomeSubmiter(getDate, category, price);
+              submitHandler();
               inputResetHandler();
             }}
           />
@@ -210,7 +201,7 @@ const Modify = (props) => {
             margin={`18px 0 0 0 `}
             width={`200px`}
             onClick={() => {
-              testOutComeSubmiter(getDate, category, cash, card, price);
+              submitHandler();
               inputResetHandler();
             }}
           />
@@ -234,8 +225,9 @@ const Submit = (props) => {
     price,
     priceHandler,
     inputResetHandler,
-    cards,
+    userCards,
     modifyState,
+    submitHandler,
   } = props;
 
   const inComeCategorys = Object.keys(categoryList.inCome);
@@ -253,6 +245,7 @@ const Submit = (props) => {
             price={price}
             priceHandler={priceHandler}
             inputResetHandler={inputResetHandler}
+            submitHandler={submitHandler}
           />
         ) : mainState === 'outcome' ? (
           <AddOutCome //
@@ -267,7 +260,8 @@ const Submit = (props) => {
             price={price}
             priceHandler={priceHandler}
             inputResetHandler={inputResetHandler}
-            cards={cards}
+            userCards={userCards}
+            submitHandler={submitHandler}
           />
         ) : mainState === 'detail' ? (
           <Modify
@@ -283,8 +277,9 @@ const Submit = (props) => {
             price={price}
             priceHandler={priceHandler}
             inputResetHandler={inputResetHandler}
-            cards={cards}
+            userCards={userCards}
             modifyState={modifyState}
+            submitHandler={submitHandler}
           />
         ) : null}
       </SubmitContainer>

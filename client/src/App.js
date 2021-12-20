@@ -47,7 +47,9 @@ function App() {
         <Route path="/" element={<Navigate to="/main" />} />
         <Route
           path="/main"
-          element={<Main isLogin={isLogin} userCards={userCards} />}
+          element={
+            <Main isLogin={isLogin} userCards={userCards} cardsId={cards} />
+          }
         />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/login" element={<LoginPage />} />
