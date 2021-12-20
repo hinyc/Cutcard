@@ -9,11 +9,11 @@ import AboutPage from './pages/AboutPage';
 import LoginPage from './pages/LoginPage';
 import MyPage from './pages/MyPage';
 import SignUpPage from './pages/SignUpPage';
+//!dummy
+import { newdumy } from './dummyData';
 
 function App() {
   //테스트중 초기상태 임의지정
-  const [isLogin, setIsLogin] = useState(true);
-
   const cards = [
     { id: 1, name: '국민카드' },
     { id: 2, name: '신한카드' },
@@ -24,17 +24,32 @@ function App() {
     { id: 7, name: '삼성카드' },
     { id: 8, name: '현대카드' },
   ];
+  const [isLogin, setIsLogin] = useState(true);
+  const [userCards, setUserCards] = useState(
+    newdumy.cards.map((el) => {
+      return {
+        id: el.id, //
+        userid: el.userId,
+        cardId: el.cardId,
+        cardName: cards[el.cardId - 1].name,
+        isCut: el.isCut,
+        remainValue: el.remainValue,
+        repaymentDay: el.repaymentDay,
+        updated_at: el.updated_at,
+      };
+    })
+  );
 
   return (
     <>
-      <Navbar />
+      <Navbar isLogin={isLogin} />
       <Routes>
         <Route path="/" element={<Navigate to="/main" />} />
-        <Route path="/main" element={<Main isLogin={isLogin} cardsList={cards} />} />
+        <Route path="/main" element={<Main isLogin={isLogin} userCards={userCards} cardsId={cards} />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/mypage" element={<MyPage cardsList={cards} />} />
+        <Route path="/signup" element={<SignUpPage cardsList={cards} />} />
       </Routes>
       <Footer />
     </>

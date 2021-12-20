@@ -5,9 +5,9 @@ import Input from '../Input';
 import { Select } from '../Select';
 import View from './View';
 import Submit from './Submit';
-
 // dumydata
 import { newdumy } from '../../dummyData';
+import axios from 'axios';
 
 export const MainContainer = styled.div`
   width: 1130px;
@@ -49,13 +49,14 @@ export const Amount = styled.div`
   font-size: 26px; ;
 `;
 
-const Main = ({ isLogin, cardsList }) => {
+const Main = ({ isLogin, userCards, cardsId }) => {
   const [leftMoney, setLeftMoney] = useState(1000000);
+  //leftMoney => 해달 월 수입계 - 해당월 현금 사용 - 전월 카드사용 ?
   const [mainState, setMainState] = useState('detail');
   const [modifyState, setModifyState] = useState('outCome');
   const [transaction, setResData] = useState(newdumy.transaction);
-  const [cards, setCards] = useState(newdumy.cards);
-  const [cardIds, setCardIds] = useState([0, '신한카드', '농협카드', '국민카드']);
+
+  // console.log(cardIds[1]);
   // Calendar
   const [pickDate, setPickDate] = useState(new Date());
   // const [targetDate, setTargetDate] = useState(pickDate.getDate());
@@ -109,26 +110,13 @@ const Main = ({ isLogin, cardsList }) => {
   };
 
   //Submit
-  const priceHandler = (e) => {
-    setPrice(e.target.value);
-  };
-  const categoryHandler = (e) => {
-    setCategory(e.target.value);
-  };
-  const cardHandler = (e) => {
-    setCard(e.target.value);
-  };
-  const cashHandler = (e) => {
-    setCash(e.target.value);
-  };
+  const priceHandler = (e) => setPrice(e.target.value);
+  const categoryHandler = (e) => setCategory(e.target.value);
+  const cardHandler = (e) => setCard(e.target.value);
+  const cashHandler = (e) => setCash(e.target.value);
 
   const inputResetHandler = (category, price, card, cash) => {
-    console.log('para', cash);
-    // if (cash) {
-    //   isCash = '현금';
-    // } else {
-    //   isCash = '카드';
-    // }
+    // const cardName = cardsId[card - 1].name;
     setCategory(category || '');
     setPrice(price || '');
     setCard(card || '');
@@ -173,7 +161,6 @@ const Main = ({ isLogin, cardsList }) => {
   //? calendar로 전달할 정보
 
   const inOutDate = {};
-
   transaction.map((el) => {
     //inOut data 생성
     const date = `${el.year}.${el.month}.${el.day}`;
@@ -222,7 +209,7 @@ const Main = ({ isLogin, cardsList }) => {
             category: el.category,
             price: el.price,
             isCash: el.outcomeIsCash,
-            card: cardIds[el.userCardId].slice(0, 2),
+            card: cardsId[el.userCardId - 1].name,
           },
         ];
         inOutDataList.detail.outComesTotal += el.price;
@@ -233,14 +220,13 @@ const Main = ({ isLogin, cardsList }) => {
   //! console tets 영역
 
   console.log(`Render! mainState:"${mainState}" date:${getDate}`);
-
-  console.log('Year:', targetYear);
-  console.log('Mont:', targetMonth);
-  console.log('Day:', targetDate);
-  console.log('카테고리:', category);
-  console.log('현금/카드:', cash);
-  console.log('카드:', card);
-  console.log('price:', price);
+  // console.log('Year:', targetYear);
+  // console.log('Mont:', targetMonth);
+  // console.log('Day:', targetDate);
+  // console.log('category:', category);
+  // console.log('isOutcomeCash:', cash);
+  // console.log('userCardId:', card);
+  // console.log('price:', price);
 
   // console.log(inOutDataList.inComes);
   // console.log(inOutDataList.outComes);
@@ -252,8 +238,42 @@ const Main = ({ isLogin, cardsList }) => {
   // 그중, 지출이 있는 날짜, 수입이 있는 날짜 정보만 필요 => main page에서 가공해서 props로 전달  => 배열형식 데이터로 인자는 객체, {year, month, date, 수입지출 상태}
 
   //! 이벤트 발생
-  // 입력 클릭(in,out)
-  // 달력 화살표 클릭
+  // 입력 클릭(in,out) transaction 업데이트 후 받아오기
+  const userCardId = cardsId.findIndex((el) => el.name === card) + 1 || null;
+  const isOutcomeCash = cash === '현금' ? true : false;
+
+  const submitHandler = () => {
+    console.log(
+      `{
+      year: ${getDate.split('-')[0]},
+      month: ${getDate.split('-')[1]},
+      date: ${getDate.split('-')[2]},
+      category: ${category},
+      isOutcomeCash: ${isOutcomeCash},
+      userCardId: ${userCardId},
+      price: ${price}
+    }`
+    );
+
+    // const resData = {
+    //   year,
+    //   month,
+    //   day: date,
+    //   category,
+    //   isOutcomeCash,
+    //   userCardId,
+    //   price,
+    //   isIncome
+    // };
+    // axios
+    //   .post('https://localhost:4000/login', { userId, password }, { headers: { 'Content-Type': 'application/json' }, withCredentials: true })
+    //   .then((res) => {
+    //     this.props.loginHandler(res.data);
+    //   })
+    //   .catch((err) => console.log(err));
+  };
+
+  // 달력 화살표 클릭 => 해당 월에 해당하는 transaction 받아오기
   // 날짜 클릭
   // 날짜 클릭시 디테일 리스트에서 목록 클릭
   // 날자 클릭시 수정버튼 클릭시
@@ -300,8 +320,9 @@ const Main = ({ isLogin, cardsList }) => {
           price={price}
           priceHandler={priceHandler}
           inputResetHandler={inputResetHandler}
-          cards={cards}
+          userCards={userCards}
           modifyState={modifyState}
+          submitHandler={submitHandler}
         />
       </MainContainer>
     </>

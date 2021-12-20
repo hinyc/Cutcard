@@ -48,16 +48,14 @@ const Menu = styled.button`
   }
 `;
 
-function Navbar() {
-  const [isLogin, setIsLogin] = useState(false);
+function Navbar({ isLogin }) {
+  const [login, setIsLogin] = useState(isLogin);
 
-  const Login = () => {
-    // setIsLogin(!isLogin);
+  const LoginClick = () => {
     setIsLogin(true);
   };
 
-  const Logout = () => {
-    // setIsLogin(!isLogin);
+  const LogoutClick = () => {
     setIsLogin(false);
   };
 
@@ -71,16 +69,16 @@ function Navbar() {
           <Menu paddingTop="0px">소개</Menu>
         </Link>
       </Nav>
-      {isLogin ? (
+      {login ? (
         <>
           <Link to="/mypage">
             <Menu marginRight="20px">마이페이지</Menu>
           </Link>
-          <Menu onClick={Logout}>로그아웃</Menu>
+          <Menu onClick={LogoutClick}>로그아웃</Menu>
         </>
       ) : (
         <Link to="/login">
-          <Menu onClick={Login}>회원가입 / 로그인</Menu>
+          <Menu onClick={LoginClick}>회원가입 / 로그인</Menu>
         </Link>
       )}
     </Header>
