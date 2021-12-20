@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import { Input } from '../Input';
-import { SmallButton } from '../Button';
-import { Select } from '../Select';
+import { useState } from "react";
+import styled from "styled-components";
+import { Input } from "../Input";
+import { SmallButton } from "../Button";
+import { Select } from "../Select";
 
 //! Right
 export const SubmitContainer = styled.div`
@@ -100,13 +100,13 @@ const AddInCome = (props) => {
         <InputDate placeholder="날짜" width={`200px`}>
           {getDate}
         </InputDate>
-<<<<<<< HEAD
         <Select
           text="수입 카테고리"
           width={`200px`}
           options={["월급", "보너스", "기타"]}
           onChange={categoryHandler}
           value={category}
+          margin={"0"}
         />
         <Input
           placeholder="금액을 입력해주세요"
@@ -114,10 +114,6 @@ const AddInCome = (props) => {
           onChange={priceHandler}
           value={price}
         />
-=======
-        <Select text="수입 카테고리" width={`200px`} options={['월급', '보너스', '기타']} onChange={categoryHandler} value={category} margin={'0'} />
-        <Input placeholder="금액을 입력해주세요" width={`200px`} onChange={priceHandler} value={price} />
->>>>>>> cfd946a8d89aaa9dd8c13709e7edf307b1b9a9a3
         <SmallButton //
           text="입력"
           width={`200px`}
@@ -155,13 +151,13 @@ const AddOutCome = (props) => {
         <InputDate placeholder="날짜" width={`200px`}>
           {getDate}
         </InputDate>
-<<<<<<< HEAD
         <Select
           text="지출 카테고리"
           width={`200px`}
           options={["식비", "공과금", "기타"]}
           onChange={categoryHandler}
           value={category}
+          margin={"0"}
         />
         <Select
           text="현금, 카드"
@@ -169,13 +165,15 @@ const AddOutCome = (props) => {
           onChange={cashHandler}
           options={["현금", "카드"]}
           value={cash}
+          margin={"0"}
         />
         <Select
           text="카드를 선택하세요"
           width={`200px`}
           onChange={cardHandler}
-          options={["삼성", "하나"]}
+          options={cardsList}
           value={card}
+          margin={"0"}
         />
         <Input
           placeholder="금액을 입력해주세요"
@@ -183,12 +181,6 @@ const AddOutCome = (props) => {
           onChange={priceHandler}
           value={price}
         />
-=======
-        <Select text="지출 카테고리" width={`200px`} options={['식비', '공과금', '기타']} onChange={categoryHandler} value={category} margin={'0'} />
-        <Select text="현금, 카드" width={`200px`} onChange={cashHandler} options={['현금', '카드']} value={cash} margin={'0'} />
-        <Select text="카드를 선택하세요" width={`200px`} onChange={cardHandler} options={cardsList} value={card} margin={'0'} />
-        <Input placeholder="금액을 입력해주세요" width={`200px`} onChange={priceHandler} value={price} />
->>>>>>> cfd946a8d89aaa9dd8c13709e7edf307b1b9a9a3
         <SmallButton //
           text="입력"
           margin={`18px 0 0 0 `}

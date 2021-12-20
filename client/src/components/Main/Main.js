@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import Calendar from './Calendar';
-import Input from '../Input';
-import { Select } from '../Select';
-import View from './View';
-import Submit from './Submit';
+import { useState } from "react";
+import styled from "styled-components";
+import Calendar from "./Calendar";
+import Input from "../Input";
+import { Select } from "../Select";
+import View from "./View";
+import Submit from "./Submit";
 
 // dumydata
-import { newdumy } from '../../dummyData';
+import { newdumy } from "../../dummyData";
 
 export const MainContainer = styled.div`
   width: 1130px;
@@ -51,15 +51,15 @@ export const Amount = styled.div`
 
 const Main = ({ isLogin, cardsList }) => {
   const [leftMoney, setLeftMoney] = useState(1000000);
-<<<<<<< HEAD
-  const [mainState, setMainState] = useState("outcome");
-  const [resData, setResData] = useState(newDummy);
-=======
-  const [mainState, setMainState] = useState('detail');
+  const [mainState, setMainState] = useState("detail");
   const [transaction, setResData] = useState(newdumy.transaction);
   const [cards, setCards] = useState(cardsList);
-  const [cardIds, setCardIds] = useState([0, '신한카드', '농협카드', '국민카드']);
->>>>>>> cfd946a8d89aaa9dd8c13709e7edf307b1b9a9a3
+  const [cardIds, setCardIds] = useState([
+    0,
+    "신한카드",
+    "농협카드",
+    "국민카드",
+  ]);
   // Calendar
   const [pickDate, setPickDate] = useState(new Date());
   // const [targetDate, setTargetDate] = useState(pickDate.getDate());
@@ -150,16 +150,12 @@ const Main = ({ isLogin, cardsList }) => {
       categorys: Object.keys(categoryList.outCome),
       totalPrice: 0,
     },
-<<<<<<< HEAD
-    detail: { ㅁㄴㅇㄹ: 13 },
-=======
     detail: {
       inComes: [],
       inComesTotal: 0,
       outComes: [],
       outComesTotal: 0,
     },
->>>>>>> cfd946a8d89aaa9dd8c13709e7edf307b1b9a9a3
   };
 
   //? calendar로 전달할 정보
@@ -262,10 +258,6 @@ const Main = ({ isLogin, cardsList }) => {
             <Amount>{`${leftMoney.toLocaleString("ko-KR")} 원`}</Amount>
           </LeftMoney>
           <Calendar //
-<<<<<<< HEAD
-            data={dummy}
-=======
->>>>>>> cfd946a8d89aaa9dd8c13709e7edf307b1b9a9a3
             dateHandler={dateHandler}
             targetYear={targetYear}
             targetMonth={targetMonth}
