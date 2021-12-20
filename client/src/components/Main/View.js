@@ -1,7 +1,6 @@
-import { useState } from 'react';
-import { is } from 'sequelize/dist/lib/operators';
-import styled from 'styled-components';
-import { SmallButton } from '../Button';
+import { useState } from "react";
+import styled from "styled-components";
+import { SmallButton } from "../Button";
 
 export const ViewContainer = styled.div`
   box-sizing: border-box;
@@ -45,27 +44,27 @@ export const ListContainer = styled.div`
 export const TotalMoneyContainer = styled.div`
   width: 150px;
   line-height: 50px;
-  color: ${(props) => props.color || '#7c8986'};
+  color: ${(props) => props.color || "#7c8986"};
   font-weight: 700;
   text-align: right;
   margin: 30px 0;
   position: absolute;
   right: 50px;
-  top: ${(props) => props.top || '360px'};
+  top: ${(props) => props.top || "360px"};
 `;
 
 //!SubTitle
 export const SubtitleContainer = styled.div`
   color: #7c8986;
   position: absolute;
-  top: ${(props) => props.top || '20px'};
-  left: ${(props) => props.left || '49px'};
+  top: ${(props) => props.top || "20px"};
+  left: ${(props) => props.left || "49px"};
 `;
 
 //!Content
 //s!!!
 export const ContentsContainer = styled.div`
-  height: ${(props) => props.height || '300px'};
+  height: ${(props) => props.height || "300px"};
   color: #97bfb4;
   font-weight: 500;
   display: flex;
@@ -73,7 +72,7 @@ export const ContentsContainer = styled.div`
   justify-content: flex-start;
   overflow: auto;
   position: absolute;
-  top: ${(props) => props.top || '50px'};
+  top: ${(props) => props.top || "50px"};
 `;
 
 export const ContantWrap = styled.div`
@@ -125,7 +124,7 @@ export const MoneyContainer = styled.div`
 
 export const CashCard = styled.div`
   box-sizing: border-box;
-  background-color: ${(props) => props.backgroundColor || 'blue'};
+  background-color: ${(props) => props.backgroundColor || "blue"};
   border-radius: 10px;
   text-align: center;
   height: 16px;
@@ -169,7 +168,9 @@ export const Item = ({ item }) => {
 };
 
 export const Money = ({ money }) => {
-  return <MoneyContainer>{`${money.toLocaleString('ko-KR')} 원`}</MoneyContainer>;
+  return (
+    <MoneyContainer>{`${money.toLocaleString("ko-KR")} 원`}</MoneyContainer>
+  );
 };
 
 export const Content = (props) => {
@@ -187,18 +188,28 @@ export const Content = (props) => {
     <>
       <ContantWrap>
         {isCash === undefined ? (
-          <ContentContainerActive onClick={() => modifyStateHandler('income', item, money)}>
+          <ContentContainerActive
+            onClick={() => modifyStateHandler("income", item, money)}
+          >
             <Item item={item} />
             <Money money={money} />
           </ContentContainerActive>
         ) : isCash ? (
-          <ContentContainerActive onClick={() => modifyStateHandler('outcome', item, money, card, isCash)}>
+          <ContentContainerActive
+            onClick={() =>
+              modifyStateHandler("outcome", item, money, card, isCash)
+            }
+          >
             <CashCard backgroundColor={`green`}>현금</CashCard>
             <Item item={item} />
             <Money money={money} />
           </ContentContainerActive>
         ) : (
-          <ContentContainerActive onClick={() => modifyStateHandler('outcome', item, money, card, isCash)}>
+          <ContentContainerActive
+            onClick={() =>
+              modifyStateHandler("outcome", item, money, card, isCash)
+            }
+          >
             <CashCard backgroundColor={`blue`}>{card.slice(0, 2)}</CashCard>
             <Item item={item} />
             <Money money={money} />
@@ -216,7 +227,11 @@ export const SubTitle = ({ title, top }) => {
 };
 
 export const TotalMoney = ({ totalMoney, top, color }) => {
-  return <TotalMoneyContainer top={top} color={color}>{`${totalMoney.toLocaleString('ko-KR')} 원`}</TotalMoneyContainer>;
+  return (
+    <TotalMoneyContainer top={top} color={color}>{`${totalMoney.toLocaleString(
+      "ko-KR"
+    )} 원`}</TotalMoneyContainer>
+  );
 };
 
 const OutComeList = ({ year, month, outComes }) => {
@@ -310,15 +325,29 @@ const View = (props) => {
     <>
       <ViewContainer>
         <ButtonContainer>
-          <SmallButton text={`수입`} width="80px" onClick={() => mainStateHandler('income')} />
-          <SmallButton text={`지출`} width="80px" onClick={() => mainStateHandler('outcome')} />
+          <SmallButton
+            text={`수입`}
+            width="80px"
+            onClick={() => mainStateHandler("income")}
+          />
+          <SmallButton
+            text={`지출`}
+            width="80px"
+            onClick={() => mainStateHandler("outcome")}
+          />
         </ButtonContainer>
-        {mainState === 'income' ? ( //
+        {mainState === "income" ? ( //
           <InComeList year={year} month={month} inComes={inComes} />
-        ) : mainState === 'outcome' ? (
+        ) : mainState === "outcome" ? (
           <OutComeList year={year} month={month} outComes={outComes} />
-        ) : mainState === 'detail' ? (
-          <DetailList year={year} month={month} date={date} detail={detail} modifyStateHandler={modifyStateHandler} />
+        ) : mainState === "detail" ? (
+          <DetailList
+            year={year}
+            month={month}
+            date={date}
+            detail={detail}
+            modifyStateHandler={modifyStateHandler}
+          />
         ) : null}
       </ViewContainer>
     </>
