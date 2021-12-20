@@ -240,7 +240,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   //! 이벤트 발생
 
   const token =
-    'accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5ZWNoYW5AZ21haWwuY29tIiwibmlja25hbWUiOiLsmIjssKwiLCJjcmVhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjIyOjQ0LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjIyOjQ0LjAwMFoiLCJpYXQiOjE2NDAwMDQzMzksImV4cCI6MTY0MDE3NzEzOX0.YGrAFFmW3QpCSu3GKzFazrP_1aYrYwwA8y0PdakAwds; Path = /; HttpOnly; SameSite=None';
+    'accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5ZWNoYW5AZ21haWwuY29tIiwibmlja25hbWUiOiLsmIjssKwiLCJjcmVhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjIyOjQ0LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjIyOjQ0LjAwMFoiLCJpYXQiOjE2NDAwMTA4OTIsImV4cCI6MTY0MDE4MzY5Mn0.uqKjEKAnCHsJSVkkhEe4x5bIoSMuHfKUrIIsm_rGZT0; Path=/; HttpOnly; SameSite=None';
 
   // 입력 클릭(in,out) transaction 업데이트 후 받아오기
   const userCardId = cardsId.findIndex((el) => el.name === card) + 1 || null;
@@ -268,7 +268,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
         {
           headers: {
             'Content-Type': 'application/json', //
-            Cookie: token,
+            authrization: token,
           },
           // withCredentials: true,
         }
