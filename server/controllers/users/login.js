@@ -36,8 +36,22 @@ module.exports = async (req, res) => {
       delete userInfo.dataValues.password
       const accessToken = generateAccessToken(userInfo.dataValues)
       sendAccessToken(res, accessToken)
-      return res.status(200).json({ "userInfo": userInfo, "cards": userCardInfos, "transaction": transactionInfos })
 
+      const modal = await userCardInfos.forEach(userCard => {
+        const isCut = userCard.dataValues.isCut;
+        const remainValue = userCard.dataValues.remainValue;
+        const repaymentDay = userCard.dataValues.repaymentDay;
+        const date = new Date().getDate();
+        if(isCut && remainValue === 0 && repaymentDay === date) {
+          return userCard
+        }
+      })
+      console.log(modal)
+      if(!modal) {
+        return res.status(200).json({ "userInfo": userInfo, "cards": userCardInfos, "transaction": transactionInfos })
+      } else {
+        return res.status(200).json({ "userInfo": userInfo, "cards": userCardInfos, "transaction": transactionInfos, "modal": modal })
+      }
     }
   }
 }
