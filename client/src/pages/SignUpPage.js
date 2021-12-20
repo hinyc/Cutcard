@@ -163,7 +163,7 @@ function SignUpPage({ cardsList }) {
       </FlexContainer>
       <Select
         label="카드 상환일"
-        text="카드 상환일을 선택해주세요"
+        text="카드 상환일을 선택해주세요 (1개 선택 가능)"
         options={["1일", "5일", "10일", "15일", "20일", "25일"]}
         onChange={onRepaymentDaySelect}
         margin="0"
