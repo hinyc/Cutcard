@@ -1,13 +1,13 @@
-import { useState } from "react";
-import styled from "styled-components";
-import Calendar from "./Calendar";
-import Input from "../Input";
-import { Select } from "../Select";
-import View from "./View";
-import Submit from "./Submit";
+import { useState } from 'react';
+import styled from 'styled-components';
+import Calendar from './Calendar';
+import Input from '../Input';
+import { Select } from '../Select';
+import View from './View';
+import Submit from './Submit';
 
 // dumydata
-import { newdumy } from "../../dummyData";
+import { newdumy } from '../../dummyData';
 
 export const MainContainer = styled.div`
   width: 1130px;
@@ -51,16 +51,14 @@ export const Amount = styled.div`
 
 const Main = ({ isLogin, cardsList }) => {
   const [leftMoney, setLeftMoney] = useState(1000000);
-  const [mainState, setMainState] = useState("detail");
-  const [modifyState, setModifyState] = useState("outCome");
+  const [mainState, setMainState] = useState('detail');
+  const [modifyState, setModifyState] = useState('outCome');
   const [transaction, setResData] = useState(newdumy.transaction);
   const [cards, setCards] = useState(newdumy.cards);
-  const [cardIds, setCardIds] = useState([
-    0,
-    "신한카드",
-    "농협카드",
-    "국민카드",
-  ]);
+  // const [cardIds, setCardIds] = useState([0, '신한카드', '농협카드', '국민카드']);
+  const cardIds = cardsList.map((el) => el.name);
+  cardIds.unshift(0);
+  // console.log(cardIds[1]);
   // Calendar
   const [pickDate, setPickDate] = useState(new Date());
   // const [targetDate, setTargetDate] = useState(pickDate.getDate());
@@ -70,10 +68,10 @@ const Main = ({ isLogin, cardsList }) => {
   const getDate = `${targetYear}-${targetMonth}-${targetDate}`;
 
   //Submit
-  const [category, setCategory] = useState("");
-  const [price, setPrice] = useState("");
-  const [card, setCard] = useState("");
-  const [cash, setCash] = useState("");
+  const [category, setCategory] = useState('');
+  const [price, setPrice] = useState('');
+  const [card, setCard] = useState('');
+  const [cash, setCash] = useState('');
 
   const categoryList = {
     inCome: {
@@ -83,13 +81,13 @@ const Main = ({ isLogin, cardsList }) => {
     },
     outCome: {
       식비: 0,
-      "주거/통신": 0,
+      '주거/통신': 0,
       생활용품: 0,
-      "의복/미용": 0,
-      "건강/문화": 0,
-      "교육/육아": 0,
-      "교통/차량": 0,
-      "공과금/보험": 0,
+      '의복/미용': 0,
+      '건강/문화': 0,
+      '교육/육아': 0,
+      '교통/차량': 0,
+      '공과금/보험': 0,
       기타: 0,
     },
   };
@@ -128,21 +126,21 @@ const Main = ({ isLogin, cardsList }) => {
   };
 
   const inputResetHandler = (category, price, card, cash) => {
-    console.log("para", cash);
+    console.log('para', cash);
     // if (cash) {
     //   isCash = '현금';
     // } else {
     //   isCash = '카드';
     // }
-    setCategory(category || "");
-    setPrice(price || "");
-    setCard(card || "");
+    setCategory(category || '');
+    setPrice(price || '');
+    setCard(card || '');
     if (cash === undefined) {
-      setCash("");
+      setCash('');
     } else if (cash) {
-      setCash("현금");
+      setCash('현금');
     } else {
-      setCash("카드");
+      setCash('카드');
     }
   };
 
@@ -239,13 +237,13 @@ const Main = ({ isLogin, cardsList }) => {
 
   console.log(`Render! mainState:"${mainState}" date:${getDate}`);
 
-  console.log("Year:", targetYear);
-  console.log("Mont:", targetMonth);
-  console.log("Day:", targetDate);
-  console.log("카테고리:", category);
-  console.log("현금/카드:", cash);
-  console.log("카드:", card);
-  console.log("price:", price);
+  // console.log('Year:', targetYear);
+  // console.log('Mont:', targetMonth);
+  // console.log('Day:', targetDate);
+  // console.log('카테고리:', category);
+  // console.log('현금/카드:', cash);
+  // console.log('카드:', card);
+  // console.log('price:', price);
 
   // console.log(inOutDataList.inComes);
   // console.log(inOutDataList.outComes);
@@ -281,7 +279,7 @@ const Main = ({ isLogin, cardsList }) => {
         <CenterContainer>
           <LeftMoney>
             <SubTitle>잔여 금액</SubTitle>
-            <Amount>{`${leftMoney.toLocaleString("ko-KR")} 원`}</Amount>
+            <Amount>{`${leftMoney.toLocaleString('ko-KR')} 원`}</Amount>
           </LeftMoney>
           <Calendar //
             dateHandler={dateHandler}
