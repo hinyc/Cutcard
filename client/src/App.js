@@ -31,7 +31,7 @@ function App() {
         id: el.id, //
         userid: el.userId,
         cardId: el.cardId,
-        cardNmae: cards[el.cardId - 1].name,
+        cardName: cards[el.cardId - 1].name,
         isCut: el.isCut,
         remainValue: el.remainValue,
         repaymentDay: el.repaymentDay,
@@ -45,7 +45,7 @@ function App() {
       <Navbar isLogin={isLogin} />
       <Routes>
         <Route path="/" element={<Navigate to="/main" />} />
-        <Route path="/main" element={<Main isLogin={isLogin} userCards={userCards} />} />
+        <Route path="/main" element={<Main isLogin={isLogin} userCards={userCards} cardsId={cards} />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/mypage" element={<MyPage cardsList={cards} />} />
