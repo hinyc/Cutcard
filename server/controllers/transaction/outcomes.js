@@ -1,5 +1,8 @@
-const { transactions, userCards } = require('./../../models');
-const { isAuthorized } = require('./../tokenFunctions');
+
+const { transactions, userCards } = require("./../../models");
+const { isAuthorized } = require("./../tokenFunctions");
+
+
 
 module.exports = async (req, res) => {
   // accessToken 확인
@@ -7,13 +10,26 @@ module.exports = async (req, res) => {
 
   const accessTokenData = isAuthorized(req, res);
   if (!accessTokenData) {
-    console.log('토큰없다!!');
-    return res.status(401).json({ data: null, message: 'invalid access token!' });
+
+    return res
+      .status(401)
+      .json({ data: null, message: "invalid access token!" });
   } else {
     const { id } = accessTokenData;
-    const { year, month, day, category, outcomeIsCash, userCardId, price, isIncome } = req.body;
+    const {
+      year,
+      month,
+      day,
+      category,
+      outcomeIsCash,
+      userCardId,
+      price,
+      isIncome,
+    } = req.body;
     let userCard;
-    if (!outcomeIsCash && userCardId !== undefined) {
+    if (!outcomeIsCash) {
+
+   
       userCard = await userCards.findOne({
         where: {
           cardId: userCardId,
