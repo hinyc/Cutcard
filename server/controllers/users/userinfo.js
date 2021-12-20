@@ -28,11 +28,9 @@ module.exports  = {
     }
   },
   patch: async (req, res) => {
-    const { nickname, password, cards } = req.body
+    const { nickname, password, cards, repaymentday } = req.body
     const accessToken = isAuthorized(req, res)
-    // 유저가 현재 보유한 카드 id 목록
-    const remainingCards = cards.map(data => data.id)
-
+    
     const userInfo = await users.findOne({
       where: {
         email: accessToken.email
@@ -44,12 +42,27 @@ module.exports  = {
         userId: userInfo.id
       }
     })
+
+    // 유저가 현재 보유한 카드 id와 제거 여부
+    const remainingCards = cards.map(data => [data.id, data.isCut]);
+    // 유저가 현재 보유한 카드 id
+    const remainingCardId = cards.map(data => data.id)
+    // 회원가입시 기록했던 유저 카드 목록에서 id와 제거 여부 추출
+    const userCardList = userCardInfos.map(data => [data.dataValues.cardId, data.dataValues.isCut])
     // 회원가입시 기록했던 유저 카드 목록에서 id만 추출
-    const userCardList = userCardInfos.map(data => data.dataValues.cardId)
-    // 회원가입시 기록했던 유저 카드 목록에서 보유한 카드 목록과 겹치는 부분을 filter = 남은 id는 지울 목록
-    const deleteCardList = userCardList.filter(data => !remainingCards.includes(data))
-    // 보유한 카드 목록에서 회원가입시 기록했던 유저 카드 목록과 겹치는 부분을 filter = 남은 id는 추가할 목록
-    const addedCardList = remainingCards.filter(data => !userCardList.includes(data))
+    const userCardId = userCardInfos.map(data => data.cardId)
+    // 회원가입시 기록했던 유저 카드 목록과 보유한 카드 목록에 중복으로 존재하는 카드의 정보
+    const notChangingCard = userCardList.filter(data => remainingCardId.includes(data[0]))
+    // 회원가입시 기록했던 유저 카드 목록에서 보유한 카드 목록과 겹치는 부분을 filter = 할당되는 배열은 제거할 카드의 정보
+    const deleteCardList = userCardList.filter(data => !remainingCardId.includes(data[0]))
+    // 보유한 카드 목록에서 회원가입시 기록했던 유저 카드 목록과 겹치는 부분을 filter = 할당되는 배열은 추가할 카드의 정보
+    const addedCardList = remainingCards.filter(data => !userCardId.includes(data[0]))
+
+    console.log(remainingCardId)
+    console.log(userCardId)
+    console.log(notChangingCard)
+    console.log(deleteCardList)
+    console.log(addedCardList)
 
     if (!userInfo) {
       return res.status(401).json({ "message": "invalid access token!" })
@@ -78,17 +91,31 @@ module.exports  = {
           await userCards.destroy({
             where: {
               userId: userInfo.id,
-              cardId: data
+              cardId: data[0]
             }
           })
         })
       }
-      // 추가할 카드 목록 삭제
+      // 추가할 카드 목록 추가
       if (addedCardList.length !== 0) {
         addedCardList.forEach(async(data) => {
           await userCards.create({
             userId: userInfo.id,
-            cardId: data,
+            cardId: data[0],
+            isCut: data[1],
+            repaymentday: repaymentday
+          })
+        })
+      }
+      // 아직 가지고 있는 카드의 제거 여부 update
+      if (notChangingCard.length !== 0) {
+        notChangingCard.forEach(async(data) => {
+          await userCards.update({ isCut: data[1] }, {
+            where: {
+              id: userInfo.id,
+              cardId: data[0],
+              repaymentday: repaymentday
+            }
           })
         })
       }

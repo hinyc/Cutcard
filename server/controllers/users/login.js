@@ -4,7 +4,7 @@ const { transactions } = require('../../models')
 const { generateAccessToken, sendAccessToken } = require('../tokenFunctions')
 
 module.exports = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, year, month } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({ "message": "bad Request!" })
@@ -27,7 +27,9 @@ module.exports = async (req, res) => {
 
       const transactionInfos = await transactions.findAll({
         where: {
-          userId: userInfo.id
+          userId: userInfo.id,
+          year: year,
+          month: month
         }
       })
 
