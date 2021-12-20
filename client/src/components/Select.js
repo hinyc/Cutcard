@@ -43,7 +43,7 @@ export function Select(props) {
       <SelectStyle width={width} hidden={height} onChange={onChange} value={value} margin={margin}>
         <Option>{text}</Option>
         {options.map((option, index) => (
-          <Option key={index} value={index + 1}>
+          <Option key={index} value={option}>
             {option}
           </Option>
         ))}

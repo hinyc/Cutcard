@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { is } from 'sequelize/dist/lib/operators';
 import styled from 'styled-components';
 import { SmallButton } from '../Button';
 
@@ -80,6 +81,24 @@ export const ContentContainer = styled.div`
   width: 300px;
   position: relative;
 `;
+export const ContentContainerActive = styled.div`
+  margin: 5px 0;
+  height: 20px;
+  width: 300px;
+  position: relative;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 70%;
+    /* text-decoration: none; */
+  }
+
+  &:active {
+    cursor: pointer;
+    opacity: 95%;
+    /* text-decoration: none; */
+  }
+`;
 
 export const ItemContainer = styled.div`
   text-align: left;
@@ -94,6 +113,47 @@ export const MoneyContainer = styled.div`
   position: absolute;
 `;
 
+export const CashCard = styled.div`
+  box-sizing: border-box;
+  background-color: ${(props) => props.backgroundColor || 'blue'};
+  border-radius: 10px;
+  text-align: center;
+  height: 16px;
+  line-height: 16px;
+  font-size: 13px;
+  width: 40px;
+  left: 0px;
+  top: 1px;
+  position: absolute;
+`;
+
+export const DeleteBox = styled.div`
+  box-sizing: border-box;
+  background-color: #bfc5c4;
+  color: #7c8986;
+  border-radius: 10px;
+  text-align: center;
+  height: 16px;
+  line-height: 16px;
+  font-size: 16px;
+  width: 25px;
+  right: 15px;
+  top: 1px;
+  position: absolute;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 80%;
+    /* text-decoration: none; */
+  }
+
+  &:active {
+    cursor: pointer;
+    opacity: 95%;
+    /* text-decoration: none; */
+  }
+`;
+
 export const Item = ({ item }) => {
   return <ItemContainer>{item}</ItemContainer>;
 };
@@ -106,19 +166,37 @@ export const Content = (props) => {
   const {
     item, //
     money,
-    mainState,
     isCash,
     card,
+    deleteBox,
+    modifyStateHandler,
   } = props;
-  console.log(props);
+  //category, price, card, cash
   return (
     <>
-      {mainState === 'detatil' ? ( //
-        <ContentContainer>
-          {isCash ? <span>현금</span> : <span>카드</span>}
-          <Item item={item} />
-          <Money money={money} />
-        </ContentContainer>
+      {deleteBox ? ( //
+        isCash === undefined ? (
+          <ContentContainerActive onClick={() => modifyStateHandler('income', item, money, card, isCash)}>
+            <Item item={item} />
+            <Money money={money} />
+            <DeleteBox>×</DeleteBox>
+          </ContentContainerActive>
+        ) : isCash ? ( //
+          <ContentContainerActive onClick={() => modifyStateHandler('outCome', item, money, card, isCash)}>
+            <CashCard backgroundColor={`green`}>현금</CashCard>
+            <Item item={item} />
+            <Money money={money} />
+            <DeleteBox>×</DeleteBox>
+          </ContentContainerActive>
+        ) : (
+          <ContentContainerActive onClick={() => modifyStateHandler('outCome', item, money, card, isCash)}>
+            <CashCard>{card}</CashCard>
+
+            <Item item={item} />
+            <Money money={money} />
+            <DeleteBox>×</DeleteBox>
+          </ContentContainerActive>
+        )
       ) : (
         <ContentContainer>
           <Item item={item} />
@@ -170,7 +248,7 @@ const InComeList = ({ year, month, inComes }) => {
 };
 
 const DetailList = (props) => {
-  const { year, month, date, detail } = props;
+  const { year, month, date, detail, modifyStateHandler } = props;
   const { inComes, inComesTotal, outComes, outComesTotal } = detail;
 
   return (
@@ -180,7 +258,7 @@ const DetailList = (props) => {
         <SubTitle title={`${year}.${month}.${date} 수입 내역`} />
         <ContentsContainer height={`75px`}>
           {inComes.map((el, index) => (
-            <Content key={index} item={el.category} money={el.price} />
+            <Content key={index} item={el.category} money={el.price} deleteBox={true} modifyStateHandler={modifyStateHandler} />
           ))}
         </ContentsContainer>
         <TotalMoney totalMoney={inComesTotal} top={`100px`} color={`skyblue`} />
@@ -188,7 +266,7 @@ const DetailList = (props) => {
         <SubTitle title={`${year}.${month}.${date} 지출 내역`} top={`200px`} />
         <ContentsContainer top={`230px`} height={`150px`}>
           {outComes.map((el, index) => (
-            <Content key={index} item={el.category} money={el.price} isCash={el.isCash} card={el.card} />
+            <Content key={index} item={el.category} money={el.price} isCash={el.isCash} card={el.card} deleteBox={true} modifyStateHandler={modifyStateHandler} />
           ))}
         </ContentsContainer>
         <TotalMoney totalMoney={outComesTotal} color={`pink`} />
@@ -205,8 +283,9 @@ const View = (props) => {
     mainStateHandler,
     mainState,
     data,
+    transaction,
+    modifyStateHandler,
   } = props;
-
   const { inComes, outComes, detail } = data;
   return (
     <>
@@ -220,7 +299,7 @@ const View = (props) => {
         ) : mainState === 'outcome' ? (
           <OutComeList year={year} month={month} outComes={outComes} />
         ) : mainState === 'detail' ? (
-          <DetailList year={year} month={month} date={date} detail={detail} />
+          <DetailList year={year} month={month} date={date} detail={detail} modifyStateHandler={modifyStateHandler} />
         ) : null}
       </ViewContainer>
     </>
