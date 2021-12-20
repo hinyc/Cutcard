@@ -8,6 +8,17 @@ export const Container = styled.div`
   text-align: center;
 `;
 
+export const FlexContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 350px;
+  margin: auto;
+`;
+
 const TitleStyle = styled.div`
   color: #7c8986;
   font-size: 20px;

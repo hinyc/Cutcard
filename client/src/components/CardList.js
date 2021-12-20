@@ -8,6 +8,8 @@ const CardStyle = styled.div`
   border: 1px solid #97bfb4;
   border-radius: 5px;
   background-color: ${(props) => props.background || "white"};
+  margin: 10px 5px 0 5px;
+  cursor: default;
 `;
 
 const Text = styled.span`
@@ -26,30 +28,15 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const AddBtn = styled.button`
-  width: 100px;
-  height: 32px;
-  border-radius: 5px;
-  outline: 0;
-  border: 0;
-  background-color: #97bfb4;
-  color: white;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-`;
-
-export function CardList({ text }) {
+function CardList({ text, onClick }) {
   return (
     <CardStyle>
       <Text>{text}</Text>
-      <Button>
+      <Button onClick={onClick}>
         <Cancel />
       </Button>
     </CardStyle>
   );
 }
 
-export function AddCard() {
-  return <AddBtn>추가</AddBtn>;
-}
+export default CardList;

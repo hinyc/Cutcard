@@ -2,13 +2,12 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Calendar from './Calendar';
 import Input from '../Input';
-import Select from '../Select';
+import { Select } from '../Select';
 import View from './View';
 import Submit from './Submit';
 
 // dumydata
-import dumyData, { newdumy } from '../../dumyData';
-import { contained } from 'sequelize/dist/lib/operators';
+import { newdumy } from '../../dummyData';
 
 export const MainContainer = styled.div`
   width: 1130px;
@@ -50,11 +49,11 @@ export const Amount = styled.div`
   font-size: 26px; ;
 `;
 
-const Main = ({ isLogin }) => {
+const Main = ({ isLogin, cardsList }) => {
   const [leftMoney, setLeftMoney] = useState(1000000);
   const [mainState, setMainState] = useState('detail');
   const [transaction, setResData] = useState(newdumy.transaction);
-  const [cards, setCards] = useState(newdumy.cards);
+  const [cards, setCards] = useState(cardsList);
   const [cardIds, setCardIds] = useState([0, '신한카드', '농협카드', '국민카드']);
   // Calendar
   const [pickDate, setPickDate] = useState(new Date());
@@ -136,8 +135,16 @@ const Main = ({ isLogin }) => {
 
   //target month 기준, 객체 복사
   const inOutDataList = {
-    inComes: { ...categoryList.inCome, categorys: Object.keys(categoryList.inCome), totalPrice: 0 },
-    outComes: { ...categoryList.outCome, categorys: Object.keys(categoryList.outCome), totalPrice: 0 },
+    inComes: {
+      ...categoryList.inCome,
+      categorys: Object.keys(categoryList.inCome),
+      totalPrice: 0,
+    },
+    outComes: {
+      ...categoryList.outCome,
+      categorys: Object.keys(categoryList.outCome),
+      totalPrice: 0,
+    },
     detail: {
       inComes: [],
       inComesTotal: 0,
@@ -246,7 +253,6 @@ const Main = ({ isLogin }) => {
             <Amount>{`${leftMoney.toLocaleString('ko-KR')} 원`}</Amount>
           </LeftMoney>
           <Calendar //
-            data={dumyData}
             dateHandler={dateHandler}
             targetYear={targetYear}
             targetMonth={targetMonth}

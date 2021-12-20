@@ -5,24 +5,12 @@ const SelectStyle = styled.select`
   box-sizing: border-box;
   height: ${(props) => props.height || '40px'};
   width: ${(props) => props.width || '335px'};
-  padding-left: 13px;
+  padding: 0 13px;
   font-size: 16px;
   border: 1px solid #bfc5c4;
   border-radius: 5px;
   color: #7c8986;
-
-  ::-webkit-input-placeholder {
-    color: #bfc5c4;
-  } /* Chrome/Opera/Safari */
-  ::-moz-placeholder {
-    color: #bfc5c4;
-  } /* Firefox 19+ */
-  :-ms-input-placeholder {
-    color: #bfc5c4;
-  } /* IE 10+ */
-  :-moz-placeholder {
-    color: #bfc5c4;
-  } /* Firefox 18- */
+  margin: ${(props) => props.margin || '0 0 27px 0'};
 
   &:focus {
     outline: 1px solid #7c8986;
@@ -30,33 +18,32 @@ const SelectStyle = styled.select`
 `;
 
 const LabelStyle = styled.div`
-  padding: 0.5rem;
-  font-size: 1rem;
-  font-weight: 600;
+  color: #7c8986;
+  padding: 27px 250px 9px 0;
+  font-size: 16px;
+  font-weight: 700;
 `;
 
-const Option = styled.option`
-  color: #bfc5c4;
-`;
+const Option = styled.option``;
 
-function Select(props) {
+export function Select(props) {
   const {
     label, //
     text,
-    readOnly,
     options,
     width,
     height,
     onChange,
     value,
+    margin,
   } = props;
   return (
     <>
       <LabelStyle>{label}</LabelStyle>
-      <SelectStyle width={width} hidden={height} onChange={onChange} value={value}>
+      <SelectStyle width={width} hidden={height} onChange={onChange} value={value} margin={margin}>
         <Option>{text}</Option>
         {options.map((option, index) => (
-          <Option key={index} value={option}>
+          <Option key={index} value={index + 1}>
             {option}
           </Option>
         ))}
@@ -65,4 +52,17 @@ function Select(props) {
   );
 }
 
-export default Select;
+export function CardSelect(props) {
+  const { label, text, width, height, onChange, value, margin } = props;
+  return (
+    <>
+      <LabelStyle>{label}</LabelStyle>
+      <SelectStyle width={width} hidden={height} onChange={onChange} value={value} margin={margin}>
+        <Option>{text}</Option>
+        <Option value="value" defaultValue>
+          {text}
+        </Option>
+      </SelectStyle>
+    </>
+  );
+}
