@@ -7,8 +7,7 @@ import { CardSelect, Select } from "../components/Select";
 import CardList from "../components/CardList";
 import { FlexContainer } from "../components/Common";
 import styled from "styled-components";
-
-import { dummy } from "../dummyData";
+import axios from "axios";
 
 const Text = styled.div`
   font-size: 14px;
@@ -17,6 +16,8 @@ const Text = styled.div`
 `;
 
 function MyPage({ cardsList, userCards }) {
+  const [nickname, setNickname] = useState("");
+
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
 
@@ -26,6 +27,10 @@ function MyPage({ cardsList, userCards }) {
   const [cards, setCards] = useState(notSelectedCards);
   const [userCardList, setUserCardList] = useState(userCards);
   const [selected, setSelected] = useState("");
+
+  const onNicknameChange = (e) => {
+    setNickname(e.target.value);
+  };
 
   const onPasswordChange = (e) => {
     setPassword(e.target.value);
@@ -79,9 +84,12 @@ function MyPage({ cardsList, userCards }) {
 
   const onWantCutCardSelect = (obj) => {
     obj.isCut = !obj.isCut;
-    console.log(obj);
-    console.log(userCardList);
-    return setUserCardList(userCardList);
+    setUserCardList(userCardList);
+  };
+
+  // TODO: 수정 버튼
+  const onUpdateClick = () => {
+    axios.patch("http://localhost:4000/users/userinfo");
   };
 
   return (
@@ -90,8 +98,9 @@ function MyPage({ cardsList, userCards }) {
       <Input
         label="닉네임"
         type="text"
-        placeholder="닉네임을 입력해주세요"
+        placeholder="닉네임을 입력해주세요" //? 플레이스 홀더에 정보가 들어가있다면?
         margin="auto"
+        onChange={onNicknameChange}
       />
       <Input label="이메일" type="text" margin="auto" readOnly={true} />
       {/* Password */}
@@ -153,7 +162,11 @@ function MyPage({ cardsList, userCards }) {
       />
       {/* Button */}
       <Link to="/login">
-        <BigButton text="수정하기" margin="28px auto 12px auto" />
+        <BigButton
+          text="수정하기"
+          margin="28px auto 12px auto"
+          onClick={onUpdateClick}
+        />
       </Link>
       <Link to="/">
         <BigButton

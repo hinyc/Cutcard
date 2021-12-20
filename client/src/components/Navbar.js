@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
+import axios from "axios";
+
 const Header = styled.header`
   box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.07);
   display: flex;
@@ -51,12 +53,27 @@ const Menu = styled.button`
 function Navbar({ isLogin }) {
   const [login, setIsLogin] = useState(isLogin);
 
-  const LoginClick = () => {
-    setIsLogin(true);
+  // const LoginClick = () => {
+  //   setIsLogin(true);
+  // };
+
+  // const LogoutClick = () => {
+  //   setIsLogin(false);
+  // };
+
+  const onLogoutClick = () => {
+    axios
+      .get("http://localhost:4000/users/logout")
+      .then((res) => console.log(res));
   };
 
-  const LogoutClick = () => {
-    setIsLogin(false);
+  // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJodXVmeXVAbmF2ZXIuY29tIiwibmlja25hbWUiOiLjhYfslYjrhZXjhYciLCJjcmVhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjU1OjMzLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjU1OjMzLjAwMFoiLCJpYXQiOjE2NDAwMDg4ODEsImV4cCI6MTY0MDE4MTY4MX0.or_4YTtUy3EBOkSemOcf5KoILstUObLmASybHVuyRTc;
+  const onMyPageClick = () => {
+    axios
+      .get("http://localhost:4000/users/userinfo", {
+        withCredentials: true,
+      })
+      .then((res) => console.log(res));
   };
 
   return (
@@ -72,13 +89,15 @@ function Navbar({ isLogin }) {
       {login ? (
         <>
           <Link to="/mypage">
-            <Menu marginRight="20px">마이페이지</Menu>
+            <Menu marginRight="20px" onClick={onMyPageClick}>
+              마이페이지
+            </Menu>
           </Link>
-          <Menu onClick={LogoutClick}>로그아웃</Menu>
+          <Menu onClick={onLogoutClick}>로그아웃</Menu>
         </>
       ) : (
         <Link to="/login">
-          <Menu onClick={LoginClick}>회원가입 / 로그인</Menu>
+          <Menu>회원가입 / 로그인</Menu>
         </Link>
       )}
     </Header>
