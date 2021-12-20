@@ -14,7 +14,7 @@ function App() {
   //테스트중 초기상태 임의지정
   const [isLogin, setIsLogin] = useState(true);
 
-  const cardsList = [
+  const cards = [
     { id: 1, name: "국민카드" },
     { id: 2, name: "신한카드" },
     { id: 3, name: "하나카드" },
@@ -30,11 +30,14 @@ function App() {
       <Navbar isLogin={isLogin} />
       <Routes>
         <Route path="/" element={<Navigate to="/main" />} />
-        <Route path="/main" element={<Main isLogin={isLogin} />} />
+        <Route
+          path="/main"
+          element={<Main isLogin={isLogin} cardsList={cards} />}
+        />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/mypage" element={<MyPage cardsList={cards} />} />
+        <Route path="/signup" element={<SignUpPage cardsList={cards} />} />
       </Routes>
       <Footer />
     </>

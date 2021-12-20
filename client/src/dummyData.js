@@ -35,15 +35,11 @@ export const dummy = {
       money: 53000,
     },
   ],
-  cards: [
-    { id: 1, name: "국민카드" },
-    { id: 2, name: "신한카드" },
-    { id: 3, name: "하나카드" },
-    { id: 4, name: "롯데카드" },
-    { id: 5, name: "비씨카드" },
-    { id: 6, name: "농협카드" },
-    { id: 7, name: "삼성카드" },
-    { id: 8, name: "현대카드" },
+  userCards: [
+    { id: 1, userId: 1, cardId: 2, isCut: false, repaymentDay: 10 },
+    { id: 2, userId: 1, cardId: 4, isCut: false, repaymentDay: 10 },
+    { id: 3, userId: 1, cardId: 1, isCut: false, repaymentDay: 10 },
+    { id: 4, userId: 1, cardId: 8, isCut: false, repaymentDay: 10 },
   ],
 };
 

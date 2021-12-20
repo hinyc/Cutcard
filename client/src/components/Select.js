@@ -19,7 +19,7 @@ const SelectStyle = styled.select`
 
 const LabelStyle = styled.div`
   color: #7c8986;
-  padding: 27px 250px 9px 0;
+  padding: ${(props) => props.padding || "27px 250px 9px 0"};
   font-size: 16px;
   font-weight: 700;
 `;
@@ -27,6 +27,39 @@ const LabelStyle = styled.div`
 const Option = styled.option``;
 
 export function Select(props) {
+  const {
+    label, //
+    text,
+    options,
+    width,
+    height,
+    onChange,
+    value,
+    margin,
+    padding,
+  } = props;
+  return (
+    <>
+      <LabelStyle padding={padding}>{label}</LabelStyle>
+      <SelectStyle
+        width={width}
+        hidden={height}
+        onChange={onChange}
+        value={value}
+        margin={margin}
+      >
+        <Option>{text}</Option>
+        {options.map((option, index) => (
+          <Option key={option} value={index + 1}>
+            {option}
+          </Option>
+        ))}
+      </SelectStyle>
+    </>
+  );
+}
+
+export function CardSelect(props) {
   const {
     label, //
     text,
@@ -48,32 +81,11 @@ export function Select(props) {
         margin={margin}
       >
         <Option>{text}</Option>
-        {options.map((option, index) => (
-          <Option key={index} value={option}>
-            {option}
+        {options.map((option) => (
+          <Option key={option.id} value={option.name}>
+            {option.name}
           </Option>
         ))}
-      </SelectStyle>
-    </>
-  );
-}
-
-export function CardSelect(props) {
-  const { label, text, width, height, onChange, value, margin } = props;
-  return (
-    <>
-      <LabelStyle>{label}</LabelStyle>
-      <SelectStyle
-        width={width}
-        hidden={height}
-        onChange={onChange}
-        value={value}
-        margin={margin}
-      >
-        <Option>{text}</Option>
-        <Option value="value" defaultValue>
-          {text}
-        </Option>
       </SelectStyle>
     </>
   );
