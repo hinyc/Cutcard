@@ -88,6 +88,7 @@ const testOutComeSubmiter = (getDate, category, cash, card, price) => {
 const AddInCome = (props) => {
   const {
     getDate, //
+    inComeCategorys,
     category,
     categoryHandler,
     price,
@@ -103,7 +104,7 @@ const AddInCome = (props) => {
         <Select
           text="수입 카테고리"
           width={`200px`}
-          options={["월급", "보너스", "기타"]}
+          options={inComeCategorys}
           onChange={categoryHandler}
           value={category}
           margin={"0"}
@@ -131,6 +132,7 @@ const AddInCome = (props) => {
 const AddOutCome = (props) => {
   const {
     getDate, //
+    outComeCategorys,
     category,
     categoryHandler,
     cash,
@@ -142,9 +144,7 @@ const AddOutCome = (props) => {
     inputResetHandler,
     cards,
   } = props;
-  console.log(cards);
   const cardsList = cards.map((el) => el.name);
-  console.log(cardsList);
   return (
     <>
       <InputContainer>
@@ -154,7 +154,7 @@ const AddOutCome = (props) => {
         <Select
           text="지출 카테고리"
           width={`200px`}
-          options={["식비", "공과금", "기타"]}
+          options={outComeCategorys}
           onChange={categoryHandler}
           value={category}
           margin={"0"}
@@ -195,10 +195,11 @@ const AddOutCome = (props) => {
   );
 };
 
-const Submit = (props) => {
+const Modify = (props) => {
   const {
-    mainState, //
-    getDate,
+    getDate, //
+    inComeCategorys,
+    outComeCategorys,
     category,
     categoryHandler,
     cash,
@@ -209,7 +210,112 @@ const Submit = (props) => {
     priceHandler,
     inputResetHandler,
     cards,
+    modifyState,
   } = props;
+  const cardsList = cards.map((el) => el.name);
+  return (
+    <>
+      {modifyState === "income" ? (
+        //inCome 수정
+        <InputContainer>
+          <InputDate placeholder="날짜" width={`200px`}>
+            {getDate}
+          </InputDate>
+          <Select
+            text="수입 카테고리"
+            width={`200px`}
+            options={inComeCategorys}
+            onChange={categoryHandler}
+            value={category}
+            margin={"0"}
+          />
+          <Input
+            placeholder="금액을 입력해주세요"
+            width={`200px`}
+            onChange={priceHandler}
+            value={price}
+          />
+          <SmallButton //
+            text="수정"
+            width={`200px`}
+            margin={`18px 0 0 0 `}
+            onClick={() => {
+              testIncomeSubmiter(getDate, category, price);
+              inputResetHandler();
+            }}
+          />
+        </InputContainer>
+      ) : (
+        //outCome 수정
+        <InputContainer>
+          <InputDate placeholder="날짜" width={`200px`}>
+            {getDate}
+          </InputDate>
+          <Select
+            text="지출 카테고리"
+            width={`200px`}
+            options={outComeCategorys}
+            onChange={categoryHandler}
+            value={category}
+            margin={"0"}
+          />
+          <Select
+            text="현금, 카드"
+            width={`200px`}
+            onChange={cashHandler}
+            options={["현금", "카드"]}
+            value={cash}
+            margin={"0"}
+          />
+          <Select
+            text="카드를 선택하세요"
+            width={`200px`}
+            onChange={cardHandler}
+            options={cardsList}
+            value={card}
+            margin={"0"}
+          />
+          <Input
+            placeholder="금액을 입력해주세요"
+            width={`200px`}
+            onChange={priceHandler}
+            value={price}
+          />
+          <SmallButton //
+            text="수정"
+            margin={`18px 0 0 0 `}
+            width={`200px`}
+            onClick={() => {
+              testOutComeSubmiter(getDate, category, cash, card, price);
+              inputResetHandler();
+            }}
+          />
+        </InputContainer>
+      )}
+    </>
+  );
+};
+
+const Submit = (props) => {
+  const {
+    mainState, //
+    getDate,
+    categoryList,
+    category,
+    categoryHandler,
+    cash,
+    cashHandler,
+    card,
+    cardHandler,
+    price,
+    priceHandler,
+    inputResetHandler,
+    cards,
+    modifyState,
+  } = props;
+
+  const inComeCategorys = Object.keys(categoryList.inCome);
+  const outComeCategorys = Object.keys(categoryList.outCome);
 
   return (
     <>
@@ -217,15 +323,17 @@ const Submit = (props) => {
         {mainState === "income" ? ( //
           <AddInCome //
             getDate={getDate}
+            inComeCategorys={inComeCategorys}
             category={category}
             categoryHandler={categoryHandler}
             price={price}
             priceHandler={priceHandler}
             inputResetHandler={inputResetHandler}
           />
-        ) : mainState === "outcome" || mainState === "detail" ? (
+        ) : mainState === "outcome" ? (
           <AddOutCome //
             getDate={getDate}
+            outComeCategorys={outComeCategorys}
             category={category}
             categoryHandler={categoryHandler}
             cash={cash}
@@ -236,6 +344,23 @@ const Submit = (props) => {
             priceHandler={priceHandler}
             inputResetHandler={inputResetHandler}
             cards={cards}
+          />
+        ) : mainState === "detail" ? (
+          <Modify
+            getDate={getDate}
+            category={category}
+            inComeCategorys={inComeCategorys}
+            outComeCategorys={outComeCategorys}
+            categoryHandler={categoryHandler}
+            cash={cash}
+            cashHandler={cashHandler}
+            card={card}
+            cardHandler={cardHandler}
+            price={price}
+            priceHandler={priceHandler}
+            inputResetHandler={inputResetHandler}
+            cards={cards}
+            modifyState={modifyState}
           />
         ) : null}
       </SubmitContainer>

@@ -52,8 +52,9 @@ export const Amount = styled.div`
 const Main = ({ isLogin, cardsList }) => {
   const [leftMoney, setLeftMoney] = useState(1000000);
   const [mainState, setMainState] = useState("detail");
+  const [modifyState, setModifyState] = useState("outCome");
   const [transaction, setResData] = useState(newdumy.transaction);
-  const [cards, setCards] = useState(cardsList);
+  const [cards, setCards] = useState(newdumy.cards);
   const [cardIds, setCardIds] = useState([
     0,
     "신한카드",
@@ -82,22 +83,26 @@ const Main = ({ isLogin, cardsList }) => {
     },
     outCome: {
       식비: 0,
-      "공과금/보험": 0,
       "주거/통신": 0,
       생활용품: 0,
       "의복/미용": 0,
       "건강/문화": 0,
       "교육/육아": 0,
       "교통/차량": 0,
+      "공과금/보험": 0,
       기타: 0,
     },
   };
 
-  const mainStateHandler = (target) => {
-    setMainState(target);
-    inputResetHandler();
+  const mainStateHandler = (state, category, price, card, cash) => {
+    setMainState(state);
+    inputResetHandler(category, price, card, cash);
   };
 
+  const modifyStateHandler = (state, category, price, card, cash) => {
+    setModifyState(state);
+    inputResetHandler(category, price, card, cash);
+  };
   //Calendar
   const pickDateHandler = (year, month) => {
     setPickDate(new Date(year, month, 0));
@@ -122,11 +127,23 @@ const Main = ({ isLogin, cardsList }) => {
     setCash(e.target.value);
   };
 
-  const inputResetHandler = () => {
-    setCategory("");
-    setPrice("");
-    setCard("");
-    setCash("");
+  const inputResetHandler = (category, price, card, cash) => {
+    console.log("para", cash);
+    // if (cash) {
+    //   isCash = '현금';
+    // } else {
+    //   isCash = '카드';
+    // }
+    setCategory(category || "");
+    setPrice(price || "");
+    setCard(card || "");
+    if (cash === undefined) {
+      setCash("");
+    } else if (cash) {
+      setCash("현금");
+    } else {
+      setCash("카드");
+    }
   };
 
   //! mainpage
@@ -210,7 +227,7 @@ const Main = ({ isLogin, cardsList }) => {
             category: el.category,
             price: el.price,
             isCash: el.outcomeIsCash,
-            card: cardIds[el.userCardId],
+            card: cardIds[el.userCardId].slice(0, 2),
           },
         ];
         inOutDataList.detail.outComesTotal += el.price;
@@ -220,11 +237,15 @@ const Main = ({ isLogin, cardsList }) => {
 
   //! console tets 영역
 
-  // console.log(`Render! mainState:"${mainState}" date:${getDate}`);
-  // console.log(isLogin);
-  // console.log('transaction', transaction);
-  // console.log(Object.keys(categoryList.inCome));
-  // console.log(cards);
+  console.log(`Render! mainState:"${mainState}" date:${getDate}`);
+
+  console.log("Year:", targetYear);
+  console.log("Mont:", targetMonth);
+  console.log("Day:", targetDate);
+  console.log("카테고리:", category);
+  console.log("현금/카드:", cash);
+  console.log("카드:", card);
+  console.log("price:", price);
 
   // console.log(inOutDataList.inComes);
   // console.log(inOutDataList.outComes);
@@ -235,10 +256,14 @@ const Main = ({ isLogin, cardsList }) => {
   //@ 날짜별 지출 수입내역 수입만true 1, 지출만 2, 지출 수입 모두 3.
   // 그중, 지출이 있는 날짜, 수입이 있는 날짜 정보만 필요 => main page에서 가공해서 props로 전달  => 배열형식 데이터로 인자는 객체, {year, month, date, 수입지출 상태}
 
-  const calendardata = {};
-
-  //? detail view는 보류중
-  // 진행한다면 선택된 날짜에 지출 수입 내역을 뷰창에 표시되로독한다.
+  //! 이벤트 발생
+  // 입력 클릭(in,out)
+  // 달력 화살표 클릭
+  // 날짜 클릭
+  // 날짜 클릭시 디테일 리스트에서 목록 클릭
+  // 날자 클릭시 수정버튼 클릭시
+  // input, select 내용 수정
+  //? 수입, 지출 버튼 => axios
 
   return (
     <>
@@ -251,6 +276,7 @@ const Main = ({ isLogin, cardsList }) => {
           mainState={mainState}
           data={inOutDataList}
           transaction={transaction}
+          modifyStateHandler={modifyStateHandler}
         />
         <CenterContainer>
           <LeftMoney>
@@ -269,6 +295,7 @@ const Main = ({ isLogin, cardsList }) => {
         <Submit
           mainState={mainState} //
           getDate={getDate}
+          categoryList={categoryList}
           category={category}
           categoryHandler={categoryHandler}
           cash={cash}
@@ -279,6 +306,7 @@ const Main = ({ isLogin, cardsList }) => {
           priceHandler={priceHandler}
           inputResetHandler={inputResetHandler}
           cards={cards}
+          modifyState={modifyState}
         />
       </MainContainer>
     </>

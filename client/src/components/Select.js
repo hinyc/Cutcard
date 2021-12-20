@@ -50,7 +50,7 @@ export function Select(props) {
       >
         <Option>{text}</Option>
         {options.map((option, index) => (
-          <Option key={option} value={index + 1}>
+          <Option key={index} value={option}>
             {option}
           </Option>
         ))}
