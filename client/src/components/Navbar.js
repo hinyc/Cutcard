@@ -50,6 +50,7 @@ const Menu = styled.button`
 
 function Navbar() {
   const [isLogin, setIsLogin] = useState(false);
+
   const Login = () => {
     // setIsLogin(!isLogin);
     setIsLogin(true);

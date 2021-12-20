@@ -6,7 +6,7 @@ export const CelandarContainer = styled.div`
   border: 2px solid #97bfb4;
   border-radius: 15px;
   width: 462px;
-  height: 430px;
+  height: 405px;
   margin: auto;
 `;
 export const Head = styled.div`
@@ -48,18 +48,21 @@ export const Days = styled.div`
   flex-wrap: wrap;
 `;
 export const Day = styled.div`
+  text-align: center;
   box-sizing: border-box;
   color: #97bfb4;
   width: 66px;
   height: 30px;
 `;
 export const DaySat = styled.div`
+  text-align: center;
   box-sizing: border-box;
   color: blue;
   width: 66px;
   height: 30px;
 `;
 export const DaySun = styled.div`
+  text-align: center;
   box-sizing: border-box;
   color: red;
   width: 66px;
@@ -77,27 +80,25 @@ const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const Calendar = (props) => {
   const {
-    inComes, //
-    outComes,
+    data, //
     dateHandler,
     targetYear,
     targetMonth,
-    targetDate,
-    setTargetYear,
-    setTargetMonth,
-    setTargetDate,
+    pickDateHandler,
+    inOutDate,
+    mainStateHandler,
   } = props;
+  //!
 
-  const date = new Date(targetYear, targetMonth, 0);
+  // console.log(`달력 데이터 테스트`);
+  // console.log(`${data}`);
+  // console.dir(data);
+  // console.log(data);
 
-  const viewYear = date.getFullYear();
-  const viewMonth = date.getMonth() + 1;
-
-  // Main에서 날짜 상태 확인
-  // dateHandler(viewYear, viewMonth);
-
-  const preLastInfo = new Date(viewYear, viewMonth - 1, 0);
-  const thisLastInfo = new Date(viewYear, viewMonth, 0);
+  //!
+  //! calendar array generate
+  const preLastInfo = new Date(targetYear, targetMonth - 1, 0);
+  const thisLastInfo = new Date(targetYear, targetMonth, 0);
 
   const preLastDate = preLastInfo.getDate();
   const preLastDay = preLastInfo.getDay();
@@ -119,21 +120,15 @@ const Calendar = (props) => {
   }
 
   const dates = prevDates.concat(thisDates, nextDates);
+  //! -----------
 
   const prevMonthHandler = () => {
-    const date = new Date(targetYear, targetMonth - 1, 0);
-
-    setTargetYear(date.getFullYear());
-    setTargetMonth(date.getMonth() + 1);
+    pickDateHandler(targetYear, targetMonth - 1);
   };
 
   const nextMonthHandler = () => {
-    const date = new Date(targetYear, targetMonth + 1, 0);
-    setTargetYear(date.getFullYear());
-    setTargetMonth(date.getMonth() + 1);
+    pickDateHandler(targetYear, targetMonth + 1);
   };
-
-  // const inComesDate = inComes.map((inCome) => inCome.date.split('-')[2]);
 
   return (
     <>
@@ -141,7 +136,7 @@ const Calendar = (props) => {
         <Head>
           <Nav>
             <Arrow onClick={prevMonthHandler}>&lt;</Arrow>
-            <YearMonth>{`${viewYear}년 ${viewMonth}월`}</YearMonth>
+            <YearMonth>{`${targetYear}년 ${targetMonth}월`}</YearMonth>
             {/* <Today>Today</Today> */}
             <Arrow onClick={nextMonthHandler}>&gt;</Arrow>
           </Nav>
@@ -164,13 +159,13 @@ const Calendar = (props) => {
             <Adate //
               key={index}
               date={date}
-              year={viewYear}
-              month={viewMonth}
+              year={targetYear}
+              month={targetMonth}
               index={index}
-              inComes={inComes}
-              outComes={outComes}
+              data={data}
               dateHandler={dateHandler}
-              // inComesDate={inComesDate}
+              inOutDate={inOutDate}
+              mainStateHandler={mainStateHandler}
             />
           ))}
         </Dates>

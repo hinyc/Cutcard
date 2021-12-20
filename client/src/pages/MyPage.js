@@ -3,12 +3,12 @@ import { Input, Notification } from "../components/Input";
 import { BigButton } from "../components/Button";
 import { Container, Title } from "../components/Common";
 import { Link } from "react-router-dom";
-import Select from "../components/Select";
+import { CardSelect } from "../components/Select";
 import CardList from "../components/CardList";
 import { FlexContainer } from "../components/Common";
 import styled from "styled-components";
 
-import dummy from "../dummyData";
+import { dummy } from "../dummyData";
 
 const Text = styled.div`
   font-size: 14px;
@@ -92,7 +92,7 @@ function MyPage() {
         </Notification>
       )}
       {/* Card */}
-      <Select
+      <CardSelect
         label="카드 등록"
         text="카드를 선택해주세요"
         options={cards.map((obj) => obj.name)}

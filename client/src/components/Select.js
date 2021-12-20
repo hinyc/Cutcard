@@ -26,7 +26,17 @@ const LabelStyle = styled.div`
 
 const Option = styled.option``;
 
-function Select({ label, text, options, width, height, onChange, margin }) {
+export function Select(props) {
+  const {
+    label, //
+    text,
+    options,
+    width,
+    height,
+    onChange,
+    value,
+    margin,
+  } = props;
   return (
     <>
       <LabelStyle>{label}</LabelStyle>
@@ -34,11 +44,10 @@ function Select({ label, text, options, width, height, onChange, margin }) {
         width={width}
         hidden={height}
         onChange={onChange}
+        value={value}
         margin={margin}
       >
-        <Option value="value" defaultValue>
-          {text}
-        </Option>
+        <Option>{text}</Option>
         {options.map((option, index) => (
           <Option key={index} value={option}>
             {option}
@@ -49,4 +58,23 @@ function Select({ label, text, options, width, height, onChange, margin }) {
   );
 }
 
-export default Select;
+export function CardSelect(props) {
+  const { label, text, width, height, onChange, value, margin } = props;
+  return (
+    <>
+      <LabelStyle>{label}</LabelStyle>
+      <SelectStyle
+        width={width}
+        hidden={height}
+        onChange={onChange}
+        value={value}
+        margin={margin}
+      >
+        <Option>{text}</Option>
+        <Option value="value" defaultValue>
+          {text}
+        </Option>
+      </SelectStyle>
+    </>
+  );
+}

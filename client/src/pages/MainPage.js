@@ -1,7 +1,11 @@
-import React from "react";
-
-function MainPage() {
-  return <div>메인페이지 입니다.</div>;
+import React from 'react';
+import Main from '../components/Main/Main';
+function MainPage({ isLogin }) {
+  return (
+    <div>
+      <Main isLogin={isLogin} />
+    </div>
+  );
 }
 
 export default MainPage;
