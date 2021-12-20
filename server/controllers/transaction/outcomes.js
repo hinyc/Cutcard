@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
     const { id } = accessTokenData;
     const { year, month, day, category, outcomeIsCash, userCardId, price, isIncome } = req.body;
     let userCard
-    if(!outcomeIsCash && card !== undefined) {
+    if(!outcomeIsCash && userCardId !== undefined) {
       userCard = await userCards.findOne({
         where: {
           cardId: userCardId
