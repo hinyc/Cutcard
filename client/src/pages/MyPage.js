@@ -33,6 +33,14 @@ function MyPage({ isLogin, setIsLogin, accessToken, setAccessToken, cardsList, u
     setNickname(e.target.value);
   };
 
+  const onPasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const onPasswordChangeCheck = (e) => {
+    setPasswordCheck(e.target.value);
+  };
+
   const onCardChange = (e) => {
     //* 카드 옵션에서 선택된 옵션 제외
     setSelected(e.target.value); // card name
