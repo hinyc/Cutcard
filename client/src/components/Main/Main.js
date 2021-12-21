@@ -187,6 +187,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
       userCardId,
     };
     console.log(resData);
+
     axios
       .post(
         `http://localhost:4000/transaction/delete`, //
