@@ -89,9 +89,55 @@ const Main = ({ isLogin, userCards, cardsId }) => {
       기타: 0,
     },
   };
+  //! 이벤트 발생
 
-  const mainStateHandler = (state, category, price, card, cash) => {
+  const token =
+    'accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5ZWNoYW5AZ21haWwuY29tIiwibmlja25hbWUiOiLsmIjssKwiLCJjcmVhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjIyOjQ0LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjIyOjQ0LjAwMFoiLCJpYXQiOjE2NDAwMTE4NjcsImV4cCI6MTY0MDE4NDY2N30.moUyc-0mn6f9oEZV7b0qnuHKRfJiscC4ywRPN37xbPo; Path=/; HttpOnly; SameSite=None';
+
+  // 입력 클릭(in,out) transaction 업데이트 후 받아오기
+  const userCardId = cardsId.findIndex((el) => el.name === card) + 1 || null;
+  const outcomeIsCash = cash === '현금' ? true : false;
+  const isIncome = mainState === 'income' ? true : mainState === 'outcome' ? false : null;
+
+  const resData = {
+    year: targetYear,
+    month: targetMonth,
+    day: targetDate,
+    category,
+    outcomeIsCash,
+    userCardId,
+    price: Number(price),
+    isIncome,
+  };
+
+  const submitHandler = (endPoint) => {
+    console.log('보내는거', resData);
+    console.log('?', endPoint);
+    console.log(typeof resData.price);
+
+    axios
+      .post(
+        `http://localhost:4000/transaction/${endPoint}`, //
+        resData,
+        {
+          headers: {
+            'Content-Type': 'application/json', //
+            authorization: token,
+          },
+          // withCredentials: true,
+        }
+      )
+      .then((res) => {
+        console.log(res.data.transaction);
+        setTransaction(res.data.transaction);
+        console.log(res.messege);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const mainStateHandler = (state, modifyState, category, price, card, cash) => {
     setMainState(state);
+    setModifyState(modifyState);
     inputResetHandler(category, price, card, cash);
   };
 
@@ -166,6 +212,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
 
   const inOutDate = {};
   transaction.map((el) => {
+    console.log('sdf', el.outcomeIsCash);
     //inOut data 생성
     const date = `${el.year}.${el.month}.${el.day}`;
     if (inOutDate[date] === undefined) {
@@ -206,17 +253,29 @@ const Main = ({ isLogin, userCards, cardsId }) => {
           },
         ];
         inOutDataList.detail.inComesTotal += el.price;
-      } else {
+      } else if (el.outcomeIsCash) {
         inOutDataList.detail.outComes = [
           ...inOutDataList.detail.outComes,
           {
             category: el.category,
             price: el.price,
             isCash: el.outcomeIsCash,
-            card: cardsId[el.userCardId - 1].name,
           },
         ];
         inOutDataList.detail.outComesTotal += el.price;
+      } else {
+        {
+          inOutDataList.detail.outComes = [
+            ...inOutDataList.detail.outComes,
+            {
+              category: el.category,
+              price: el.price,
+              isCash: el.outcomeIsCash,
+              // card: cardsId[el.userCardId - 1].name,
+            },
+          ];
+          inOutDataList.detail.outComesTotal += el.price;
+        }
       }
     }
   });
@@ -240,52 +299,6 @@ const Main = ({ isLogin, userCards, cardsId }) => {
 
   //@ 날짜별 지출 수입내역 수입만true 1, 지출만 2, 지출 수입 모두 3.
   // 그중, 지출이 있는 날짜, 수입이 있는 날짜 정보만 필요 => main page에서 가공해서 props로 전달  => 배열형식 데이터로 인자는 객체, {year, month, date, 수입지출 상태}
-
-  //! 이벤트 발생
-
-  const token =
-    'accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5ZWNoYW5AZ21haWwuY29tIiwibmlja25hbWUiOiLsmIjssKwiLCJjcmVhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjIyOjQ0LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjIyOjQ0LjAwMFoiLCJpYXQiOjE2NDAwMTE4NjcsImV4cCI6MTY0MDE4NDY2N30.moUyc-0mn6f9oEZV7b0qnuHKRfJiscC4ywRPN37xbPo; Path=/; HttpOnly; SameSite=None';
-
-  // 입력 클릭(in,out) transaction 업데이트 후 받아오기
-  const userCardId = cardsId.findIndex((el) => el.name === card) + 1 || null;
-  const outcomeIsCash = cash === '현금' ? true : false;
-  const isIncome = mainState === 'income' ? true : mainState === 'outcome' ? false : null;
-
-  const resData = {
-    year: targetYear,
-    month: targetMonth,
-    day: targetDate,
-    category,
-    outcomeIsCash,
-    userCardId,
-    price: Number(price),
-    isIncome,
-  };
-
-  const submitHandler = (endPoint) => {
-    console.log('보내는거', resData);
-    console.log('?', endPoint);
-    console.log(typeof resData.price);
-
-    axios
-      .post(
-        `http://localhost:4000/transaction/${endPoint}`, //
-        resData,
-        {
-          headers: {
-            'Content-Type': 'application/json', //
-            authorization: token,
-          },
-          // withCredentials: true,
-        }
-      )
-      .then((res) => {
-        console.log(res.data.transaction);
-        setTransaction(res.data.transaction);
-        console.log(res.messege);
-      })
-      .catch((err) => console.log(err));
-  };
 
   // 달력 화살표 클릭 => 해당 월에 해당하는 transaction 받아오기
   // 날짜 클릭

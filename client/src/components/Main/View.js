@@ -310,8 +310,20 @@ const View = (props) => {
     <>
       <ViewContainer>
         <ButtonContainer>
-          <SmallButton text={`수입`} width="80px" onClick={() => mainStateHandler('income')} />
-          <SmallButton text={`지출`} width="80px" onClick={() => mainStateHandler('outcome')} />
+          <SmallButton
+            text={`수입`}
+            width="80px"
+            onClick={() => {
+              mainStateHandler('income', false);
+            }}
+          />
+          <SmallButton
+            text={`지출`}
+            width="80px"
+            onClick={() => {
+              mainStateHandler('outcome', false);
+            }}
+          />
         </ButtonContainer>
         {modifyState ? (
           <DetailList year={year} month={month} date={date} detail={detail} modifyStateHandler={modifyStateHandler} />
