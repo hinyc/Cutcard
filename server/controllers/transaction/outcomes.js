@@ -20,10 +20,12 @@ module.exports = async (req, res) => {
       price,
       isIncome,
     } = req.body;
+    console.log(outcomeIsCash);
     let userCard;
     if (!outcomeIsCash) {
       userCard = await userCards.findOne({
         where: {
+          userId: id,
           cardId: userCardId,
         },
       });
@@ -34,53 +36,36 @@ module.exports = async (req, res) => {
         },
         {
           where: {
+            userId: id,
             cardId: userCardId,
           },
         }
       );
-      if (month === 12) {
-        await transactions.create({
-          year: year + 1,
-          month: 1,
-          day: userCard.dataValues.repaymentDay,
-          category,
-          price,
-          isIncome,
-          outcomeIsCash: outcomeIsCash,
-          userId: id,
-          userCardId: userCard.dataValues.cardId,
-        });
-        const outcomeData = await transactions.findAll({
-          where: {
-            year,
-            month,
-            userId: id,
-            isIncome,
+      await transactions.create({
+        year,
+        month,
+        day,
+        category,
+        price,
+        isIncome,
+        outcomeIsCash: outcomeIsCash,
+        userId: id,
+        userCardId: userCard.dataValues.cardId,
+      });
+      const outcomeData = await transactions.findAll({
+        include: [
+          {
+            model: userCards,
+            attributes: ["repaymentDay"],
           },
-        });
-        res.status(201).json({ transaction: outcomeData });
-      } else {
-        await transactions.create({
+        ],
+        where: {
           year,
-          month: month + 1,
-          day: userCard.dataValues.repaymentDay,
-          category,
-          price,
-          isIncome,
-          outcomeIsCash: outcomeIsCash,
+          month,
           userId: id,
-          userCardId: userCard.dataValues.cardId,
-        });
-        const outcomeData = await transactions.findAll({
-          where: {
-            year,
-            month,
-            userId: id,
-            isIncome,
-          },
-        });
-        res.status(201).json({ transaction: outcomeData });
-      }
+        },
+      });
+      res.status(201).json({ transaction: outcomeData });
     } else {
       await transactions.create({
         year,
@@ -96,11 +81,16 @@ module.exports = async (req, res) => {
         updatedAt: new Date(),
       });
       const outcomeData = await transactions.findAll({
+        include: [
+          {
+            model: userCards,
+            attributes: ["repaymentDay"],
+          },
+        ],
         where: {
           year,
           month,
           userId: id,
-          isIncome,
         },
       });
       res.status(201).json({ transaction: outcomeData });

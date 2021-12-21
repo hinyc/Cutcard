@@ -1,4 +1,4 @@
-const { transactions } = require("./../../models");
+const { transactions, userCards } = require("./../../models");
 const { isAuthorized } = require("./../tokenFunctions");
 
 module.exports = async (req, res) => {
@@ -25,11 +25,16 @@ module.exports = async (req, res) => {
       updatedAt: new Date(),
     });
     const incomeData = await transactions.findAll({
+      include: [
+        {
+          model: userCards,
+          attributes: ["repaymentDay"],
+        },
+      ],
       where: {
         year,
         month,
         userId: id,
-        isIncome,
       },
     });
     res.status(201).json({ transaction: incomeData });
