@@ -8,7 +8,6 @@ import Submit from './Submit';
 // dumydata
 import { newdumy } from '../../dummyData';
 import axios from 'axios';
-import { contained } from 'sequelize/dist/lib/operators';
 
 export const MainContainer = styled.div`
   width: 1130px;
@@ -64,12 +63,6 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   const targetYear = pickDate.getFullYear();
   const targetMonth = pickDate.getMonth() + 1;
   const getDate = `${targetYear}-${targetMonth}-${targetDate}`;
-
-  //!------------------------------------------------------
-  //!------------------------------------------------------
-  console.log('1');
-  //!------------------------------------------------------
-  //!------------------------------------------------------
 
   //Submit
   const [category, setCategory] = useState('');
