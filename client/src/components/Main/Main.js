@@ -66,7 +66,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
 
   //!------------------------------------------------------
   //!------------------------------------------------------
-  console.log('1');
+  console.log("1");
   //!------------------------------------------------------
   //!------------------------------------------------------
 
@@ -151,7 +151,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   //todo
   const calendarMover = (year, month) => {
     console.log(`http://localhost:4000/transaction/date`);
-    console.log('move 1');
+    console.log("move 1");
 
     const resDate = {
       year,
@@ -172,11 +172,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
       )
       .then((res) => {
         setTransaction(res.data.transaction);
-<<<<<<< HEAD
-        console.log("move!", res.data.transaction);
-=======
-        console.log('move 2');
->>>>>>> 3567dc6c7d3e84bf01fda25b801b4e6592db6926
+        console.log("move 2");
       })
       .catch((err) => console.log(err));
   };
@@ -256,14 +252,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
     const newDate = new Date(year, month, 0);
     setPickDate(newDate);
 
-<<<<<<< HEAD
-    calendarMover(
-      new Date(year, month, 0).getFullYear(),
-      new Date(year, month, 0).getMonth() + 1
-    );
-=======
     calendarMover(newDate.getFullYear(), newDate.getMonth() + 1);
->>>>>>> 3567dc6c7d3e84bf01fda25b801b4e6592db6926
   };
 
   const dateHandler = (year, month, date, move) => {
