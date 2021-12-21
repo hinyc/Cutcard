@@ -64,12 +64,6 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   const targetMonth = pickDate.getMonth() + 1;
   const getDate = `${targetYear}-${targetMonth}-${targetDate}`;
 
-  //!------------------------------------------------------
-  //!------------------------------------------------------
-  console.log("1");
-  //!------------------------------------------------------
-  //!------------------------------------------------------
-
   //Submit
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
@@ -172,6 +166,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
       )
       .then((res) => {
         setTransaction(res.data.transaction);
+        console.log("move 2");
       })
       .catch((err) => console.log(err));
   };
@@ -250,10 +245,6 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   const pickDateHandler = (year, month) => {
     const newDate = new Date(year, month, 0);
     setPickDate(newDate);
-    calendarMover(
-      new Date(year, month, 0).getFullYear(),
-      new Date(year, month, 0).getMonth() + 1
-    );
     calendarMover(newDate.getFullYear(), newDate.getMonth() + 1);
   };
 

@@ -3,12 +3,6 @@ const { isAuthorized } = require('./../tokenFunctions');
 
 module.exports = async (req, res) => {
   // accessToken 확인
-  //!------------------------------------------------------
-  //!------------------------------------------------------
-  console.log('1');
-  //!------------------------------------------------------
-  //!------------------------------------------------------
-
   const accessTokenData = isAuthorized(req, res);
   if (!accessTokenData) {
     return res.status(401).json({ data: null, message: 'invalid access token!' });
