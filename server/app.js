@@ -6,7 +6,8 @@ const indexRouter = require("./routes");
 const app = express();
 const port = 4000;
 
-app.use(cors());
+
+app.use(cors({ credentials: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/", indexRouter);

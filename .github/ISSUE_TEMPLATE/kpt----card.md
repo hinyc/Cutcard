@@ -1,7 +1,7 @@
 ---
 name: KPT 회고 Card
 about: KPT 회고 Card
-title: " [회고] KPT 회고 제목 설정하기"
+title: " [KPT] O주차 O요일"
 labels: ''
 assignees: ''
 
@@ -15,7 +15,7 @@ assignees: ''
 -
 -
 -
-Try (Action Items)
-[] Todo 형식으로 작성해주세요.
-[] Todo 형식으로 작성해주세요.
-[] Todo 형식으로 작성해주세요.
+# Try (Action Items)
+- [ ] Todo 형식으로 작성해주세요.
+- [ ] Todo 형식으로 작성해주세요.
+- [ ] Todo 형식으로 작성해주세요.

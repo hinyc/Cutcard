@@ -6,12 +6,16 @@ import { Link } from "react-router-dom";
 import { CardSelect, Select } from "../components/Select";
 import CardList from "../components/CardList";
 import { FlexContainer } from "../components/Common";
+import axios from "axios";
 
 function SignUpPage({ cardsList }) {
+  const [nickname, setNickname] = useState("");
+
   const [email, setEmail] = useState("");
   const [emailFocused, setEmailFocused] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
-  const [emailExists, setEmailExists] = useState(false);
+  const [isEmailBtnClick, setIsEmailBtnClick] = useState(false);
+  const [emailExists, setEmailExists] = useState(true);
 
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -20,6 +24,12 @@ function SignUpPage({ cardsList }) {
   const [userCardList, setUserCardList] = useState([]);
   const [selected, setSelected] = useState("");
   const [wantCut, setWantCut] = useState(false);
+
+  const [repaymentday, setRepaymentday] = useState(0);
+
+  const onNicknameChange = (e) => {
+    setNickname(e.target.value);
+  };
 
   const onEmailChange = (e) => {
     const emailValidator =
@@ -34,7 +44,24 @@ function SignUpPage({ cardsList }) {
   };
 
   const emailExistsCheck = () => {
-    setEmailExists(!emailExists);
+    setIsEmailBtnClick(true);
+    axios
+      .post(
+        "http://localhost:4000/users/exists",
+        { email: email },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          setEmailExists(false);
+        }
+      })
+      .catch(() => setEmailExists(true));
   };
 
   const onPasswordChange = (e) => {
@@ -65,11 +92,38 @@ function SignUpPage({ cardsList }) {
   };
 
   const onRepaymentDaySelect = (e) => {
-    console.log(e.target.value);
+    const value = e.target.value;
+    const repaymentDay = value.slice(0, value.length - 1);
+    setRepaymentday(Number(repaymentDay));
   };
 
-  const onWantCutCardSelect = (e) => {
+  const onWantCutCardSelect = () => {
     setWantCut(!wantCut);
+  };
+
+  const onSignUpClick = () => {
+    axios
+      .post(
+        "http://localhost:4000/users/signup",
+        {
+          email: email,
+          password: password,
+          nickname: nickname,
+          repaymentDay: repaymentday,
+          cards: userCardList.map((obj) => {
+            return {
+              id: obj.id,
+              isCut: wantCut,
+            };
+          }),
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => console.log(res));
   };
 
   return (
@@ -80,6 +134,7 @@ function SignUpPage({ cardsList }) {
         type="text"
         placeholder="닉네임을 입력해주세요"
         margin="auto"
+        onChange={onNicknameChange}
       />
       {/* Email */}
       <EmailInput
@@ -92,19 +147,21 @@ function SignUpPage({ cardsList }) {
         onFocus={onEmailFocus}
         onClick={emailExistsCheck}
         disabled={!isEmail}
-        opacity={!isEmail && "50%"}
-        hoverOpacity={!isEmail && "50%"}
-        cursor={!isEmail && "default"}
+        opacity={!isEmail ? "50%" : 0}
+        hoverOpacity={!isEmail ? "50%" : 0}
+        cursor={!isEmail ? "default" : "pointer"}
       />
       {emailFocused ? (
         email !== "" && isEmail ? (
-          emailExists ? (
-            <Notification color="#FF6B6B" margin="4px 160px 0 0">
-              * 이미 존재하는 이메일입니다.
-            </Notification>
-          ) : (
-            <Notification>* 사용 가능한 이메일입니다.</Notification>
-          )
+          isEmailBtnClick ? (
+            emailExists ? (
+              <Notification color="#FF6B6B" margin="4px 160px 0 0">
+                * 이미 존재하는 이메일입니다.
+              </Notification>
+            ) : (
+              <Notification>* 사용 가능한 이메일입니다.</Notification>
+            )
+          ) : null
         ) : (
           <Notification color="#FF6B6B" margin="4px 175px 0 0">
             * 이메일 형식을 지켜주세요
@@ -160,6 +217,7 @@ function SignUpPage({ cardsList }) {
             xColor={wantCut === true ? "white" : "#97bfb4"}
           />
         ))}
+        <div>삭제를 목표로 한다면 카드 이름을 클릭해주세요.</div>
       </FlexContainer>
       <Select
         label="카드 상환일"
@@ -170,7 +228,11 @@ function SignUpPage({ cardsList }) {
       />
       {/* Button */}
       <Link to="/login">
-        <BigButton text="가입하기" margin="28px auto 12px auto" />
+        <BigButton
+          text="가입하기"
+          margin="28px auto 12px auto"
+          onClick={onSignUpClick}
+        />
       </Link>
       <Link to="/">
         <BigButton
