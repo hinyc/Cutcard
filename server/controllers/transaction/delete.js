@@ -19,9 +19,10 @@ module.exports = async (req, res) => {
       outcomeIsCash,
       userCardId,
     } = req.body;
+    console.log(req.body);
     let userCard;
 
-    if (!outcomeIsCash) {
+    if (!outcomeIsCash && !isIncome) {
       userCard = await userCards.findOne({
         where: {
           cardId: userCardId,
@@ -49,7 +50,7 @@ module.exports = async (req, res) => {
           price,
           isIncome,
           userId: id,
-          cardId: userCard.dataValues.id,
+          userCardId,
         },
       });
       const deleteData = await transactions.findAll({
