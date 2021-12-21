@@ -6,8 +6,11 @@ import { Link } from "react-router-dom";
 import { CardSelect, Select } from "../components/Select";
 import CardList from "../components/CardList";
 import { FlexContainer } from "../components/Common";
+import axios from "axios";
 
 function SignUpPage({ cardsList }) {
+  const [nickname, setNickname] = useState("");
+
   const [email, setEmail] = useState("");
   const [emailFocused, setEmailFocused] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
@@ -20,6 +23,12 @@ function SignUpPage({ cardsList }) {
   const [userCardList, setUserCardList] = useState([]);
   const [selected, setSelected] = useState("");
   const [wantCut, setWantCut] = useState(false);
+
+  const [repaymentday, setRepaymentday] = useState(0);
+
+  const onNicknameChange = (e) => {
+    setNickname(e.target.value);
+  };
 
   const onEmailChange = (e) => {
     const emailValidator =
@@ -34,7 +43,18 @@ function SignUpPage({ cardsList }) {
   };
 
   const emailExistsCheck = () => {
-    setEmailExists(!emailExists);
+    axios
+      .post(
+        "http://localhost:4000/users/exists",
+        { email: email },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => console.log(res)); // TODO: status: 200 && message: "available email"
+    // TODO: setEmailExists(!emailExists);
   };
 
   const onPasswordChange = (e) => {
@@ -51,6 +71,7 @@ function SignUpPage({ cardsList }) {
     setCards(newCards);
     const selectedData = cards.filter((obj) => obj.name === e.target.value);
     const newUserCardList = userCardList.concat(selectedData);
+    // console.log(userCardList);
     setUserCardList(newUserCardList);
   };
 
@@ -65,11 +86,33 @@ function SignUpPage({ cardsList }) {
   };
 
   const onRepaymentDaySelect = (e) => {
-    console.log(e.target.value);
+    const value = e.target.value;
+    const repaymentDay = value.slice(0, value.length - 1);
+    setRepaymentday(Number(repaymentDay));
   };
 
   const onWantCutCardSelect = (e) => {
     setWantCut(!wantCut);
+  };
+
+  const onSignUpClick = () => {
+    axios
+      .post(
+        "http://localhost:4000/users/signup",
+        {
+          email: email,
+          password: password,
+          nickname: nickname,
+          cards: userCardList, // ! isCut, repaymentdays
+          repaymentday: repaymentday,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => console.log(res));
   };
 
   return (
@@ -80,6 +123,7 @@ function SignUpPage({ cardsList }) {
         type="text"
         placeholder="닉네임을 입력해주세요"
         margin="auto"
+        onChange={onNicknameChange}
       />
       {/* Email */}
       <EmailInput
@@ -170,7 +214,11 @@ function SignUpPage({ cardsList }) {
       />
       {/* Button */}
       <Link to="/login">
-        <BigButton text="가입하기" margin="28px auto 12px auto" />
+        <BigButton
+          text="가입하기"
+          margin="28px auto 12px auto"
+          onClick={onSignUpClick}
+        />
       </Link>
       <Link to="/">
         <BigButton
