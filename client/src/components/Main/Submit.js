@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import { Input } from '../Input';
-import { SmallButton } from '../Button';
-import { Select } from '../Select';
+import { useState } from "react";
+import styled from "styled-components";
+import { Input } from "../Input";
+import { SmallButton } from "../Button";
+import { Select } from "../Select";
 
 //! Right
 export const SubmitContainer = styled.div`
@@ -31,8 +31,8 @@ export const InputContainer = styled.div`
 
 export const InputDate = styled.div`
   box-sizing: border-box;
-  height: ${(props) => props.height || '40px'};
-  width: ${(props) => props.width || '335px'};
+  height: ${(props) => props.height || "40px"};
+  width: ${(props) => props.width || "335px"};
   padding-left: 13px;
   font-size: 16px;
   border: 1px solid #bfc5c4;
@@ -78,7 +78,14 @@ const AddInCome = (props) => {
         <InputDate placeholder="날짜" width={`200px`}>
           {getDate}
         </InputDate>
-        <Select text="수입 카테고리" width={`200px`} options={inComeCategorys} onChange={categoryHandler} value={category} margin={'0'} />
+        <Select
+          text="수입 카테고리"
+          width={`200px`}
+          options={inComeCategorys}
+          onChange={categoryHandler}
+          value={category}
+          margin={"0"}
+        />
         <Input
           placeholder="금액을 입력해주세요" //
           width={`200px`}
@@ -104,7 +111,7 @@ const AddInCome = (props) => {
             width={`200px`}
             margin={`18px 0 0 0 `}
             onClick={() => {
-              submitHandler('incomes');
+              submitHandler("incomes");
               inputResetHandler(true);
             }}
           />
@@ -133,6 +140,7 @@ const AddOutCome = (props) => {
 
     buttonModifyState,
   } = props;
+  console.log("test", userCards);
   const cardsList = userCards.map((el) => el.cardName);
   return (
     <>
@@ -140,9 +148,30 @@ const AddOutCome = (props) => {
         <InputDate placeholder="날짜" width={`200px`}>
           {getDate}
         </InputDate>
-        <Select text="지출 카테고리" width={`200px`} options={outComeCategorys} onChange={categoryHandler} value={category} margin={'0'} />
-        <Select text="현금, 카드" width={`200px`} onChange={cashHandler} options={['현금', '카드']} value={cash} margin={'0'} />
-        <Select text="카드를 선택하세요" width={`200px`} onChange={cardHandler} options={cardsList} value={card} margin={'0'} />
+        <Select
+          text="지출 카테고리"
+          width={`200px`}
+          options={outComeCategorys}
+          onChange={categoryHandler}
+          value={category}
+          margin={"0"}
+        />
+        <Select
+          text="현금, 카드"
+          width={`200px`}
+          onChange={cashHandler}
+          options={["현금", "카드"]}
+          value={cash}
+          margin={"0"}
+        />
+        <Select
+          text="카드를 선택하세요"
+          width={`200px`}
+          onChange={cardHandler}
+          options={cardsList}
+          value={card}
+          margin={"0"}
+        />
         <Input
           placeholder="금액을 입력해주세요" //
           width={`200px`}
@@ -168,7 +197,7 @@ const AddOutCome = (props) => {
             width={`200px`}
             margin={`18px 0 0 0 `}
             onClick={() => {
-              submitHandler('outcomes');
+              submitHandler("outcomes");
               inputResetHandler(false);
             }}
           />
@@ -205,7 +234,7 @@ const Submit = (props) => {
   return (
     <>
       <SubmitContainer>
-        {mainState === 'income' ? ( //
+        {mainState === "income" ? ( //
           <AddInCome //
             getDate={getDate}
             inComeCategorys={inComeCategorys}
