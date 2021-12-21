@@ -24,6 +24,7 @@ module.exports = async (req, res) => {
       userCard = await userCards.findOne({
         where: {
           cardId: userCardId,
+          userId: id,
         },
       });
       userCard.dataValues.remainValue -= price;
@@ -34,6 +35,7 @@ module.exports = async (req, res) => {
         {
           where: {
             cardId: userCardId,
+            userId: id,
           },
         }
       );
@@ -49,7 +51,20 @@ module.exports = async (req, res) => {
           cardId: userCard.dataValues.id,
         },
       });
-      res.status(200).json({ message: "transaction data successfully delete" });
+      const deleteData = await transactions.findAll({
+        include: [
+          {
+            model: userCards,
+            attributes: ["repaymentDay"],
+          },
+        ],
+        where: {
+          year,
+          month,
+          userId: id,
+        },
+      });
+      res.status(200).json({ transaction: deleteData });
     } else {
       await transactions.destroy({
         where: {
@@ -62,7 +77,20 @@ module.exports = async (req, res) => {
           userId: id,
         },
       });
-      res.status(200).json({ message: "transaction data successfully delete" });
+      const deleteData = await transactions.findAll({
+        include: [
+          {
+            model: userCards,
+            attributes: ["repaymentDay"],
+          },
+        ],
+        where: {
+          year,
+          month,
+          userId: id,
+        },
+      });
+      res.status(200).json({ transaction: deleteData });
     }
   }
 };
