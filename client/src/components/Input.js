@@ -181,3 +181,29 @@ export function LoginInput({
     </>
   );
 }
+
+export function PasswordInput({
+  label,
+  type,
+  placeholder,
+  readOnly,
+  margin,
+  onChange,
+  onKeyPress,
+}) {
+  return (
+    <>
+      <LabelStyle>{label}</LabelStyle>
+      <InputStyle
+        type={type}
+        placeholder={placeholder}
+        spellCheck="false" // always
+        readOnly={readOnly}
+        height="50px"
+        margin={margin}
+        onChange={onChange}
+        onKeyPress={onKeyPress}
+      />
+    </>
+  );
+}

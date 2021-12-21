@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { LoginInput } from "../components/Input";
+import { LoginInput, PasswordInput } from "../components/Input";
 import { BigButton } from "../components/Button";
 import { Container, Title } from "../components/Common";
 import { Link } from "react-router-dom";
 
 import axios from "axios";
 
-function LoginPage() {
+function LoginPage({ setAccessToken, setUserCards, setUserInfo }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -38,8 +38,19 @@ function LoginPage() {
           },
         }
       )
-      .then((res) => console.log(res));
+      .then((res) => {
+        setUserCards(res.data.cards);
+        setAccessToken(res.data.accessToken);
+        setUserInfo(res.data.userInfo);
+      });
   };
+
+  // const onLoginPress = (e) => {
+  //   if (e.key === "Enter") {
+  //     onLoginClick();
+  //     history.push("/main");
+  //   }
+  // };
 
   return (
     <Container>
@@ -51,12 +62,13 @@ function LoginPage() {
         margin="auto"
         onChange={onEmailChange}
       />
-      <LoginInput
+      <PasswordInput
         label="비밀번호"
         type="password"
         placeholder="비밀번호를 입력해주세요"
         margin="0 auto 50px auto"
         onChange={onPasswordChange}
+        // onKeyPress={onLoginPress}
       />
       <Link to="/">
         <BigButton text="로그인" margin="12px auto" onClick={onLoginClick} />
