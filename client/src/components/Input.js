@@ -49,11 +49,11 @@ const EmailExist = styled.button`
   background-color: #97bfb4;
   font-size: 16px;
   border-radius: 5px;
-  opacity: ${(props) => props.opacity || "100%"};
+  opacity: ${(props) => props.opacity || '100%'};
 
   &:hover {
-    cursor: ${(props) => props.cursor || "pointer"};
-    opacity: ${(props) => props.hoverOpacity || "80%"};
+    cursor: ${(props) => props.cursor || 'pointer'};
+    opacity: ${(props) => props.hoverOpacity || '80%'};
   }
 
   &:active {
@@ -72,29 +72,12 @@ const EmailContainer = styled.div`
 export const Notification = styled.div`
   font-size: 12px;
   font-weight: 700;
-  color: ${(props) => props.color || "#6B95FF"};
-  margin: ${(props) => props.margin || "4px 170px 0 0"};
+  color: ${(props) => props.color || '#6B95FF'};
+  margin: ${(props) => props.margin || '4px 170px 0 0'};
 `;
 
 export function EmailInput(props) {
-  const {
-    label,
-    type,
-    placeholder,
-    readOnly,
-    width,
-    height,
-    margin,
-    marginLabel,
-    value,
-    onChange,
-    onFocus,
-    onClick,
-    disabled,
-    opacity,
-    hoverOpacity,
-    cursor,
-  } = props;
+  const { label, type, placeholder, readOnly, width, height, margin, marginLabel, value, onChange, onFocus, onClick, disabled, opacity, hoverOpacity, cursor } = props;
 
   return (
     <>
@@ -112,13 +95,7 @@ export function EmailInput(props) {
           onChange={onChange}
           onFocus={onFocus}
         />
-        <EmailExist
-          onClick={onClick}
-          disabled={disabled}
-          opacity={opacity}
-          hoverOpacity={hoverOpacity}
-          cursor={cursor}
-        >
+        <EmailExist onClick={onClick} disabled={disabled} opacity={opacity} hoverOpacity={hoverOpacity} cursor={cursor}>
           중복 확인
         </EmailExist>
       </EmailContainer>
@@ -127,13 +104,15 @@ export function EmailInput(props) {
 }
 
 export function Input(props) {
-  const { label, type, placeholder, readOnly, width, height, value, margin, marginLabel, onChange } = props;
+  const { label, type, placeholder, readOnly, width, height, value, margin, marginLabel, onChange, min, max } = props;
 
   return (
     <>
       <LabelStyle marginLabel={marginLabel}>{label}</LabelStyle>
       <InputStyle
         type={type}
+        min={min}
+        max={max}
         placeholder={placeholder}
         spellCheck="false" // always
         readOnly={readOnly}

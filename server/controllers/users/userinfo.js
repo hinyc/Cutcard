@@ -118,7 +118,7 @@ module.exports = {
             userId: userInfo.id,
             cardId: data[0],
             isCut: data[1],
-            repaymentday: repaymentday,
+            repaymentDay: repaymentday,
           });
         });
       }
