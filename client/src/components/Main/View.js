@@ -184,7 +184,7 @@ export const Content = (props) => {
     isIncome,
   } = props;
   //category, price, card, cash
-
+  console.log(card);
   return (
     <>
       <ContantWrap>
