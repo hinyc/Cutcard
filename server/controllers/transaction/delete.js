@@ -1,19 +1,31 @@
-const { transactions, userCards } = require('./../../models');
-const { isAuthorized } = require('./../tokenFunctions');
+const { transactions, userCards } = require("./../../models");
+const { isAuthorized } = require("./../tokenFunctions");
 
 module.exports = async (req, res) => {
   const accessTokenData = await isAuthorized(req, res);
   if (!accessTokenData) {
-    return res.status(401).json({ data: null, message: 'invalid access token!' });
+    return res
+      .status(401)
+      .json({ data: null, message: "invalid access token!" });
   } else {
     const { id } = accessTokenData;
-    const { year, month, day, category, price, isIncome, outcomeIsCash, userCardId } = req.body;
+    const {
+      year,
+      month,
+      day,
+      category,
+      price,
+      isIncome,
+      outcomeIsCash,
+      userCardId,
+    } = req.body;
     let userCard;
 
     if (!outcomeIsCash) {
       userCard = await userCards.findOne({
         where: {
           cardId: userCardId,
+          userId: id,
         },
       });
       userCard.dataValues.remainValue -= price;
@@ -24,6 +36,7 @@ module.exports = async (req, res) => {
         {
           where: {
             cardId: userCardId,
+            userId: id,
           },
         }
       );
@@ -39,12 +52,11 @@ module.exports = async (req, res) => {
           cardId: userCard.dataValues.id,
         },
       });
-      // res.status(200).json({ message: "transaction data successfully delete" });
       const deleteData = await transactions.findAll({
         include: [
           {
             model: userCards,
-            attributes: ['repaymentDay'],
+            attributes: ["repaymentDay"],
           },
         ],
         where: {
@@ -70,7 +82,7 @@ module.exports = async (req, res) => {
         include: [
           {
             model: userCards,
-            attributes: ['repaymentDay'],
+            attributes: ["repaymentDay"],
           },
         ],
         where: {
