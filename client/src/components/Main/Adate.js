@@ -127,6 +127,7 @@ const Adate = (props) => {
     mainStateHandler,
     setModifyState,
     modifyStateHandler,
+    buttonStateHandler,
   } = props;
 
   return (
@@ -142,8 +143,8 @@ const Adate = (props) => {
           modifyStateHandler={modifyStateHandler}
           onClick={() => {
             dateHandler(year, month - 1, date);
-            // setModifyState(true);
             modifyStateHandler();
+            buttonStateHandler(false);
           }}
         />
       ) : index > 20 && 10 - date > 0 ? (
@@ -157,9 +158,8 @@ const Adate = (props) => {
           modifyStateHandler={modifyStateHandler}
           onClick={() => {
             dateHandler(year, month + 1, date);
-            // setModifyState(true);
-
             modifyStateHandler();
+            buttonStateHandler(false);
           }}
         />
       ) : (
@@ -172,9 +172,9 @@ const Adate = (props) => {
           modifyStateHandler={modifyStateHandler}
           onClick={() => {
             dateHandler(year, month, date);
-            // setModifyState(true);
 
             modifyStateHandler();
+            buttonStateHandler(false);
           }}
         />
       )}

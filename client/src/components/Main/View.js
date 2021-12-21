@@ -180,31 +180,56 @@ export const Content = (props) => {
     cardId,
     deleteBox,
     modifyStateHandler,
+    buttonStateHandler,
+    contentDeleter,
   } = props;
   //category, price, card, cash
+
   return (
     <>
       <ContantWrap>
-        {isCash === undefined ? (
-          <ContentContainerActive onClick={() => modifyStateHandler('income', item, money)}>
-            <Item item={item} />
-            <Money money={money} />
-          </ContentContainerActive>
-        ) : isCash ? (
-          <ContentContainerActive onClick={() => modifyStateHandler('outcome', item, money, card, isCash)}>
-            <CashCard backgroundColor={`green`}>현금</CashCard>
-            <Item item={item} />
-            <Money money={money} />
-          </ContentContainerActive>
+        {deleteBox ? (
+          isCash === undefined ? (
+            <ContentContainerActive
+              onClick={() => {
+                modifyStateHandler('income', item, money);
+                buttonStateHandler(true);
+              }}
+            >
+              <Item item={item} />
+              <Money money={money} />
+            </ContentContainerActive>
+          ) : isCash ? (
+            <ContentContainerActive
+              onClick={() => {
+                modifyStateHandler('outcome', item, money, card, isCash);
+                buttonStateHandler(true);
+              }}
+            >
+              <CashCard backgroundColor={`green`}>현금</CashCard>
+              <Item item={item} />
+              <Money money={money} />
+            </ContentContainerActive>
+          ) : (
+            <ContentContainerActive
+              onClick={() => {
+                modifyStateHandler('outcome', item, money, card, isCash);
+                buttonStateHandler(true);
+              }}
+            >
+              <CashCard backgroundColor={`blue`}>{card.name.slice(0, 2)}</CashCard>
+              <Item item={item} />
+              <Money money={money} />
+            </ContentContainerActive>
+          )
         ) : (
-          <ContentContainerActive onClick={() => modifyStateHandler('outcome', item, money, card, isCash)}>
-            <CashCard backgroundColor={`blue`}>{card.slice(0, 2)}</CashCard>
+          <ContentContainer>
             <Item item={item} />
             <Money money={money} />
-          </ContentContainerActive>
+          </ContentContainer>
         )}
 
-        {deleteBox ? <DeleteBox>×</DeleteBox> : null}
+        {deleteBox ? <DeleteBox onClick={() => contentDeleter()}>×</DeleteBox> : null}
       </ContantWrap>
     </>
   );
@@ -251,7 +276,7 @@ const InComeList = ({ year, month, inComes }) => {
 };
 
 const DetailList = (props) => {
-  const { year, month, date, detail, modifyStateHandler } = props;
+  const { year, month, date, detail, modifyStateHandler, buttonStateHandler, contentDeleter } = props;
   const { inComes, inComesTotal, outComes, outComesTotal } = detail;
 
   return (
@@ -267,6 +292,8 @@ const DetailList = (props) => {
               money={el.price}
               deleteBox={true}
               modifyStateHandler={modifyStateHandler}
+              buttonStateHandler={buttonStateHandler}
+              contentDeleter={contentDeleter}
             />
           ))}
         </ContentsContainer>
@@ -284,6 +311,8 @@ const DetailList = (props) => {
               cardId={el.cardId}
               deleteBox={true}
               modifyStateHandler={modifyStateHandler}
+              buttonStateHandler={buttonStateHandler}
+              contentDeleter={contentDeleter}
             />
           ))}
         </ContentsContainer>
@@ -304,6 +333,8 @@ const View = (props) => {
     transaction,
     modifyStateHandler,
     modifyState,
+    buttonStateHandler,
+    contentDeleter,
   } = props;
   const { inComes, outComes, detail } = data;
   return (
@@ -315,6 +346,7 @@ const View = (props) => {
             width="80px"
             onClick={() => {
               mainStateHandler('income', false);
+              buttonStateHandler(false);
             }}
           />
           <SmallButton
@@ -322,11 +354,12 @@ const View = (props) => {
             width="80px"
             onClick={() => {
               mainStateHandler('outcome', false);
+              buttonStateHandler(false);
             }}
           />
         </ButtonContainer>
         {modifyState ? (
-          <DetailList year={year} month={month} date={date} detail={detail} modifyStateHandler={modifyStateHandler} />
+          <DetailList year={year} month={month} date={date} detail={detail} modifyStateHandler={modifyStateHandler} buttonStateHandler={buttonStateHandler} contentDeleter={contentDeleter} />
         ) : mainState === 'income' ? ( //
           <InComeList year={year} month={month} inComes={inComes} />
         ) : (

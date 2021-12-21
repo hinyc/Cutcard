@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Input } from '../Input';
 import { SmallButton } from '../Button';
 import { Select } from '../Select';
-import CardList from '../CardList';
 
 //! Right
 export const SubmitContainer = styled.div`
@@ -60,18 +59,6 @@ export const InputDate = styled.div`
   }
 `;
 
-const testIncomeSubmiter = (getDate, category, price) => {
-  console.log(
-    `{
-      year: ${getDate.split('-')[0]},
-      month: ${getDate.split('-')[1]},
-      date: ${getDate.split('-')[2]},
-      category: ${category},
-      price: ${price}
-    }`
-  );
-};
-
 const AddInCome = (props) => {
   const {
     getDate, //
@@ -82,7 +69,8 @@ const AddInCome = (props) => {
     priceHandler,
     inputResetHandler,
     submitHandler,
-    modifyState,
+    contentModifiyer,
+    buttonModifyState,
   } = props;
   return (
     <>
@@ -91,15 +79,23 @@ const AddInCome = (props) => {
           {getDate}
         </InputDate>
         <Select text="수입 카테고리" width={`200px`} options={inComeCategorys} onChange={categoryHandler} value={category} margin={'0'} />
-        <Input placeholder="금액을 입력해주세요" width={`200px`} onChange={priceHandler} value={price} />
-        {modifyState ? (
+        <Input
+          placeholder="금액을 입력해주세요" //
+          width={`200px`}
+          onChange={priceHandler}
+          value={price}
+          type={`number`}
+          min={`0`}
+          max={`999999999`}
+        />
+        {buttonModifyState ? (
           <SmallButton //
             text="수정"
             width={`200px`}
             margin={`18px 0 0 0 `}
             onClick={() => {
-              submitHandler('incomes');
-              inputResetHandler();
+              contentModifiyer();
+              inputResetHandler(true);
             }}
           />
         ) : (
@@ -109,7 +105,7 @@ const AddInCome = (props) => {
             margin={`18px 0 0 0 `}
             onClick={() => {
               submitHandler('incomes');
-              inputResetHandler();
+              inputResetHandler(true);
             }}
           />
         )}
@@ -133,7 +129,9 @@ const AddOutCome = (props) => {
     inputResetHandler,
     userCards,
     submitHandler,
-    modifyState,
+    contentModifiyer,
+
+    buttonModifyState,
   } = props;
   const cardsList = userCards.map((el) => el.cardName);
   return (
@@ -145,15 +143,23 @@ const AddOutCome = (props) => {
         <Select text="지출 카테고리" width={`200px`} options={outComeCategorys} onChange={categoryHandler} value={category} margin={'0'} />
         <Select text="현금, 카드" width={`200px`} onChange={cashHandler} options={['현금', '카드']} value={cash} margin={'0'} />
         <Select text="카드를 선택하세요" width={`200px`} onChange={cardHandler} options={cardsList} value={card} margin={'0'} />
-        <Input placeholder="금액을 입력해주세요" width={`200px`} onChange={priceHandler} value={price} />
-        {modifyState ? (
+        <Input
+          placeholder="금액을 입력해주세요" //
+          width={`200px`}
+          onChange={priceHandler}
+          value={price}
+          type={`number`}
+          min={`0`}
+          max={`999999999`}
+        />
+        {buttonModifyState ? (
           <SmallButton //
             text="수정"
             width={`200px`}
             margin={`18px 0 0 0 `}
             onClick={() => {
-              submitHandler('incomes');
-              inputResetHandler();
+              inputResetHandler(false);
+              contentModifiyer();
             }}
           />
         ) : (
@@ -162,8 +168,8 @@ const AddOutCome = (props) => {
             width={`200px`}
             margin={`18px 0 0 0 `}
             onClick={() => {
-              submitHandler('incomes');
-              inputResetHandler();
+              submitHandler('outcomes');
+              inputResetHandler(false);
             }}
           />
         )}
@@ -189,6 +195,8 @@ const Submit = (props) => {
     userCards,
     modifyState,
     submitHandler,
+    buttonModifyState,
+    contentModifiyer,
   } = props;
 
   const inComeCategorys = Object.keys(categoryList.inCome);
@@ -208,6 +216,8 @@ const Submit = (props) => {
             inputResetHandler={inputResetHandler}
             submitHandler={submitHandler}
             modifyState={modifyState}
+            buttonModifyState={buttonModifyState}
+            contentModifiyer={contentModifiyer}
           />
         ) : (
           <AddOutCome //
@@ -225,6 +235,8 @@ const Submit = (props) => {
             userCards={userCards}
             submitHandler={submitHandler}
             modifyState={modifyState}
+            buttonModifyState={buttonModifyState}
+            contentModifiyer={contentModifiyer}
           />
         )}
       </SubmitContainer>
