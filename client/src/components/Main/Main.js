@@ -49,7 +49,7 @@ export const Amount = styled.div`
   font-size: 26px; ;
 `;
 
-const Main = ({ isLogin, userCards, cardsId }) => {
+const Main = ({ isLogin, userCards, cardsId, accessToken }) => {
   const [leftMoney, setLeftMoney] = useState(1000000);
   //leftMoney => 해달 월 수입계 - 해당월 현금 사용 - 전월 카드사용 ?
   const [mainState, setMainState] = useState("outcome");
@@ -69,6 +69,8 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   const [price, setPrice] = useState("");
   const [card, setCard] = useState("");
   const [cash, setCash] = useState("");
+
+  console.log(userCards);
 
   const categoryList = {
     inCome: {
@@ -90,8 +92,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   };
   //! 이벤트 발생
 
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5ZWNoYW5AZ21haWwuY29tIiwibmlja25hbWUiOiLsmIjssKwiLCJjcmVhdGVkQXQiOiIyMDIxLTEyLTIxVDAxOjM2OjI0LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIxLTEyLTIxVDAxOjM2OjI0LjAwMFoiLCJpYXQiOjE2NDAwODk4MDMsImV4cCI6MTY0MDI2MjYwM30.Dlz6FQ9rdrJGyt92jfhU4phiO7AwpZzmteCAQDeiW7M";
+  const token = accessToken;
 
   // 입력 클릭(in,out) transaction 업데이트 후 받아오기
   const userCardId = cardsId.findIndex((el) => el.name === card) + 1 || null;
