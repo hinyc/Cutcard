@@ -142,7 +142,7 @@ const Adate = (props) => {
           inOutDate={inOutDate}
           modifyStateHandler={modifyStateHandler}
           onClick={() => {
-            dateHandler(year, month - 1, date);
+            dateHandler(year, month - 1, date, true);
             modifyStateHandler();
             buttonStateHandler(false);
           }}
@@ -157,7 +157,7 @@ const Adate = (props) => {
           inOutDate={inOutDate}
           modifyStateHandler={modifyStateHandler}
           onClick={() => {
-            dateHandler(year, month + 1, date);
+            dateHandler(year, month + 1, date, true);
             modifyStateHandler();
             buttonStateHandler(false);
           }}
@@ -171,7 +171,7 @@ const Adate = (props) => {
           inOutDate={inOutDate}
           modifyStateHandler={modifyStateHandler}
           onClick={() => {
-            dateHandler(year, month, date);
+            dateHandler(year, month, date, false);
 
             modifyStateHandler();
             buttonStateHandler(false);

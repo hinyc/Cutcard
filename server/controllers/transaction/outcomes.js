@@ -1,25 +1,20 @@
-const { transactions, userCards } = require("./../../models");
-const { isAuthorized } = require("./../tokenFunctions");
+const { transactions, userCards } = require('./../../models');
+const { isAuthorized } = require('./../tokenFunctions');
 
 module.exports = async (req, res) => {
   // accessToken 확인
+  //!------------------------------------------------------
+  //!------------------------------------------------------
+  console.log('1');
+  //!------------------------------------------------------
+  //!------------------------------------------------------
+
   const accessTokenData = isAuthorized(req, res);
   if (!accessTokenData) {
-    return res
-      .status(401)
-      .json({ data: null, message: "invalid access token!" });
+    return res.status(401).json({ data: null, message: 'invalid access token!' });
   } else {
     const { id } = accessTokenData;
-    const {
-      year,
-      month,
-      day,
-      category,
-      outcomeIsCash,
-      userCardId,
-      price,
-      isIncome,
-    } = req.body;
+    const { year, month, day, category, outcomeIsCash, userCardId, price, isIncome } = req.body;
     let userCard;
 
     if (!outcomeIsCash) {
@@ -56,7 +51,7 @@ module.exports = async (req, res) => {
         include: [
           {
             model: userCards,
-            attributes: ["repaymentDay"],
+            attributes: ['repaymentDay'],
           },
         ],
         where: {
@@ -84,7 +79,7 @@ module.exports = async (req, res) => {
         include: [
           {
             model: userCards,
-            attributes: ["repaymentDay"],
+            attributes: ['repaymentDay'],
           },
         ],
         where: {

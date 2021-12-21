@@ -64,6 +64,12 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   const targetMonth = pickDate.getMonth() + 1;
   const getDate = `${targetYear}-${targetMonth}-${targetDate}`;
 
+  //!------------------------------------------------------
+  //!------------------------------------------------------
+  console.log('1');
+  //!------------------------------------------------------
+  //!------------------------------------------------------
+
   //Submit
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
@@ -144,6 +150,9 @@ const Main = ({ isLogin, userCards, cardsId }) => {
 
   //todo
   const calendarMover = (year, month) => {
+    console.log(`http://localhost:4000/transaction/date`);
+    console.log('move 1');
+
     const resDate = {
       year,
       month,
@@ -163,12 +172,17 @@ const Main = ({ isLogin, userCards, cardsId }) => {
       )
       .then((res) => {
         setTransaction(res.data.transaction);
+<<<<<<< HEAD
         console.log("move!", res.data.transaction);
+=======
+        console.log('move 2');
+>>>>>>> 3567dc6c7d3e84bf01fda25b801b4e6592db6926
       })
       .catch((err) => console.log(err));
   };
 
   const contentDeleter = (data) => {
+    console.log(`http://localhost:4000/transaction/delete`);
     const category = data.category || null;
     const price = data.price;
     const isIncome = data.isIncome;
@@ -239,18 +253,27 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   };
   //Calendar
   const pickDateHandler = (year, month) => {
-    setPickDate(new Date(year, month, 0));
+    const newDate = new Date(year, month, 0);
+    setPickDate(newDate);
 
+<<<<<<< HEAD
     calendarMover(
       new Date(year, month, 0).getFullYear(),
       new Date(year, month, 0).getMonth() + 1
     );
+=======
+    calendarMover(newDate.getFullYear(), newDate.getMonth() + 1);
+>>>>>>> 3567dc6c7d3e84bf01fda25b801b4e6592db6926
   };
 
-  const dateHandler = (year, month, date) => {
-    setPickDate(new Date(year, month, 0));
+  const dateHandler = (year, month, date, move) => {
+    const newDate = new Date(year, month, 0);
+    setPickDate(newDate);
     setTargetDate(date);
-    calendarMover(year, month);
+
+    if (move) {
+      calendarMover(newDate.getFullYear(), newDate.getMonth() + 1);
+    }
   };
 
   //Submit
