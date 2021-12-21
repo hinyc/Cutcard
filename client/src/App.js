@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
@@ -24,25 +24,31 @@ function App() {
     { id: 7, name: "삼성카드" },
     { id: 8, name: "현대카드" },
   ];
-  const [isLogin, setIsLogin] = useState(true);
-  const [userCards, setUserCards] = useState(
-    newdumy.cards.map((el) => {
-      return {
-        id: el.id, //
-        userId: el.userId,
-        cardId: el.cardId,
-        cardName: cards[el.cardId - 1].name,
-        isCut: el.isCut,
-        remainValue: el.remainValue,
-        repaymentDay: el.repaymentDay,
-        updated_at: el.updated_at,
-      };
-    })
-  );
+  const [isLogin, setIsLogin] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
+  const [userCards, setUserCards] = useState([]);
+  const [accessToken, setAccessToken] = useState("");
+  console.log("userCards", userCards);
+  console.log("accessToken", accessToken);
+  console.log("userInfo", userInfo);
+
+  // if (accessToken !== "") {
+  //   setIsLogin(true);
+  // }
+  useEffect(() => {
+    setIsLogin(true);
+  }, [accessToken]);
 
   return (
     <>
-      <Navbar isLogin={isLogin} />
+      <Navbar
+        isLogin={isLogin}
+        setIsLogin={setIsLogin}
+        accessToken={accessToken}
+        setAccessToken={setAccessToken}
+        setUserCards={setUserCards}
+        setUserInfo={setUserInfo}
+      />
       <Routes>
         <Route path="/" element={<Navigate to="/main" />} />
         <Route
@@ -52,10 +58,31 @@ function App() {
           }
         />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/login"
+          element={
+            <LoginPage
+              setUserCards={setUserCards}
+              setUserInfo={setUserInfo}
+              setAccessToken={setAccessToken}
+            />
+          }
+        />
         <Route
           path="/mypage"
-          element={<MyPage cardsList={cards} userCards={userCards} />}
+          element={
+            <MyPage
+              isLogin={isLogin}
+              setIsLogin={setIsLogin}
+              accessToken={accessToken}
+              setAccessToken={setAccessToken}
+              cardsList={cards}
+              userInfo={userInfo}
+              setUserInfo={setUserInfo}
+              userCards={userCards}
+              setUserCards={setUserCards}
+            />
+          }
         />
         <Route path="/signup" element={<SignUpPage cardsList={cards} />} />
       </Routes>

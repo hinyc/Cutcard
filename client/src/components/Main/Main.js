@@ -172,11 +172,6 @@ const Main = ({ isLogin, userCards, cardsId }) => {
       )
       .then((res) => {
         setTransaction(res.data.transaction);
-<<<<<<< HEAD
-        console.log("move!", res.data.transaction);
-=======
-        console.log('move 2');
->>>>>>> 3567dc6c7d3e84bf01fda25b801b4e6592db6926
       })
       .catch((err) => console.log(err));
   };
@@ -253,17 +248,15 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   };
   //Calendar
   const pickDateHandler = (year, month) => {
+
     const newDate = new Date(year, month, 0);
     setPickDate(newDate);
-
-<<<<<<< HEAD
     calendarMover(
       new Date(year, month, 0).getFullYear(),
       new Date(year, month, 0).getMonth() + 1
     );
-=======
     calendarMover(newDate.getFullYear(), newDate.getMonth() + 1);
->>>>>>> 3567dc6c7d3e84bf01fda25b801b4e6592db6926
+
   };
 
   const dateHandler = (year, month, date, move) => {
