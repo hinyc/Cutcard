@@ -91,7 +91,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   //! 이벤트 발생
 
   const token =
-    "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5ZWNoYW5AZ21haWwuY29tIiwibmlja25hbWUiOiLsmIjssKwiLCJjcmVhdGVkQXQiOiIyMDIxLTEyLTIxVDA0OjA4OjMwLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIxLTEyLTIxVDA0OjA4OjMwLjAwMFoiLCJpYXQiOjE2NDAwNTk3NzAsImV4cCI6MTY0MDIzMjU3MH0.UBZeZKdSf-y4umJAbzYNEZE1x_YEfOh_VozhHpHrjBM; Path=/; HttpOnly; SameSite=None";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5ZWNoYW5AZ21haWwuY29tIiwibmlja25hbWUiOiLsmIjssKwiLCJjcmVhdGVkQXQiOiIyMDIxLTEyLTIxVDAxOjM2OjI0LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIxLTEyLTIxVDAxOjM2OjI0LjAwMFoiLCJpYXQiOjE2NDAwODk4MDMsImV4cCI6MTY0MDI2MjYwM30.Dlz6FQ9rdrJGyt92jfhU4phiO7AwpZzmteCAQDeiW7M";
 
   // 입력 클릭(in,out) transaction 업데이트 후 받아오기
   const userCardId = cardsId.findIndex((el) => el.name === card) + 1 || null;
@@ -130,7 +130,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
         {
           headers: {
             "Content-Type": "application/json", //
-            authorization: token,
+            authorization: `Bearer ${token}`,
           },
           // withCredentials: true,
         }
@@ -159,7 +159,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
         {
           headers: {
             "Content-Type": "application/json", //
-            authorization: token,
+            authorization: `Bearer ${token}`,
           },
           // withCredentials: true,
         }
@@ -198,7 +198,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
         {
           headers: {
             "Content-Type": "application/json", //
-            authorization: token,
+            authorization: `Bearer ${token}`,
           },
           // withCredentials: true,
         }
