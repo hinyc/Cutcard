@@ -42,6 +42,22 @@ module.exports = async (req, res) => {
           cards: userCardInfos,
           transaction: transactionInfos,
         });
+      // const modal = await userCardInfos.forEach(userCard => {
+      //   const isCut = userCard.dataValues.isCut;
+      //   const remainValue = userCard.dataValues.remainValue;
+      //   const repaymentDay = userCard.dataValues.repaymentDay;
+      //   const date = new Date().getDate();
+      //   // 다음 달 상환일이 됐을 때부터
+      //   if(isCut && remainValue === 0 && repaymentDay === date) {
+      //     return userCard
+      //   }
+      // })
+      // console.log(modal)
+      // if(!modal) {
+      //   return res.status(200).json({ "userInfo": userInfo, "cards": userCardInfos, "transaction": transactionInfos })
+      // } else {
+      //   return res.status(200).json({ "userInfo": userInfo, "cards": userCardInfos, "transaction": transactionInfos, "modal": modal })
+      // }
     }
   }
 };

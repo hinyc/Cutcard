@@ -1,8 +1,12 @@
 const { transactions } = require("./../../models");
 const { isAuthorized } = require("./../tokenFunctions");
 
+
 module.exports = async (req, res) => {
   // accessToken 확인
+  console.log('옜다응답 income!');
+  console.dir(req);
+
   const accessTokenData = await isAuthorized(req, res);
   if (!accessTokenData) {
     return res

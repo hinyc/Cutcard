@@ -20,10 +20,11 @@ module.exports = async (req, res) => {
       userCardId,
     } = req.body;
     let userCard;
-    if (!cash) {
+
+    if (!outcomeIsCash) {
       userCard = await userCards.findOne({
         where: {
-          cardId: card,
+          cardId: userCardId,
         },
       });
       userCard.dataValues.remainValue -= price;
@@ -33,7 +34,7 @@ module.exports = async (req, res) => {
         },
         {
           where: {
-            cardId: card,
+            cardId: userCardId,
           },
         }
       );

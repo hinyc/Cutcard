@@ -3,8 +3,11 @@ const { isAuthorized } = require("./../tokenFunctions");
 
 module.exports = async (req, res) => {
   // accessToken 확인
+  console.log('옜다응답!');
+
   const accessTokenData = isAuthorized(req, res);
   if (!accessTokenData) {
+
     return res
       .status(401)
       .json({ data: null, message: "invalid access token!" });
@@ -19,9 +22,9 @@ module.exports = async (req, res) => {
       userCardId,
       price,
       isIncome,
-    } = req.body; // 요청 API cash -> isCash로 수정
+    } = req.body;
     let userCard;
-    if (!isCash && card !== undefined) {
+    if (!outcomeIsCash) {
       userCard = await userCards.findOne({
         where: {
           cardId: userCardId,
@@ -46,7 +49,7 @@ module.exports = async (req, res) => {
           category,
           price,
           isIncome,
-          outcomeIsCash: isCash,
+          outcomeIsCash: outcomeIsCash,
           userId: id,
           userCardId: userCard.dataValues.cardId,
         });
@@ -67,7 +70,7 @@ module.exports = async (req, res) => {
           category,
           price,
           isIncome,
-          outcomeIsCash: isCash,
+          outcomeIsCash: outcomeIsCash,
           userId: id,
           userCardId: userCard.dataValues.cardId,
         });
@@ -89,7 +92,7 @@ module.exports = async (req, res) => {
         category,
         price,
         isIncome,
-        outcomeIsCash: isCash, // 응답 API outcomeCash -> outcomeIsCash로 수정
+        outcomeIsCash: outcomeIsCash,
         userId: id,
         userCardId: null,
         createdAt: new Date(),

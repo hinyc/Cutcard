@@ -14,6 +14,7 @@ module.exports = async (req, res) => {
       where: {
         year,
         month,
+        userId: id,
       },
     });
     res.status(200).json({ transaction: dataOfDate });
