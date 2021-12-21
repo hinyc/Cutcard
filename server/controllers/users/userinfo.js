@@ -67,11 +67,7 @@ module.exports = {
       (data) => !userCardId.includes(data[0])
     );
 
-    console.log(remainingCardId);
-    console.log(userCardId);
-    console.log(notChangingCard);
-    console.log(deleteCardList);
-    console.log(addedCardList);
+    console.log("repaymentDay", repaymentDay);
 
     if (!userInfo) {
       return res.status(401).json({ message: "invalid access token!" });
@@ -126,12 +122,11 @@ module.exports = {
       if (notChangingCard.length !== 0) {
         notChangingCard.forEach(async (data) => {
           await userCards.update(
-            { isCut: data[1] },
+            { isCut: data[1], repaymentDay: repaymentDay },
             {
               where: {
-                id: userInfo.id,
+                userId: userInfo.id,
                 cardId: data[0],
-                repaymentDay: repaymentDay,
               },
             }
           );

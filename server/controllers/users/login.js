@@ -81,6 +81,7 @@ module.exports = async (req, res) => {
           userInfo: userInfo,
           cards: userCardInfos,
           transaction: transactionInfos,
+          accessToken: accessToken,
         });
       } else {
         return res.status(200).json({
@@ -88,6 +89,7 @@ module.exports = async (req, res) => {
           cards: userCardInfos,
           transaction: transactionInfos,
           modal: cardInfos,
+          accessToken: accessToken,
         });
       }
     }

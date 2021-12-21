@@ -9,8 +9,6 @@ import AboutPage from "./pages/AboutPage";
 import LoginPage from "./pages/LoginPage";
 import MyPage from "./pages/MyPage";
 import SignUpPage from "./pages/SignUpPage";
-//!dummy
-import { newdumy } from "./dummyData";
 
 function App() {
   //테스트중 초기상태 임의지정
@@ -31,13 +29,6 @@ function App() {
   console.log("userCards", userCards);
   console.log("accessToken", accessToken);
   console.log("userInfo", userInfo);
-
-  // if (accessToken !== "") {
-  //   setIsLogin(true);
-  // }
-  useEffect(() => {
-    setIsLogin(true);
-  }, [accessToken]);
 
   return (
     <>
@@ -62,6 +53,7 @@ function App() {
           path="/login"
           element={
             <LoginPage
+              setIsLogin={setIsLogin}
               setUserCards={setUserCards}
               setUserInfo={setUserInfo}
               setAccessToken={setAccessToken}

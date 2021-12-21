@@ -25,7 +25,7 @@ function SignUpPage({ cardsList }) {
   const [selected, setSelected] = useState("");
   const [wantCut, setWantCut] = useState(false);
 
-  const [repaymentday, setRepaymentday] = useState(0);
+  const [repaymentDay, setRepaymentDay] = useState(0);
 
   const onNicknameChange = (e) => {
     setNickname(e.target.value);
@@ -78,7 +78,8 @@ function SignUpPage({ cardsList }) {
     setCards(newCards);
     const selectedData = cards.filter((obj) => obj.name === e.target.value);
     const newUserCardList = userCardList.concat(selectedData);
-    console.log(userCardList);
+    console.log(newUserCardList); // [{id, name}] => isCut 추가
+    // newUserCardList.map((obj) => {...obj, obj.isCut})
     setUserCardList(newUserCardList);
   };
 
@@ -95,7 +96,8 @@ function SignUpPage({ cardsList }) {
   const onRepaymentDaySelect = (e) => {
     const value = e.target.value;
     const repaymentDay = value.slice(0, value.length - 1);
-    setRepaymentday(Number(repaymentDay));
+    // console.log(repaymentDay);
+    setRepaymentDay(Number(repaymentDay));
   };
 
   const onWantCutCardSelect = () => {
@@ -110,11 +112,11 @@ function SignUpPage({ cardsList }) {
           email: email,
           password: password,
           nickname: nickname,
-          repaymentDay: repaymentday,
+          repaymentDay: repaymentDay,
           cards: userCardList.map((obj) => {
             return {
               id: obj.id,
-              isCut: wantCut,
+              isCut: wantCut, //! 카드별로 각 다른 상태가 들어가야함
             };
           }),
         },

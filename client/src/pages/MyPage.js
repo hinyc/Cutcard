@@ -41,7 +41,7 @@ function MyPage({
     (obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === true
   );
   const [userCardList, setUserCardList] = useState(selectedCards);
-  const [repaymentday, setRepaymentday] = useState(0);
+  const [repaymentDay, setRepaymentDay] = useState(0);
 
   const onNicknameChange = (e) => {
     setNickname(e.target.value);
@@ -94,8 +94,10 @@ function MyPage({
   const onRepaymentDaySelect = (e) => {
     const value = e.target.value;
     const repaymentDay = value.slice(0, value.length - 1);
-    userCardList.map((obj) => (obj.repaymentDay = Number(repaymentDay)));
-    setRepaymentday(Number(repaymentDay));
+    // userCardList.map((obj) => (obj.repaymentDay = Number(repaymentDay)));
+    setRepaymentDay(Number(repaymentDay));
+    console.log(repaymentDay);
+    // console.log(userCardList);
   };
 
   const onWantCutCardSelect = (obj) => {
@@ -104,28 +106,38 @@ function MyPage({
   };
 
   const onUpdateClick = () => {
-    axios
-      .patch(
-        "http://localhost:4000/users/userinfo",
-        {
-          nickname: nickname,
-          password: password,
-          repaymentDay: repaymentday,
-          cards: userCardList.map((obj) => {
-            return {
-              id: obj.id,
-              isCut: false, //!
-            };
-          }),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
+    if (password === passwordCheck) {
+      axios
+        .patch(
+          "http://localhost:4000/users/userinfo",
+          {
+            nickname: nickname,
+            password: password,
+            repaymentDay: repaymentDay,
+            cards: userCardList.map((obj) => {
+              return {
+                id: obj.id,
+                isCut: false, //!
+              };
+            }),
           },
-        }
-      )
-      .then((res) => console.log(res));
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          setAccessToken("");
+          setUserCards([]);
+          setUserInfo({});
+        })
+        .then(() => {
+          setIsLogin(false);
+        });
+    }
   };
 
   const onSignOutClick = () => {
@@ -217,7 +229,7 @@ function MyPage({
       <Select
         padding="25px 238px 9px 0"
         label="카드 상환일"
-        text="카드 상환일을 선택해주세요 (1개 선택 가능)"
+        text={`카드 상환일을 선택해주세요 (현재 ${userCards[0].repaymentDay}일)`}
         options={["1일", "5일", "10일", "15일", "20일", "25일"]} //! 해당없음?
         onChange={onRepaymentDaySelect}
       />

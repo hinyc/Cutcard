@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 import axios from "axios";
 
-function LoginPage({ setAccessToken, setUserCards, setUserInfo }) {
+function LoginPage({ setAccessToken, setUserCards, setUserInfo, setIsLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -39,9 +39,11 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo }) {
         }
       )
       .then((res) => {
+        console.log("******data*******", res);
         setUserCards(res.data.cards);
         setAccessToken(res.data.accessToken);
         setUserInfo(res.data.userInfo);
+        setIsLogin(true);
       });
   };
 
