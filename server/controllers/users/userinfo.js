@@ -43,39 +43,32 @@ module.exports = {
       },
     });
 
-    // 유저가 현재 보유한 카드 id와 제거 여부
-    const remainingCards = cards.map((data) => [data.id, data.isCut]);
-    // 유저가 현재 보유한 카드 id
-    const remainingCardId = cards.map((data) => data.id);
-    // 회원가입시 기록했던 유저 카드 목록에서 id와 제거 여부 추출
-    const userCardList = userCardInfos.map((data) => [
-      data.dataValues.cardId,
-      data.dataValues.isCut,
-    ]);
-    // 회원가입시 기록했던 유저 카드 목록에서 id만 추출
-    const userCardId = userCardInfos.map((data) => data.cardId);
-    // 회원가입시 기록했던 유저 카드 목록과 보유한 카드 목록에 중복으로 존재하는 카드의 정보
-    const notChangingCard = userCardList.filter((data) =>
-      remainingCardId.includes(data[0])
-    );
-    // 회원가입시 기록했던 유저 카드 목록에서 보유한 카드 목록과 겹치는 부분을 filter = 할당되는 배열은 제거할 카드의 정보
-    const deleteCardList = userCardList.filter(
-      (data) => !remainingCardId.includes(data[0])
-    );
-    // 보유한 카드 목록에서 회원가입시 기록했던 유저 카드 목록과 겹치는 부분을 filter = 할당되는 배열은 추가할 카드의 정보
-    const addedCardList = remainingCards.filter(
-      (data) => !userCardId.includes(data[0])
-    );
-
-    console.log(remainingCardId);
-    console.log(userCardId);
-    console.log(notChangingCard);
-    console.log(deleteCardList);
-    console.log(addedCardList);
-
     if (!userInfo) {
       return res.status(401).json({ message: "invalid access token!" });
     } else {
+      // 유저가 현재 보유한 카드 id와 제거 여부
+      const remainingCards = cards.map((data) => [data.id, data.isCut]);
+      // 유저가 현재 보유한 카드 id
+      const remainingCardId = cards.map((data) => data.id);
+      // 회원가입시 기록했던 유저 카드 목록에서 id와 제거 여부 추출
+      const userCardList = userCardInfos.map((data) => [
+        data.dataValues.cardId,
+        data.dataValues.isCut,
+      ]);
+      // 회원가입시 기록했던 유저 카드 목록에서 id만 추출
+      const userCardId = userCardInfos.map((data) => data.cardId);
+      // 회원가입시 기록했던 유저 카드 목록과 보유한 카드 목록에 중복으로 존재하는 카드의 정보
+      const notChangingCard = userCardList.filter((data) =>
+        remainingCardId.includes(data[0])
+      );
+      // 회원가입시 기록했던 유저 카드 목록에서 보유한 카드 목록과 겹치는 부분을 filter = 할당되는 배열은 제거할 카드의 정보
+      const deleteCardList = userCardList.filter(
+        (data) => !remainingCardId.includes(data[0])
+      );
+      // 보유한 카드 목록에서 회원가입시 기록했던 유저 카드 목록과 겹치는 부분을 filter = 할당되는 배열은 추가할 카드의 정보
+      const addedCardList = remainingCards.filter(
+        (data) => !userCardId.includes(data[0])
+      );
       // 수정할 nickname 존재할 때 수정
       if (nickname) {
         await users.update(

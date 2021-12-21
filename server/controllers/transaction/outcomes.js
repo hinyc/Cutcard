@@ -1,8 +1,5 @@
-
 const { transactions, userCards } = require("./../../models");
 const { isAuthorized } = require("./../tokenFunctions");
-
-
 
 module.exports = async (req, res) => {
   // accessToken 확인
@@ -28,8 +25,6 @@ module.exports = async (req, res) => {
     } = req.body;
     let userCard;
     if (!outcomeIsCash) {
-
-   
       userCard = await userCards.findOne({
         where: {
           cardId: userCardId,

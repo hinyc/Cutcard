@@ -20,6 +20,7 @@ module.exports = async (req, res) => {
       userCardId,
     } = req.body;
     let userCard;
+
     if (!outcomeIsCash) {
       userCard = await userCards.findOne({
         where: {
