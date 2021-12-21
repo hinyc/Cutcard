@@ -177,11 +177,11 @@ export const Content = (props) => {
     money,
     isCash,
     card,
-    cardId,
     deleteBox,
     modifyStateHandler,
     buttonStateHandler,
     contentDeleter,
+    isIncome,
   } = props;
   //category, price, card, cash
 
@@ -229,7 +229,7 @@ export const Content = (props) => {
           </ContentContainer>
         )}
 
-        {deleteBox ? <DeleteBox onClick={() => contentDeleter()}>×</DeleteBox> : null}
+        {deleteBox ? <DeleteBox onClick={() => contentDeleter({ category: item, card, isCash: isCash, price: money, isIncome })}>×</DeleteBox> : null}
       </ContantWrap>
     </>
   );
@@ -276,7 +276,7 @@ const InComeList = ({ year, month, inComes }) => {
 };
 
 const DetailList = (props) => {
-  const { year, month, date, detail, modifyStateHandler, buttonStateHandler, contentDeleter } = props;
+  const { year, month, date, detail, modifyStateHandler, buttonStateHandler, contentDeleter, mainState } = props;
   const { inComes, inComesTotal, outComes, outComesTotal } = detail;
 
   return (
@@ -294,6 +294,7 @@ const DetailList = (props) => {
               modifyStateHandler={modifyStateHandler}
               buttonStateHandler={buttonStateHandler}
               contentDeleter={contentDeleter}
+              isIncome={el.isIncome}
             />
           ))}
         </ContentsContainer>
@@ -313,6 +314,7 @@ const DetailList = (props) => {
               modifyStateHandler={modifyStateHandler}
               buttonStateHandler={buttonStateHandler}
               contentDeleter={contentDeleter}
+              isIncome={el.isIncome}
             />
           ))}
         </ContentsContainer>
@@ -359,7 +361,16 @@ const View = (props) => {
           />
         </ButtonContainer>
         {modifyState ? (
-          <DetailList year={year} month={month} date={date} detail={detail} modifyStateHandler={modifyStateHandler} buttonStateHandler={buttonStateHandler} contentDeleter={contentDeleter} />
+          <DetailList
+            year={year}
+            month={month}
+            date={date}
+            detail={detail}
+            mainState={mainState}
+            modifyStateHandler={modifyStateHandler}
+            buttonStateHandler={buttonStateHandler}
+            contentDeleter={contentDeleter}
+          />
         ) : mainState === 'income' ? ( //
           <InComeList year={year} month={month} inComes={inComes} />
         ) : (

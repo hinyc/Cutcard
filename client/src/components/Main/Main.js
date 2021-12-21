@@ -142,12 +142,70 @@ const Main = ({ isLogin, userCards, cardsId }) => {
       .catch((err) => console.log(err));
   };
 
+  //todo
   const calendarMover = (year, month) => {
-    console.log('move!');
+    const resDate = {
+      year,
+      month,
+    };
+
+    axios
+      .post(
+        `http://localhost:4000/transaction/date`, //
+        resDate,
+        {
+          headers: {
+            'Content-Type': 'application/json', //
+            authorization: token,
+          },
+          // withCredentials: true,
+        }
+      )
+      .then((res) => {
+        setTransaction(res.data.transaction);
+        console.log('move!', res.data.transaction);
+      })
+      .catch((err) => console.log(err));
   };
-  const contentDeleter = () => {
-    console.log('delete');
+
+  const contentDeleter = (data) => {
+    const category = data.category || null;
+    const price = data.price;
+    const isIncome = data.isIncome;
+    // console.log('isIncome', data.category ? );
+    const outcomeIsCash = data.isCash === undefined ? null : data.isCash;
+    const userCardId = data.card ? data.card.id : null;
+
+    const resData = {
+      year: targetYear,
+      month: targetMonth,
+      day: targetDate,
+      category,
+      price,
+      isIncome,
+      outcomeIsCash,
+      userCardId,
+    };
+    console.log(resData);
+    axios
+      .post(
+        `http://localhost:4000/transaction/delete`, //
+        resData,
+        {
+          headers: {
+            'Content-Type': 'application/json', //
+            authorization: token,
+          },
+          // withCredentials: true,
+        }
+      )
+      .then((res) => {
+        setTransaction(res.data.transaction);
+        console.log('delet!', res.data.transaction);
+      })
+      .catch((err) => console.log(err));
   };
+
   const contentModifiyer = () => {
     console.log('modify');
   };
@@ -175,7 +233,8 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   //Calendar
   const pickDateHandler = (year, month) => {
     setPickDate(new Date(year, month, 0));
-    calendarMover(year, month);
+
+    calendarMover(new Date(year, month, 0).getFullYear(), new Date(year, month, 0).getMonth() + 1);
   };
 
   const dateHandler = (year, month, date) => {
@@ -278,6 +337,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
           {
             category: el.category,
             price: el.price,
+            isIncome: true,
           },
         ];
         inOutDataList.detail.inComesTotal += el.price;
@@ -291,6 +351,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
             price: el.price,
             isCash: el.outcomeIsCash,
             card: cardsId[el.userCardId - 1],
+            isIncome: false,
           },
         ];
         inOutDataList.detail.outComesTotal += el.price;
