@@ -82,6 +82,7 @@ const AddInCome = (props) => {
     priceHandler,
     inputResetHandler,
     submitHandler,
+    modifyState,
   } = props;
   return (
     <>
@@ -91,15 +92,27 @@ const AddInCome = (props) => {
         </InputDate>
         <Select text="수입 카테고리" width={`200px`} options={inComeCategorys} onChange={categoryHandler} value={category} margin={'0'} />
         <Input placeholder="금액을 입력해주세요" width={`200px`} onChange={priceHandler} value={price} />
-        <SmallButton //
-          text="입력"
-          width={`200px`}
-          margin={`18px 0 0 0 `}
-          onClick={() => {
-            submitHandler();
-            inputResetHandler();
-          }}
-        />
+        {modifyState ? (
+          <SmallButton //
+            text="수정"
+            width={`200px`}
+            margin={`18px 0 0 0 `}
+            onClick={() => {
+              submitHandler('incomes');
+              inputResetHandler();
+            }}
+          />
+        ) : (
+          <SmallButton //
+            text="입력"
+            width={`200px`}
+            margin={`18px 0 0 0 `}
+            onClick={() => {
+              submitHandler('incomes');
+              inputResetHandler();
+            }}
+          />
+        )}
       </InputContainer>
     </>
   );
@@ -120,6 +133,7 @@ const AddOutCome = (props) => {
     inputResetHandler,
     userCards,
     submitHandler,
+    modifyState,
   } = props;
   const cardsList = userCards.map((el) => el.cardName);
   return (
@@ -132,81 +146,28 @@ const AddOutCome = (props) => {
         <Select text="현금, 카드" width={`200px`} onChange={cashHandler} options={['현금', '카드']} value={cash} margin={'0'} />
         <Select text="카드를 선택하세요" width={`200px`} onChange={cardHandler} options={cardsList} value={card} margin={'0'} />
         <Input placeholder="금액을 입력해주세요" width={`200px`} onChange={priceHandler} value={price} />
-        <SmallButton //
-          text="입력"
-          margin={`18px 0 0 0 `}
-          width={`200px`}
-          onClick={() => {
-            submitHandler();
-            inputResetHandler();
-          }}
-        />
+        {modifyState ? (
+          <SmallButton //
+            text="수정"
+            width={`200px`}
+            margin={`18px 0 0 0 `}
+            onClick={() => {
+              submitHandler('incomes');
+              inputResetHandler();
+            }}
+          />
+        ) : (
+          <SmallButton //
+            text="입력"
+            width={`200px`}
+            margin={`18px 0 0 0 `}
+            onClick={() => {
+              submitHandler('incomes');
+              inputResetHandler();
+            }}
+          />
+        )}
       </InputContainer>
-    </>
-  );
-};
-
-const Modify = (props) => {
-  const {
-    getDate, //
-    inComeCategorys,
-    outComeCategorys,
-    category,
-    categoryHandler,
-    cash,
-    cashHandler,
-    card,
-    cardHandler,
-    price,
-    priceHandler,
-    inputResetHandler,
-    userCards,
-    modifyState,
-    submitHandler,
-  } = props;
-  const cardsList = userCards.map((el) => el.cardName);
-
-  return (
-    <>
-      {modifyState === 'income' ? (
-        //inCome 수정
-        <InputContainer>
-          <InputDate placeholder="날짜" width={`200px`}>
-            {getDate}
-          </InputDate>
-          <Select text="수입 카테고리" width={`200px`} options={inComeCategorys} onChange={categoryHandler} value={category} margin={'0'} />
-          <Input placeholder="금액을 입력해주세요" width={`200px`} onChange={priceHandler} value={price} />
-          <SmallButton //
-            text="수정"
-            width={`200px`}
-            margin={`18px 0 0 0 `}
-            onClick={() => {
-              submitHandler();
-              inputResetHandler();
-            }}
-          />
-        </InputContainer>
-      ) : (
-        //outCome 수정
-        <InputContainer>
-          <InputDate placeholder="날짜" width={`200px`}>
-            {getDate}
-          </InputDate>
-          <Select text="지출 카테고리" width={`200px`} options={outComeCategorys} onChange={categoryHandler} value={category} margin={'0'} />
-          <Select text="현금, 카드" width={`200px`} onChange={cashHandler} options={['현금', '카드']} value={cash} margin={'0'} />
-          <Select text="카드를 선택하세요" width={`200px`} onChange={cardHandler} options={cardsList} value={card} margin={'0'} />
-          <Input placeholder="금액을 입력해주세요" width={`200px`} onChange={priceHandler} value={price} />
-          <SmallButton //
-            text="수정"
-            margin={`18px 0 0 0 `}
-            width={`200px`}
-            onClick={() => {
-              submitHandler();
-              inputResetHandler();
-            }}
-          />
-        </InputContainer>
-      )}
     </>
   );
 };
@@ -246,8 +207,9 @@ const Submit = (props) => {
             priceHandler={priceHandler}
             inputResetHandler={inputResetHandler}
             submitHandler={submitHandler}
+            modifyState={modifyState}
           />
-        ) : mainState === 'outcome' ? (
+        ) : (
           <AddOutCome //
             getDate={getDate}
             outComeCategorys={outComeCategorys}
@@ -262,26 +224,9 @@ const Submit = (props) => {
             inputResetHandler={inputResetHandler}
             userCards={userCards}
             submitHandler={submitHandler}
-          />
-        ) : mainState === 'detail' ? (
-          <Modify
-            getDate={getDate}
-            category={category}
-            inComeCategorys={inComeCategorys}
-            outComeCategorys={outComeCategorys}
-            categoryHandler={categoryHandler}
-            cash={cash}
-            cashHandler={cashHandler}
-            card={card}
-            cardHandler={cardHandler}
-            price={price}
-            priceHandler={priceHandler}
-            inputResetHandler={inputResetHandler}
-            userCards={userCards}
             modifyState={modifyState}
-            submitHandler={submitHandler}
           />
-        ) : null}
+        )}
       </SubmitContainer>
     </>
   );

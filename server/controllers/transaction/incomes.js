@@ -1,13 +1,12 @@
-const { transactions, userCards } = require("./../../models");
-const { isAuthorized } = require("./../tokenFunctions");
+const { transactions, userCards } = require('./../../models');
+const { isAuthorized } = require('./../tokenFunctions');
 
 module.exports = async (req, res) => {
-  // accessToken 확인
+  console.log('sever incomes------------');
+
   const accessTokenData = await isAuthorized(req, res);
   if (!accessTokenData) {
-    return res
-      .status(401)
-      .json({ data: null, message: "invalid access token!" });
+    return res.status(401).json({ data: null, message: 'invalid access token!' });
   } else {
     const { id } = accessTokenData;
     const { year, month, day, category, price, isIncome } = req.body;
@@ -24,11 +23,12 @@ module.exports = async (req, res) => {
       createdAt: new Date(),
       updatedAt: new Date(),
     });
+
     const incomeData = await transactions.findAll({
       include: [
         {
           model: userCards,
-          attributes: ["repaymentDay"],
+          attributes: ['repaymentDay'],
         },
       ],
       where: {
@@ -37,6 +37,7 @@ module.exports = async (req, res) => {
         userId: id,
       },
     });
+
     res.status(201).json({ transaction: incomeData });
   }
 };
