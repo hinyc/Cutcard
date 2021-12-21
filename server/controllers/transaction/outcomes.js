@@ -1,35 +1,20 @@
-
-const { transactions, userCards } = require("./../../models");
-const { isAuthorized } = require("./../tokenFunctions");
-
-
+const { transactions, userCards } = require('./../../models');
+const { isAuthorized } = require('./../tokenFunctions');
 
 module.exports = async (req, res) => {
   // accessToken 확인
-  console.log('옜다응답!');
-
+  console.log('sever outcomes----------');
   const accessTokenData = isAuthorized(req, res);
   if (!accessTokenData) {
-
-    return res
-      .status(401)
-      .json({ data: null, message: "invalid access token!" });
+    return res.status(401).json({ data: null, message: 'invalid access token!' });
   } else {
     const { id } = accessTokenData;
-    const {
-      year,
-      month,
-      day,
-      category,
-      outcomeIsCash,
-      userCardId,
-      price,
-      isIncome,
-    } = req.body;
+    const { year, month, day, category, outcomeIsCash, userCardId, price, isIncome } = req.body;
     let userCard;
-    if (!outcomeIsCash) {
+    console.log('이거', outcomeIsCash);
+    console.log('조건문안에', !outcomeIsCash);
 
-   
+    if (!outcomeIsCash) {
       userCard = await userCards.findOne({
         where: {
           cardId: userCardId,
@@ -58,16 +43,19 @@ module.exports = async (req, res) => {
           userId: id,
           userCardId: userCard.dataValues.cardId,
         });
+
         const outcomeData = await transactions.findAll({
           where: {
             year,
             month,
             userId: id,
-            isIncome,
+            // isIncome,
           },
         });
         res.status(201).json({ transaction: outcomeData });
       } else {
+        console.log('sever outcomes----------!!!');
+
         await transactions.create({
           year,
           month: month + 1,
@@ -84,7 +72,7 @@ module.exports = async (req, res) => {
             year,
             month,
             userId: id,
-            isIncome,
+            // isIncome,
           },
         });
         res.status(201).json({ transaction: outcomeData });
@@ -108,7 +96,7 @@ module.exports = async (req, res) => {
           year,
           month,
           userId: id,
-          isIncome,
+          // isIncome,
         },
       });
       res.status(201).json({ transaction: outcomeData });

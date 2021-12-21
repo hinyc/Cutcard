@@ -52,9 +52,9 @@ export const Amount = styled.div`
 const Main = ({ isLogin, userCards, cardsId }) => {
   const [leftMoney, setLeftMoney] = useState(1000000);
   //leftMoney => 해달 월 수입계 - 해당월 현금 사용 - 전월 카드사용 ?
-  const [mainState, setMainState] = useState('detail');
-  const [modifyState, setModifyState] = useState('outCome');
-  const [transaction, setResData] = useState(newdumy.transaction);
+  const [mainState, setMainState] = useState('outcome');
+  const [modifyState, setModifyState] = useState(false);
+  const [transaction, setTransaction] = useState(newdumy.transaction);
 
   // console.log(cardIds[1]);
   // Calendar
@@ -96,7 +96,11 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   };
 
   const modifyStateHandler = (state, category, price, card, cash) => {
-    setModifyState(state);
+    console.log('modify');
+    setModifyState(true);
+    if (state) {
+      setMainState(state);
+    }
     inputResetHandler(category, price, card, cash);
   };
   //Calendar
@@ -219,7 +223,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
 
   //! console tets 영역
 
-  console.log(`Render! mainState:"${mainState}" date:${getDate}`);
+  console.log(`Render! mainState:"${mainState}" modifyState:"${modifyState}" date:${getDate}`);
   // console.log('Year:', targetYear);
   // console.log('Mont:', targetMonth);
   // console.log('Day:', targetDate);
@@ -240,11 +244,11 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   //! 이벤트 발생
 
   const token =
-    'accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5ZWNoYW5AZ21haWwuY29tIiwibmlja25hbWUiOiLsmIjssKwiLCJjcmVhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjIyOjQ0LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjIyOjQ0LjAwMFoiLCJpYXQiOjE2NDAwMTA4OTIsImV4cCI6MTY0MDE4MzY5Mn0.uqKjEKAnCHsJSVkkhEe4x5bIoSMuHfKUrIIsm_rGZT0; Path=/; HttpOnly; SameSite=None';
+    'accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5ZWNoYW5AZ21haWwuY29tIiwibmlja25hbWUiOiLsmIjssKwiLCJjcmVhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjIyOjQ0LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjIyOjQ0LjAwMFoiLCJpYXQiOjE2NDAwMTE4NjcsImV4cCI6MTY0MDE4NDY2N30.moUyc-0mn6f9oEZV7b0qnuHKRfJiscC4ywRPN37xbPo; Path=/; HttpOnly; SameSite=None';
 
   // 입력 클릭(in,out) transaction 업데이트 후 받아오기
   const userCardId = cardsId.findIndex((el) => el.name === card) + 1 || null;
-  const isOutcomeCash = cash === '현금' ? true : false;
+  const outcomeIsCash = cash === '현금' ? true : false;
   const isIncome = mainState === 'income' ? true : mainState === 'outcome' ? false : null;
 
   const resData = {
@@ -252,29 +256,32 @@ const Main = ({ isLogin, userCards, cardsId }) => {
     month: targetMonth,
     day: targetDate,
     category,
-    isOutcomeCash,
+    outcomeIsCash,
     userCardId,
-    price,
+    price: Number(price),
     isIncome,
   };
 
-  const submitHandler = () => {
-    console.log('axios 요청!');
+  const submitHandler = (endPoint) => {
+    console.log('보내는거', resData);
+    console.log('?', endPoint);
+    console.log(typeof resData.price);
 
     axios
       .post(
-        'http://localhost:4000/transaction/incomes', //
+        `http://localhost:4000/transaction/${endPoint}`, //
         resData,
         {
           headers: {
             'Content-Type': 'application/json', //
-            authrization: token,
+            authorization: token,
           },
           // withCredentials: true,
         }
       )
       .then((res) => {
-        console.log(res);
+        console.log(res.data.transaction);
+        setTransaction(res.data.transaction);
         console.log(res.messege);
       })
       .catch((err) => console.log(err));
@@ -299,6 +306,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
           data={inOutDataList}
           transaction={transaction}
           modifyStateHandler={modifyStateHandler}
+          modifyState={modifyState}
         />
         <CenterContainer>
           <LeftMoney>
@@ -312,6 +320,8 @@ const Main = ({ isLogin, userCards, cardsId }) => {
             pickDateHandler={pickDateHandler}
             inOutDate={inOutDate}
             mainStateHandler={mainStateHandler}
+            setMainState={setModifyState}
+            modifyStateHandler={modifyStateHandler}
           />
         </CenterContainer>
         <Submit

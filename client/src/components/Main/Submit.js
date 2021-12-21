@@ -96,7 +96,7 @@ const AddInCome = (props) => {
           width={`200px`}
           margin={`18px 0 0 0 `}
           onClick={() => {
-            submitHandler();
+            submitHandler('incomes');
             inputResetHandler();
           }}
         />
@@ -137,7 +137,7 @@ const AddOutCome = (props) => {
           margin={`18px 0 0 0 `}
           width={`200px`}
           onClick={() => {
-            submitHandler();
+            submitHandler('outcomes');
             inputResetHandler();
           }}
         />
@@ -181,7 +181,7 @@ const Modify = (props) => {
             width={`200px`}
             margin={`18px 0 0 0 `}
             onClick={() => {
-              submitHandler();
+              submitHandler('incomes');
               inputResetHandler();
             }}
           />
@@ -201,7 +201,7 @@ const Modify = (props) => {
             margin={`18px 0 0 0 `}
             width={`200px`}
             onClick={() => {
-              submitHandler();
+              submitHandler('outcomes');
               inputResetHandler();
             }}
           />
