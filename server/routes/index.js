@@ -6,9 +6,15 @@ const { transactions, userCards } = require("./../models");
 
 const cardValuePayment = (req, res, next) => {
   cron.schedule("0 0 1,5,10,15,20,25 * *", async () => {
+    const year = new Date().getFullYear();
     const day = new Date().getDate();
     const month = new Date().getMonth();
-    const year = new Date().getFullYear();
+    if (month === 1) {
+      month = 12;
+      year -= 1;
+    } else {
+      month -= 1;
+    }
     const cardId = await userCards.findAll({
       where: {
         repaymentDay: day,
@@ -17,6 +23,7 @@ const cardValuePayment = (req, res, next) => {
     await cardId.map(async (userCards) => {
       const transaction = await transactions.findAll({
         where: {
+          userId: userCards.dataValues.userId,
           userCardId: userCards.dataValues.cardId,
           year,
           month,
@@ -30,6 +37,7 @@ const cardValuePayment = (req, res, next) => {
           },
           {
             where: {
+              userId: userCards.dataValues.userId,
               cardId: userCards.dataValues.cardId,
             },
           }

@@ -28,7 +28,7 @@ module.exports = {
     }
   },
   patch: async (req, res) => {
-    const { nickname, password, cards, repaymentday } = req.body;
+    const { nickname, password, cards, repaymentDay } = req.body;
     const accessToken = isAuthorized(req, res);
 
     const userInfo = await users.findOne({
@@ -111,7 +111,7 @@ module.exports = {
             userId: userInfo.id,
             cardId: data[0],
             isCut: data[1],
-            repaymentday: repaymentday,
+            repaymentDay: repaymentDay,
           });
         });
       }
@@ -124,7 +124,7 @@ module.exports = {
               where: {
                 id: userInfo.id,
                 cardId: data[0],
-                repaymentday: repaymentday,
+                repaymentDay: repaymentDay,
               },
             }
           );

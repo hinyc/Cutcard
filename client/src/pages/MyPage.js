@@ -15,18 +15,37 @@ const Text = styled.div`
   text-decoration: underline;
 `;
 
-function MyPage({ cardsList, userCards }) {
+function MyPage({
+  isLogin,
+  setIsLogin,
+  accessToken,
+  setAccessToken,
+  cardsList,
+  userInfo,
+  setUserInfo,
+  userCards,
+  setUserCards,
+}) {
   const [nickname, setNickname] = useState("");
 
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
 
+  console.log("MY Page", userCards);
+  const [selected, setSelected] = useState("");
   const notSelectedCards = cardsList.filter(
     (obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === false
   );
   const [cards, setCards] = useState(notSelectedCards);
-  const [userCardList, setUserCardList] = useState(userCards);
-  const [selected, setSelected] = useState("");
+  const selectedCards = cardsList.filter(
+    (obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === true
+  );
+  const [userCardList, setUserCardList] = useState(selectedCards);
+  const [repaymentday, setRepaymentday] = useState(0);
+
+  const onNicknameChange = (e) => {
+    setNickname(e.target.value);
+  };
 
   const onNicknameChange = (e) => {
     setNickname(e.target.value);
@@ -80,6 +99,7 @@ function MyPage({ cardsList, userCards }) {
     const value = e.target.value;
     const repaymentDay = value.slice(0, value.length - 1);
     userCardList.map((obj) => (obj.repaymentDay = Number(repaymentDay)));
+    setRepaymentday(Number(repaymentDay));
   };
 
   const onWantCutCardSelect = (obj) => {
@@ -87,9 +107,48 @@ function MyPage({ cardsList, userCards }) {
     setUserCardList(userCardList);
   };
 
-  // TODO: 수정 버튼
   const onUpdateClick = () => {
-    axios.patch("http://localhost:4000/users/userinfo");
+    axios
+      .patch(
+        "http://localhost:4000/users/userinfo",
+        {
+          nickname: nickname,
+          password: password,
+          repaymentDay: repaymentday,
+          cards: userCardList.map((obj) => {
+            return {
+              id: obj.id,
+              isCut: false, //!
+            };
+          }),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => console.log(res));
+  };
+
+  const onSignOutClick = () => {
+    axios
+      .delete("http://localhost:4000/users/userinfo", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setAccessToken("");
+        setUserCards([]);
+        setUserInfo({});
+      })
+      .then(() => {
+        setIsLogin(false);
+      });
   };
 
   return (
@@ -98,11 +157,17 @@ function MyPage({ cardsList, userCards }) {
       <Input
         label="닉네임"
         type="text"
-        placeholder="닉네임을 입력해주세요" //? 플레이스 홀더에 정보가 들어가있다면?
+        placeholder={userInfo.nickname}
         margin="auto"
         onChange={onNicknameChange}
       />
-      <Input label="이메일" type="text" margin="auto" readOnly={true} />
+      <Input
+        label="이메일"
+        type="text"
+        margin="auto"
+        readOnly={true}
+        value={userInfo.email}
+      />
       {/* Password */}
       <Input
         marginLabel="18px 226px 0 0"
@@ -142,8 +207,8 @@ function MyPage({ cardsList, userCards }) {
       <FlexContainer>
         {userCardList.map((obj) => (
           <CardList
-            key={obj.cardId}
-            text={obj.cardName}
+            key={obj.id}
+            text={obj.name}
             onTextClick={() => onWantCutCardSelect(obj)}
             onClick={() => onCardDelete(obj.cardId)}
             background={obj.isCut ? "#97bfb4" : "white"}
@@ -157,7 +222,7 @@ function MyPage({ cardsList, userCards }) {
         padding="25px 238px 9px 0"
         label="카드 상환일"
         text="카드 상환일을 선택해주세요 (1개 선택 가능)"
-        options={["1일", "5일", "10일", "15일", "20일", "25일"]}
+        options={["1일", "5일", "10일", "15일", "20일", "25일"]} //! 해당없음?
         onChange={onRepaymentDaySelect}
       />
       {/* Button */}
@@ -179,7 +244,7 @@ function MyPage({ cardsList, userCards }) {
       </Link>
       <Container>
         <Link to="/">
-          <Text>회원탈퇴</Text>
+          <Text onClick={onSignOutClick}>회원탈퇴</Text>
         </Link>
       </Container>
     </Container>
