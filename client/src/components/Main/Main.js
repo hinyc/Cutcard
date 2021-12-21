@@ -92,7 +92,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   //! 이벤트 발생
 
   const token =
-    "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5ZWNoYW5AZ21haWwuY29tIiwibmlja25hbWUiOiLsmIjssKwiLCJjcmVhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjIyOjQ0LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjIyOjQ0LjAwMFoiLCJpYXQiOjE2NDAwMTE4NjcsImV4cCI6MTY0MDE4NDY2N30.moUyc-0mn6f9oEZV7b0qnuHKRfJiscC4ywRPN37xbPo; Path=/; HttpOnly; SameSite=None";
+    "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5ZWNoYW5AZ21haWwuY29tIiwibmlja25hbWUiOiLsmIjssKwiLCJjcmVhdGVkQXQiOiIyMDIxLTEyLTIxVDAxOjM2OjI0LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIxLTEyLTIxVDAxOjM2OjI0LjAwMFoiLCJpYXQiOjE2NDAwNTE2NzksImV4cCI6MTY0MDIyNDQ3OX0.OxOjo_MvCRKnmnFQfyT5fX7pFSrNXUyKkwTL-OgqZGc; Path=/; HttpOnly; SameSite=None";
 
   // 입력 클릭(in,out) transaction 업데이트 후 받아오기
   const userCardId = cardsId.findIndex((el) => el.name === card) + 1 || null;
