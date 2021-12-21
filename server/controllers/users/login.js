@@ -34,14 +34,13 @@ module.exports = async (req, res) => {
 
       delete userInfo.dataValues.password;
       const accessToken = generateAccessToken(userInfo.dataValues);
-      sendAccessToken(res, accessToken);
-      return res
-        .status(200)
-        .json({
-          userInfo: userInfo,
-          cards: userCardInfos,
-          transaction: transactionInfos,
-        });
+      // sendAccessToken(res, accessToken);
+      return res.status(200).json({
+        userInfo: userInfo,
+        cards: userCardInfos,
+        transaction: transactionInfos,
+        accessToken: accessToken,
+      });
       // const modal = await userCardInfos.forEach(userCard => {
       //   const isCut = userCard.dataValues.isCut;
       //   const remainValue = userCard.dataValues.remainValue;

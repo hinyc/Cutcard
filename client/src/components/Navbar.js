@@ -72,6 +72,7 @@ function Navbar({ isLogin }) {
     axios
       .get("http://localhost:4000/users/userinfo", {
         withCredentials: true,
+        credentials: "include",
       })
       .then((res) => console.log(res));
   };
