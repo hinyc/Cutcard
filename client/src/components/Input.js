@@ -1,25 +1,25 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const LabelStyle = styled.div`
   padding: 9px;
   font-size: 16px;
   font-weight: 700;
   color: #7c8986;
-  margin: ${(props) => props.marginLabel || '18px 270px 0 0'};
+  margin: ${(props) => props.marginLabel || "18px 270px 0 0"};
 `;
 
 const InputStyle = styled.input`
   box-sizing: border-box;
   display: block;
-  height: ${(props) => props.height || '40px'};
-  width: ${(props) => props.width || '335px'};
+  height: ${(props) => props.height || "40px"};
+  width: ${(props) => props.width || "335px"};
   padding-left: 13px;
   font-size: 16px;
   border: 1px solid #bfc5c4;
   border-radius: 5px;
   color: #7c8986;
-  margin: ${(props) => props.margin || '0'};
+  margin: ${(props) => props.margin || "0"};
 
   ::-webkit-input-placeholder {
     color: #bfc5c4;
@@ -49,11 +49,11 @@ const EmailExist = styled.button`
   background-color: #97bfb4;
   font-size: 16px;
   border-radius: 5px;
-  opacity: ${(props) => props.opacity || '100%'};
+  opacity: ${(props) => props.opacity || "100%"};
 
   &:hover {
-    cursor: ${(props) => props.cursor || 'pointer'};
-    opacity: ${(props) => props.hoverOpacity || '80%'};
+    cursor: ${(props) => props.cursor || "pointer"};
+    opacity: ${(props) => props.hoverOpacity || "80%"};
   }
 
   &:active {
@@ -72,12 +72,29 @@ const EmailContainer = styled.div`
 export const Notification = styled.div`
   font-size: 12px;
   font-weight: 700;
-  color: ${(props) => props.color || '#6B95FF'};
-  margin: ${(props) => props.margin || '4px 170px 0 0'};
+  color: ${(props) => props.color || "#6B95FF"};
+  margin: ${(props) => props.margin || "4px 170px 0 0"};
 `;
 
 export function EmailInput(props) {
-  const { label, type, placeholder, readOnly, width, height, margin, marginLabel, value, onChange, onFocus, onClick, disabled, opacity, hoverOpacity, cursor } = props;
+  const {
+    label,
+    type,
+    placeholder,
+    readOnly,
+    width,
+    height,
+    margin,
+    marginLabel,
+    value,
+    onChange,
+    onFocus,
+    onClick,
+    disabled,
+    opacity,
+    hoverOpacity,
+    cursor,
+  } = props;
 
   return (
     <>
@@ -95,7 +112,13 @@ export function EmailInput(props) {
           onChange={onChange}
           onFocus={onFocus}
         />
-        <EmailExist onClick={onClick} disabled={disabled} opacity={opacity} hoverOpacity={hoverOpacity} cursor={cursor}>
+        <EmailExist
+          onClick={onClick}
+          disabled={disabled}
+          opacity={opacity}
+          hoverOpacity={hoverOpacity}
+          cursor={cursor}
+        >
           중복 확인
         </EmailExist>
       </EmailContainer>
@@ -104,7 +127,20 @@ export function EmailInput(props) {
 }
 
 export function Input(props) {
-  const { label, type, placeholder, readOnly, width, height, value, margin, marginLabel, onChange, min, max } = props;
+  const {
+    label,
+    type,
+    placeholder,
+    readOnly,
+    width,
+    height,
+    value,
+    margin,
+    marginLabel,
+    onChange,
+    min,
+    max,
+  } = props;
 
   return (
     <>
@@ -126,7 +162,14 @@ export function Input(props) {
   );
 }
 
-export function LoginInput({ label, type, placeholder, readOnly, margin }) {
+export function LoginInput({
+  label,
+  type,
+  placeholder,
+  readOnly,
+  margin,
+  onChange,
+}) {
   return (
     <>
       <LabelStyle>{label}</LabelStyle>
@@ -137,6 +180,34 @@ export function LoginInput({ label, type, placeholder, readOnly, margin }) {
         readOnly={readOnly}
         height="50px"
         margin={margin}
+        onChange={onChange}
+
+      />
+    </>
+  );
+}
+
+export function PasswordInput({
+  label,
+  type,
+  placeholder,
+  readOnly,
+  margin,
+  onChange,
+  onKeyPress,
+}) {
+  return (
+    <>
+      <LabelStyle>{label}</LabelStyle>
+      <InputStyle
+        type={type}
+        placeholder={placeholder}
+        spellCheck="false" // always
+        readOnly={readOnly}
+        height="50px"
+        margin={margin}
+        onChange={onChange}
+        onKeyPress={onKeyPress}
       />
     </>
   );
