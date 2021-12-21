@@ -9,6 +9,7 @@ module.exports = async (req, res) => {
     const { id } = accessTokenData;
     const { year, month, day, category, price, isIncome, outcomeIsCash, userCardId } = req.body;
     let userCard;
+
     if (!outcomeIsCash) {
       userCard = await userCards.findOne({
         where: {

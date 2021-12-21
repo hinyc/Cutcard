@@ -78,7 +78,6 @@ function SignUpPage({ cardsList }) {
     setCards(newCards);
     const selectedData = cards.filter((obj) => obj.name === e.target.value);
     const newUserCardList = userCardList.concat(selectedData);
-    console.log(userCardList);
     setUserCardList(newUserCardList);
   };
 
