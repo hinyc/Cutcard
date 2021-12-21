@@ -138,6 +138,8 @@ export function Input(props) {
     margin,
     marginLabel,
     onChange,
+    min,
+    max,
   } = props;
 
   return (
@@ -145,6 +147,8 @@ export function Input(props) {
       <LabelStyle marginLabel={marginLabel}>{label}</LabelStyle>
       <InputStyle
         type={type}
+        min={min}
+        max={max}
         placeholder={placeholder}
         spellCheck="false" // always
         readOnly={readOnly}

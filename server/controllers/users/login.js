@@ -1,6 +1,7 @@
-const { users } = require("../../models");
+const { users, cards } = require("../../models");
 const { userCards } = require("../../models");
 const { transactions } = require("../../models");
+const { Op } = require("sequelize");
 const { generateAccessToken, sendAccessToken } = require("../tokenFunctions");
 
 module.exports = async (req, res) => {
@@ -34,28 +35,61 @@ module.exports = async (req, res) => {
 
       delete userInfo.dataValues.password;
       const accessToken = generateAccessToken(userInfo.dataValues);
-      // sendAccessToken(res, accessToken)
-      return res.status(200).json({
-        userInfo: userInfo,
-        cards: userCardInfos,
-        transaction: transactionInfos,
-        accessToken: accessToken,
+      sendAccessToken(res, accessToken);
+      // return res
+      //   .status(200)
+      //   .json({
+      //     userInfo: userInfo,
+      //     cards: userCardInfos,
+      //     transaction: transactionInfos,
+      //   });
+
+      const cardInfos = await userCards.findAll({
+        include: cards,
+        where: {
+          userId: userInfo.id,
+          remainValue: {
+            [Op.eq]: 0,
+          },
+          isCut: {
+            [Op.is]: true,
+          },
+          createdAt: {
+            [Op.gte]: new Date("2021/12/20"),
+          },
+        },
       });
-      // const modal = await userCardInfos.forEach(userCard => {
-      //   const isCut = userCard.dataValues.isCut;
-      //   const remainValue = userCard.dataValues.remainValue;
-      //   const repaymentDay = userCard.dataValues.repaymentDay;
-      //   const date = new Date().getDate();
-      //   if(isCut && remainValue === 0 && repaymentDay === date) {
-      //     return userCard
-      //   }
-      // })
-      // console.log(modal)
-      // if(!modal) {
-      //   return res.status(200).json({ "userInfo": userInfo, "cards": userCardInfos, "transaction": transactionInfos })
-      // } else {
-      //   return res.status(200).json({ "userInfo": userInfo, "cards": userCardInfos, "transaction": transactionInfos, "modal": modal })
-      // }
+      console.log(cardInfos);
+
+      const cardIds = userCardInfos.filter((userCard) => {
+        const isCut = userCard.dataValues.isCut;
+        const remainValue = userCard.dataValues.remainValue;
+        const repaymentDay = userCard.dataValues.repaymentDay;
+        const createdMonth = new Date(userCard.dataValues.createdAt).getMonth();
+        const createdYear = new Date(
+          userCard.dataValues.createdAt
+        ).getFullYear();
+        const date = new Date();
+        const test = new Date("2021/12/20");
+        // 다음 달 상환일이 됐을 때부터
+        if (isCut && remainValue === 0 && test <= date) {
+          return userCard.dataValues;
+        }
+      });
+      if (!cardInfos) {
+        return res.status(200).json({
+          userInfo: userInfo,
+          cards: userCardInfos,
+          transaction: transactionInfos,
+        });
+      } else {
+        return res.status(200).json({
+          userInfo: userInfo,
+          cards: userCardInfos,
+          transaction: transactionInfos,
+          modal: cardInfos,
+        });
+      }
     }
   }
 };

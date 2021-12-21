@@ -1,6 +1,6 @@
-import { useState } from "react";
-import styled from "styled-components";
-import { SmallButton } from "../Button";
+import { useState } from 'react';
+import styled from 'styled-components';
+import { SmallButton } from '../Button';
 
 export const ViewContainer = styled.div`
   box-sizing: border-box;
@@ -44,27 +44,27 @@ export const ListContainer = styled.div`
 export const TotalMoneyContainer = styled.div`
   width: 150px;
   line-height: 50px;
-  color: ${(props) => props.color || "#7c8986"};
+  color: ${(props) => props.color || '#7c8986'};
   font-weight: 700;
   text-align: right;
   margin: 30px 0;
   position: absolute;
   right: 50px;
-  top: ${(props) => props.top || "360px"};
+  top: ${(props) => props.top || '360px'};
 `;
 
 //!SubTitle
 export const SubtitleContainer = styled.div`
   color: #7c8986;
   position: absolute;
-  top: ${(props) => props.top || "20px"};
-  left: ${(props) => props.left || "49px"};
+  top: ${(props) => props.top || '20px'};
+  left: ${(props) => props.left || '49px'};
 `;
 
 //!Content
 //s!!!
 export const ContentsContainer = styled.div`
-  height: ${(props) => props.height || "300px"};
+  height: ${(props) => props.height || '300px'};
   color: #97bfb4;
   font-weight: 500;
   display: flex;
@@ -72,7 +72,7 @@ export const ContentsContainer = styled.div`
   justify-content: flex-start;
   overflow: auto;
   position: absolute;
-  top: ${(props) => props.top || "50px"};
+  top: ${(props) => props.top || '50px'};
 `;
 
 export const ContantWrap = styled.div`
@@ -111,20 +111,20 @@ export const ContentContainerActive = styled.div`
 
 export const ItemContainer = styled.div`
   text-align: left;
-  width: 100px;
+  width: 90px;
   left: 50px;
   position: absolute;
 `;
 export const MoneyContainer = styled.div`
   text-align: right;
-  width: 100px;
+  width: 110px;
   right: 0px;
   position: absolute;
 `;
 
 export const CashCard = styled.div`
   box-sizing: border-box;
-  background-color: ${(props) => props.backgroundColor || "blue"};
+  background-color: ${(props) => props.backgroundColor || 'blue'};
   border-radius: 10px;
   text-align: center;
   height: 16px;
@@ -168,9 +168,7 @@ export const Item = ({ item }) => {
 };
 
 export const Money = ({ money }) => {
-  return (
-    <MoneyContainer>{`${money.toLocaleString("ko-KR")} 원`}</MoneyContainer>
-  );
+  return <MoneyContainer>{`${money.toLocaleString('ko-KR')} 원`}</MoneyContainer>;
 };
 
 export const Content = (props) => {
@@ -179,44 +177,59 @@ export const Content = (props) => {
     money,
     isCash,
     card,
-    cardId,
     deleteBox,
     modifyStateHandler,
+    buttonStateHandler,
+    contentDeleter,
+    isIncome,
   } = props;
   //category, price, card, cash
+
   return (
     <>
       <ContantWrap>
-        {isCash === undefined ? (
-          <ContentContainerActive
-            onClick={() => modifyStateHandler("income", item, money)}
-          >
-            <Item item={item} />
-            <Money money={money} />
-          </ContentContainerActive>
-        ) : isCash ? (
-          <ContentContainerActive
-            onClick={() =>
-              modifyStateHandler("outcome", item, money, card, isCash)
-            }
-          >
-            <CashCard backgroundColor={`green`}>현금</CashCard>
-            <Item item={item} />
-            <Money money={money} />
-          </ContentContainerActive>
+        {deleteBox ? (
+          isCash === undefined ? (
+            <ContentContainerActive
+              onClick={() => {
+                modifyStateHandler('income', item, money);
+                buttonStateHandler(true);
+              }}
+            >
+              <Item item={item} />
+              <Money money={money} />
+            </ContentContainerActive>
+          ) : isCash ? (
+            <ContentContainerActive
+              onClick={() => {
+                modifyStateHandler('outcome', item, money, card, isCash);
+                buttonStateHandler(true);
+              }}
+            >
+              <CashCard backgroundColor={`green`}>현금</CashCard>
+              <Item item={item} />
+              <Money money={money} />
+            </ContentContainerActive>
+          ) : (
+            <ContentContainerActive
+              onClick={() => {
+                modifyStateHandler('outcome', item, money, card, isCash);
+                buttonStateHandler(true);
+              }}
+            >
+              <CashCard backgroundColor={`blue`}>{card.name.slice(0, 2)}</CashCard>
+              <Item item={item} />
+              <Money money={money} />
+            </ContentContainerActive>
+          )
         ) : (
-          <ContentContainerActive
-            onClick={() =>
-              modifyStateHandler("outcome", item, money, card, isCash)
-            }
-          >
-            <CashCard backgroundColor={`blue`}>{card.slice(0, 2)}</CashCard>
+          <ContentContainer>
             <Item item={item} />
             <Money money={money} />
-          </ContentContainerActive>
+          </ContentContainer>
         )}
 
-        {deleteBox ? <DeleteBox>×</DeleteBox> : null}
+        {deleteBox ? <DeleteBox onClick={() => contentDeleter({ category: item, card, isCash: isCash, price: money, isIncome })}>×</DeleteBox> : null}
       </ContantWrap>
     </>
   );
@@ -227,11 +240,7 @@ export const SubTitle = ({ title, top }) => {
 };
 
 export const TotalMoney = ({ totalMoney, top, color }) => {
-  return (
-    <TotalMoneyContainer top={top} color={color}>{`${totalMoney.toLocaleString(
-      "ko-KR"
-    )} 원`}</TotalMoneyContainer>
-  );
+  return <TotalMoneyContainer top={top} color={color}>{`${totalMoney.toLocaleString('ko-KR')} 원`}</TotalMoneyContainer>;
 };
 
 const OutComeList = ({ year, month, outComes }) => {
@@ -267,7 +276,7 @@ const InComeList = ({ year, month, inComes }) => {
 };
 
 const DetailList = (props) => {
-  const { year, month, date, detail, modifyStateHandler } = props;
+  const { year, month, date, detail, modifyStateHandler, buttonStateHandler, contentDeleter, mainState } = props;
   const { inComes, inComesTotal, outComes, outComesTotal } = detail;
 
   return (
@@ -283,6 +292,9 @@ const DetailList = (props) => {
               money={el.price}
               deleteBox={true}
               modifyStateHandler={modifyStateHandler}
+              buttonStateHandler={buttonStateHandler}
+              contentDeleter={contentDeleter}
+              isIncome={el.isIncome}
             />
           ))}
         </ContentsContainer>
@@ -300,6 +312,9 @@ const DetailList = (props) => {
               cardId={el.cardId}
               deleteBox={true}
               modifyStateHandler={modifyStateHandler}
+              buttonStateHandler={buttonStateHandler}
+              contentDeleter={contentDeleter}
+              isIncome={el.isIncome}
             />
           ))}
         </ContentsContainer>
@@ -319,6 +334,9 @@ const View = (props) => {
     data,
     transaction,
     modifyStateHandler,
+    modifyState,
+    buttonStateHandler,
+    contentDeleter,
   } = props;
   const { inComes, outComes, detail } = data;
   return (
@@ -328,27 +346,36 @@ const View = (props) => {
           <SmallButton
             text={`수입`}
             width="80px"
-            onClick={() => mainStateHandler("income")}
+            onClick={() => {
+              mainStateHandler('income', false);
+              buttonStateHandler(false);
+            }}
           />
           <SmallButton
             text={`지출`}
             width="80px"
-            onClick={() => mainStateHandler("outcome")}
+            onClick={() => {
+              mainStateHandler('outcome', false);
+              buttonStateHandler(false);
+            }}
           />
         </ButtonContainer>
-        {mainState === "income" ? ( //
-          <InComeList year={year} month={month} inComes={inComes} />
-        ) : mainState === "outcome" ? (
-          <OutComeList year={year} month={month} outComes={outComes} />
-        ) : mainState === "detail" ? (
+        {modifyState ? (
           <DetailList
             year={year}
             month={month}
             date={date}
             detail={detail}
+            mainState={mainState}
             modifyStateHandler={modifyStateHandler}
+            buttonStateHandler={buttonStateHandler}
+            contentDeleter={contentDeleter}
           />
-        ) : null}
+        ) : mainState === 'income' ? ( //
+          <InComeList year={year} month={month} inComes={inComes} />
+        ) : (
+          <OutComeList year={year} month={month} outComes={outComes} />
+        )}
       </ViewContainer>
     </>
   );

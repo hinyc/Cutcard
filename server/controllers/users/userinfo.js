@@ -5,7 +5,6 @@ const { isAuthorized } = require("../tokenFunctions");
 
 module.exports = {
   get: async (req, res) => {
-    console.log(req.headers);
     const accessToken = isAuthorized(req, res);
 
     const userInfo = await users.findOne({
