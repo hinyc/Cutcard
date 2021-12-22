@@ -8,6 +8,7 @@ import CardList from "../components/CardList";
 import { FlexContainer } from "../components/Common";
 import styled from "styled-components";
 import axios from "axios";
+import { useBeforeunload } from "react-beforeunload";
 
 const Text = styled.div`
   font-size: 14px;
@@ -16,7 +17,6 @@ const Text = styled.div`
 `;
 
 function MyPage({
-  isLogin,
   setIsLogin,
   accessToken,
   setAccessToken,
@@ -158,6 +158,8 @@ function MyPage({
         setIsLogin(false);
       });
   };
+
+  useBeforeunload((event) => event.preventDefault());
 
   return (
     <Container>

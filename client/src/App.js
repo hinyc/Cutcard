@@ -72,6 +72,7 @@ function App() {
           path="/login"
           element={
             <LoginPage
+              isLogin={isLogin}
               setIsLogin={setIsLogin}
               setUserCards={setUserCards}
               setUserInfo={setUserInfo}
