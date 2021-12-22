@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { LoginInput, PasswordInput } from "../components/Input";
-import { BigButton } from "../components/Button";
-import { Container, Title } from "../components/Common";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { LoginInput, PasswordInput } from '../components/Input';
+import { BigButton } from '../components/Button';
+import { Container, Title } from '../components/Common';
+import { Link } from 'react-router-dom';
 
-import axios from "axios";
+import axios from 'axios';
 
-function LoginPage({ setAccessToken, setUserCards, setUserInfo }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+function LoginPage({ setAccessToken, setUserCards, setUserInfo, setTransaction }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const onEmailChange = (e) => {
     setEmail(e.target.value);
@@ -25,7 +25,7 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo }) {
 
     axios
       .post(
-        "http://localhost:4000/users/login",
+        'http://localhost:4000/users/login',
         {
           email: email,
           password: password,
@@ -34,7 +34,7 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo }) {
         },
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         }
       )
@@ -42,6 +42,7 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo }) {
         setUserCards(res.data.cards);
         setAccessToken(res.data.accessToken);
         setUserInfo(res.data.userInfo);
+        setTransaction(res.data.transaction);
       });
   };
 
@@ -55,13 +56,7 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo }) {
   return (
     <Container>
       <Title margin="66px 0 53px 0" text="로그인" />
-      <LoginInput
-        label="이메일"
-        type="text"
-        placeholder="이메일을 입력해주세요"
-        margin="auto"
-        onChange={onEmailChange}
-      />
+      <LoginInput label="이메일" type="text" placeholder="이메일을 입력해주세요" margin="auto" onChange={onEmailChange} />
       <PasswordInput
         label="비밀번호"
         type="password"
@@ -74,13 +69,7 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo }) {
         <BigButton text="로그인" margin="12px auto" onClick={onLoginClick} />
       </Link>
       <Link to="/signup">
-        <BigButton
-          text="회원가입"
-          background="white"
-          color="#97BFB4"
-          border="1px solid #97BFB4"
-          margin="0 auto 50px auto"
-        />
+        <BigButton text="회원가입" background="white" color="#97BFB4" border="1px solid #97BFB4" margin="0 auto 50px auto" />
       </Link>
     </Container>
   );

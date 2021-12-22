@@ -164,3 +164,24 @@ export function PasswordInput({ label, type, placeholder, readOnly, margin, onCh
     </>
   );
 }
+
+export const PriceInput = (props) => {
+  const { type, placeholder, readOnly, width, height, value, margin, onChange, min, max, position, bottom } = props;
+  return (
+    <InputStyle
+      type={type}
+      min={min}
+      max={max}
+      placeholder={placeholder}
+      spellCheck="false" // always
+      readOnly={readOnly}
+      width={width}
+      height={height}
+      margin={margin}
+      value={value}
+      onChange={onChange}
+      position={position}
+      bottom={bottom}
+    />
+  );
+};

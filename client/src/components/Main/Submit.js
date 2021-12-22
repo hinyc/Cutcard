@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { Input } from '../Input';
+import { PriceInput } from '../Input';
 import { SmallButton } from '../Button';
-import { InputSelect, Select } from '../Select';
+import { Select } from '../Select';
 
 //! Right
 export const SubmitContainer = styled.div`
@@ -28,8 +28,8 @@ export const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: absolute;
-  top: 130px;
+  /* position: absolute;
+  top: 130px; */
 `;
 
 export const InputDate = styled.div`
@@ -43,6 +43,7 @@ export const InputDate = styled.div`
   color: #7c8986;
   text-align: left;
   line-height: 40px;
+  margin-top: 130px;
 
   ::-webkit-input-placeholder {
     color: #bfc5c4;
@@ -73,11 +74,17 @@ const wrap = styled.div`
   margin: ${(props) => props.margin || '0'};
 `;
 const RequestMessage = styled.div`
+  box-sizing: border-box;
+  padding-left: 15px;
   color: #ff6b6b;
+  width: 200px;
+  text-align: left;
+  line-height: 14px;
+
   font-size: 14px;
   font-weight: 700;
-  position: absolute;
-  bottom: 150px;
+  /* position: absolute;
+  bottom: 150px; */
 `;
 
 const AddInCome = (props) => {
@@ -107,7 +114,7 @@ const AddInCome = (props) => {
           options={inComeCategorys}
           onChange={categoryHandler}
           value={category}
-          margin={`15px 0 10px 0`}
+          margin={`10px 0 10px 0`}
           padding={`0`}
         />
       </InputContainer>
@@ -135,7 +142,8 @@ const AddOutCome = (props) => {
     requestMessage,
   } = props;
   const cardsList = userCards.map((el) => el.cardName);
-
+  console.log(cash);
+  console.log(cash === '카드' ? `40px` : `0px`);
   return (
     <>
       <InputContainer>
@@ -148,7 +156,7 @@ const AddOutCome = (props) => {
           options={outComeCategorys}
           onChange={categoryHandler}
           value={category}
-          margin={`15px 0 10px 0`}
+          margin={`10px 0 10px 0`}
           padding={`0`}
         />
         <Select
@@ -160,17 +168,20 @@ const AddOutCome = (props) => {
           margin={`0 0 10px 0`}
           padding={`0`}
         />
-        {cash === '카드' ? ( //
-          <Select
-            text="카드 목록" //
-            width={`200px`}
-            onChange={cardHandler}
-            options={cardsList}
-            value={card}
-            margin={`0 0 10px 0`}
-            padding={`0`}
-          />
-        ) : null}
+        {/* {cash === '카드' ? ( // */}
+        <Select
+          text="카드 목록" //
+          width={`200px`}
+          thisHeight={cash === '카드' ? `40px` : `0px`}
+          border={cash === '카드' ? `` : `none`}
+          onChange={cardHandler}
+          options={cardsList}
+          value={card}
+          margin={cash === '카드' ? `0 0 10px 0` : `0`}
+          padding={`0`}
+          transition={`.2s`}
+        />
+        {/* ) : null} */}
       </InputContainer>
     </>
   );
@@ -241,7 +252,7 @@ const Submit = (props) => {
           />
         )}
 
-        <Input
+        <PriceInput
           placeholder="금액을 입력해주세요" //
           width={`200px`}
           onChange={priceHandler}
@@ -249,18 +260,18 @@ const Submit = (props) => {
           type={`number`}
           min={`0`}
           max={`999999999`}
-          position={`absolute`}
-          bottom={`170px`}
+          labelHeight={`0px`}
+          margin={`0 0 5px 0`}
+          // position={`absolute`}
+          // bottom={`170px`}
         />
-
         <RequestMessage>{requestMessage}</RequestMessage>
-
         <SmallButton //
           text={buttonModifyState ? '수정' : '입력'}
           width={`200px`}
-          margin={`18px 0 0 0 `}
-          position={`absolute`}
-          bottom={`110px`}
+          margin={`5px 0 0 0 `}
+          // position={`absolute`}
+          // bottom={`110px`}
           onClick={buttonModifyState ? contentModifiyer : () => submitHandler(mainState)}
         />
       </SubmitContainer>
