@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Input, EmailInput, Notification } from "../components/Input";
 import { BigButton } from "../components/Button";
 import { Container, Title } from "../components/Common";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CardSelect, Select } from "../components/Select";
 import CardList from "../components/CardList";
 import { FlexContainer } from "../components/Common";
@@ -24,6 +24,8 @@ function SignUpPage({ cardsList }) {
   const [userCardList, setUserCardList] = useState([]);
   const [selected, setSelected] = useState("");
   const [repaymentDay, setRepaymentDay] = useState(0);
+
+  const navigate = useNavigate();
 
   const onNicknameChange = (e) => {
     setNickname(e.target.value);
@@ -130,7 +132,14 @@ function SignUpPage({ cardsList }) {
           },
         }
       )
-      .then((res) => console.log(res));
+      .then((res) => {
+        console.log(res);
+        navigate("/login");
+      });
+  };
+
+  const onCancelClick = () => {
+    navigate("/");
   };
 
   return (
@@ -233,22 +242,20 @@ function SignUpPage({ cardsList }) {
         margin="0"
       />
       {/* Button */}
-      <Link to="/login">
-        <BigButton
-          text="가입하기"
-          margin="28px auto 12px auto"
-          onClick={onSignUpClick}
-        />
-      </Link>
-      <Link to="/">
-        <BigButton
-          text="취소"
-          background="white"
-          color="#97BFB4"
-          border="1px solid #97BFB4"
-          margin="0 auto 50px auto"
-        />
-      </Link>
+
+      <BigButton
+        text="가입하기"
+        margin="28px auto 12px auto"
+        onClick={onSignUpClick}
+      />
+      <BigButton
+        text="취소"
+        background="white"
+        color="#97BFB4"
+        border="1px solid #97BFB4"
+        margin="0 auto 50px auto"
+        onClick={onCancelClick}
+      />
     </Container>
   );
 }
