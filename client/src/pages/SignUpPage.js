@@ -23,7 +23,6 @@ function SignUpPage({ cardsList }) {
   const [cards, setCards] = useState(cardsList);
   const [userCardList, setUserCardList] = useState([]);
   const [selected, setSelected] = useState("");
-  const [wantCut, setWantCut] = useState(false);
   const [repaymentDay, setRepaymentDay] = useState(0);
 
   const onNicknameChange = (e) => {
@@ -31,6 +30,7 @@ function SignUpPage({ cardsList }) {
   };
 
   const onEmailChange = (e) => {
+    setIsEmailBtnClick(false);
     const emailValidator =
       /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     const result = emailValidator.test(e.target.value);
@@ -224,7 +224,6 @@ function SignUpPage({ cardsList }) {
             xColor={obj.isCut ? "white" : "#97bfb4"}
           />
         ))}
-        <div>삭제를 목표로 한다면 카드 이름을 클릭해주세요.</div>
       </FlexContainer>
       <Select
         label="카드 상환일"

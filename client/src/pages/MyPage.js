@@ -84,7 +84,6 @@ function MyPage({
       name: deletedCard[0].name,
     });
     updateCards.sort((a, b) => a.id - b.id);
-    console.log("updateCards", updateCards);
     setCards(updateCards);
 
     const updateUserCardList = userCardList.filter((obj) => obj.id !== id);
@@ -95,7 +94,6 @@ function MyPage({
     const value = e.target.value;
     const repaymentDay = value.slice(0, value.length - 1);
     setRepaymentDay(Number(repaymentDay));
-    console.log(repaymentDay);
   };
 
   const onWantCutCardSelect = (e) => {
@@ -105,19 +103,9 @@ function MyPage({
     selected.isCut = !selected.isCut;
     userCardList[index] = selected;
     setUserCardList([...userCardList]);
-    console.log("userCardList click", userCardList);
   };
 
   const onUpdateClick = () => {
-    console.log(
-      "userCardList update",
-      userCardList.map((obj) => {
-        return {
-          id: obj.id,
-          isCut: obj.isCut,
-        };
-      })
-    );
     if (password === passwordCheck) {
       axios
         .patch(
