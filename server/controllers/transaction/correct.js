@@ -23,8 +23,9 @@ module.exports = async (req, res) => {
     } = req.body;
     // 수정 필요 항목
     let userCard;
+    console.log("correct body", req.body);
 
-    if (!outcomeIsCash) {
+    if (!outcomeIsCash && userCardId !== null) {
       userCard = await userCards.findOne({
         where: {
           cardId: userCardId,
@@ -73,24 +74,10 @@ module.exports = async (req, res) => {
       });
       res.status(200).json({ transaction: correctDate });
     } else {
+      console.log("들어오니?");
       await transactions.update(
-        {
-          year,
-          month,
-          day,
-          category: newCategory,
-          price: newPrice,
-        },
-        {
-          where: {
-            year,
-            month,
-            day,
-            category,
-            price,
-            userId: id,
-          },
-        }
+        { category: newCategory, price: newPrice },
+        { where: { year, month, day, category, price, userId: id } }
       );
       const correctDate = await transactions.findAll({
         where: {

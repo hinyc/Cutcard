@@ -19,7 +19,6 @@ module.exports = async (req, res) => {
       outcomeIsCash,
       userCardId,
     } = req.body;
-    console.log(req.body);
     let userCard;
 
     if (!outcomeIsCash && !isIncome) {
