@@ -28,7 +28,7 @@ module.exports = {
     }
   },
   patch: async (req, res) => {
-    const { nickname, password, cards, repaymentday } = req.body;
+    const { nickname, password, cards, repaymentDay } = req.body;
     const accessToken = isAuthorized(req, res);
 
     const userInfo = await users.findOne({
@@ -111,7 +111,7 @@ module.exports = {
             userId: userInfo.id,
             cardId: data[0],
             isCut: data[1],
-            repaymentday: repaymentday,
+            repaymentDay: repaymentDay,
           });
         });
       }
@@ -119,12 +119,11 @@ module.exports = {
       if (notChangingCard.length !== 0) {
         notChangingCard.forEach(async (data) => {
           await userCards.update(
-            { isCut: data[1] },
+            { isCut: data[1], repaymentDay: repaymentDay },
             {
               where: {
-                id: userInfo.id,
+                userId: userInfo.id,
                 cardId: data[0],
-                repaymentday: repaymentday,
               },
             }
           );

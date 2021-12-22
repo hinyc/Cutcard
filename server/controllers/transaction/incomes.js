@@ -1,12 +1,7 @@
-const { transactions } = require("./../../models");
+const { transactions, userCards } = require("./../../models");
 const { isAuthorized } = require("./../tokenFunctions");
 
-
 module.exports = async (req, res) => {
-  // accessToken 확인
-  console.log('옜다응답 income!');
-  console.dir(req);
-
   const accessTokenData = await isAuthorized(req, res);
   if (!accessTokenData) {
     return res
@@ -28,14 +23,21 @@ module.exports = async (req, res) => {
       createdAt: new Date(),
       updatedAt: new Date(),
     });
+
     const incomeData = await transactions.findAll({
+      include: [
+        {
+          model: userCards,
+          attributes: ["repaymentDay"],
+        },
+      ],
       where: {
         year,
         month,
         userId: id,
-        isIncome,
       },
     });
+
     res.status(201).json({ transaction: incomeData });
   }
 };

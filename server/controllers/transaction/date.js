@@ -9,7 +9,8 @@ module.exports = async (req, res) => {
       .status(401)
       .json({ data: null, message: "Invalid access token!" });
   } else {
-    const { year, month } = req.body; // 이후 수정
+    const { id } = accessTokenData;
+    const { year, month } = req.body;
     const dataOfDate = await transactions.findAll({
       where: {
         year,
@@ -17,6 +18,8 @@ module.exports = async (req, res) => {
         userId: id,
       },
     });
+    console.log(`res 3`);
+    console.log(dataOfDate.length);
     res.status(200).json({ transaction: dataOfDate });
   }
 };

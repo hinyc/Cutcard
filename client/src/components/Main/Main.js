@@ -49,14 +49,14 @@ export const Amount = styled.div`
   font-size: 26px; ;
 `;
 
-const Main = ({ isLogin, userCards, cardsId }) => {
+const Main = ({ isLogin, userCards, cardsId, accessToken }) => {
   const [leftMoney, setLeftMoney] = useState(1000000);
   //leftMoney => 해달 월 수입계 - 해당월 현금 사용 - 전월 카드사용 ?
-  const [mainState, setMainState] = useState('detail');
-  const [modifyState, setModifyState] = useState('outCome');
-  const [transaction, setResData] = useState(newdumy.transaction);
-
-  // console.log(cardIds[1]);
+  const [mainState, setMainState] = useState('outcome');
+  const [modifyState, setModifyState] = useState(false);
+  const [buttonModifyState, setButtonModifyState] = useState(false);
+  const [transaction, setTransaction] = useState(newdumy.transaction);
+  const [dataForModify, setDataForModify] = useState({});
   // Calendar
   const [pickDate, setPickDate] = useState(new Date());
   // const [targetDate, setTargetDate] = useState(pickDate.getDate());
@@ -75,38 +75,245 @@ const Main = ({ isLogin, userCards, cardsId }) => {
     inCome: {
       월급: 0,
       보너스: 0,
-      기타: 0,
+      기타수입: 0,
     },
     outCome: {
       식비: 0,
       '주거/통신': 0,
       생활용품: 0,
-      '의복/미용': 0,
-      '건강/문화': 0,
-      '교육/육아': 0,
-      '교통/차량': 0,
-      '공과금/보험': 0,
-      기타: 0,
+      "의복/미용": 0,
+      "건강/문화": 0,
+      "교육/육아": 0,
+      "교통/차량": 0,
+      "공과금/보험": 0,
+      기타지출: 0,
     },
   };
+  //! 이벤트 발생
 
-  const mainStateHandler = (state, category, price, card, cash) => {
+  const token = accessToken;
+
+
+  // 입력 클릭(in,out) transaction 업데이트 후 받아오기
+  const userCardId = cardsId.findIndex((el) => el.name === card) + 1 || null;
+  const outcomeIsCash = cash === '현금' ? true : false;
+  const isIncome = mainState === 'income' ? true : mainState === 'outcome' ? false : null;
+
+  const resData = {
+    year: targetYear,
+    month: targetMonth,
+    day: targetDate,
+    category,
+    outcomeIsCash,
+    userCardId,
+    price: Number(price),
+    isIncome,
+  };
+
+  //! API
+  //* 수입, 지출 입력
+  const submitHandler = (endPoint) => {
+    console.log(`url:  http://localhost:4000/transaction/${endPoint}`);
+    console.log('보내는거', resData);
+    // if (mainState === 'income' &&//
+    //   resData.category === "" ||
+
+    // ) {
+    // if (resData.isIncome) {
+    //   //현금
+
+    //   if (!resData.category.length) {
+    //     return console.log('카테고리를 선택해주세요');
+    //   } else if (resData.price === 0) {
+    //     return console.log('금액을 입력해주세요 ');
+    //   }
+    // } else {
+    //   //카드
+    //   if (!resData.category.length) {
+    //     return console.log('카테고리를 선택해주세요');
+    //   } else if (!resData.userCardId) {
+    //     return console.log('카드를 선택해주세요');
+    //     //! 현금인지 카든지 state로 관리해야됨!
+    //   } else if (resData.price === 0) {
+    //     return console.log('금액을 입력해주세요 ');
+    //   } else if (resData.price === 0) {
+    //     return console.log('금액을 입력해주세요 ');
+    //   }
+    //   console.log('12319303939393933123');
+    // }
+    // }
+
+    axios
+      .post(
+        `http://localhost:4000/transaction/${endPoint}`, //
+        resData,
+        {
+          headers: {
+            "Content-Type": "application/json", //
+            authorization: `Bearer ${token}`,
+
+          },
+          // withCredentials: true,
+        }
+      )
+      .then((res) => {
+        setTransaction(res.data.transaction);
+        console.log('응답데이터', res.data.transaction);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  //! API
+  //* 달력 월이동시 해당월 데이터 불러오기
+  const calendarMover = (year, month) => {
+    console.log(`http://localhost:4000/transaction/date`);
+
+    const resDate = {
+      year,
+      month,
+    };
+
+    axios
+      .post(
+        `http://localhost:4000/transaction/date`, //
+        resDate,
+        {
+          headers: {
+            "Content-Type": "application/json", //
+            authorization: `Bearer ${token}`,
+
+          },
+          // withCredentials: true,
+        }
+      )
+      .then((res) => {
+        setTransaction(res.data.transaction);
+        console.log("move 2");
+      })
+      .catch((err) => console.log(err));
+  };
+
+  //! API
+  //* 수입, 지출 데이터 삭제
+  const contentDeleter = (data) => {
+    console.log(`http://localhost:4000/transaction/delete`);
+    const category = data.category || null;
+    const price = data.price;
+    const isIncome = data.isIncome;
+    // console.log('isIncome', data.category ? );
+    const outcomeIsCash = data.isCash === undefined ? null : data.isCash;
+    const userCardId = data.card ? data.card.id : null;
+
+    const resData = {
+      year: targetYear,
+      month: targetMonth,
+      day: targetDate,
+      category,
+      price,
+      isIncome,
+      outcomeIsCash,
+      userCardId,
+    };
+    console.log(resData);
+    axios
+      .post(
+        `http://localhost:4000/transaction/delete`, //
+        resData,
+        {
+          headers: {
+            "Content-Type": "application/json", //
+            authorization: `Bearer ${token}`,
+
+          },
+          // withCredentials: true,
+        }
+      )
+      .then((res) => {
+        setTransaction(res.data.transaction);
+        console.log('delet!', res.data.transaction);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  //! API
+  //* 데이터 수정!
+  const contentModifiyer = () => {
+
+    const resCorrectData = {
+      year: targetYear,
+      month: targetMonth,
+      day: targetDate,
+      // newYear: dataForModify.year,
+      // newMonth: dataForModify.month,
+      // newDay: dataForModify.day,
+      category: dataForModify.category,
+      newCategory: category,
+      price: dataForModify.price,
+      newPrice: Number(price),
+      outcomeIsCash,
+      userCardId,
+    };
+
+    console.log("수정요청데이터", resCorrectData);
+    axios
+      .post(
+        `http://localhost:4000/transaction/correct`, //
+        resCorrectData,
+        {
+          headers: {
+            "Content-Type": "application/json", //
+            authorization: `Bearer ${token}`,
+          },
+          // withCredentials: true,
+        }
+      )
+      .then((res) => {
+        setTransaction(res.data.transaction);
+        console.log("correct!", res.data.transaction);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const mainStateHandler = (state, modifyState, category, price, card, cash) => {
     setMainState(state);
+    setModifyState(modifyState);
     inputResetHandler(category, price, card, cash);
+  };
+  const buttonStateHandler = (state) => {
+    setButtonModifyState(state);
   };
 
   const modifyStateHandler = (state, category, price, card, cash) => {
-    setModifyState(state);
+    setModifyState(true);
+    setDataForModify({
+      year: targetYear,
+      month: targetMonth,
+      day: targetDate,
+      category,
+      price,
+    });
+    console.log(dataForModify);
+    if (state) {
+      setMainState(state);
+    }
     inputResetHandler(category, price, card, cash);
   };
   //Calendar
   const pickDateHandler = (year, month) => {
-    setPickDate(new Date(year, month, 0));
+    const newDate = new Date(year, month, 0);
+    setPickDate(newDate);
+
+    calendarMover(newDate.getFullYear(), newDate.getMonth() + 1);
   };
 
-  const dateHandler = (year, month, date) => {
-    setPickDate(new Date(year, month, 0));
+  const dateHandler = (year, month, date, move) => {
+    const newDate = new Date(year, month, 0);
+    setPickDate(newDate);
     setTargetDate(date);
+
+    if (move) {
+      calendarMover(newDate.getFullYear(), newDate.getMonth() + 1);
+    }
   };
 
   //Submit
@@ -117,9 +324,10 @@ const Main = ({ isLogin, userCards, cardsId }) => {
 
   const inputResetHandler = (category, price, card, cash) => {
     // const cardName = cardsId[card - 1].name;
-    setCategory(category || '');
-    setPrice(price || '');
-    setCard(card || '');
+
+    setCategory(category || "");
+    setPrice(price || "");
+    setCard(card ? card.name : "");
     if (cash === undefined) {
       setCash('');
     } else if (cash) {
@@ -161,6 +369,9 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   //? calendar로 전달할 정보
 
   const inOutDate = {};
+  // console.log(cardsId);
+  // console.log('확인', transaction);
+  // console.log('확인', transaction[transaction.length - 1].userCardId);
   transaction.map((el) => {
     //inOut data 생성
     const date = `${el.year}.${el.month}.${el.day}`;
@@ -173,9 +384,9 @@ const Main = ({ isLogin, userCards, cardsId }) => {
       }
     } else {
       //값이 있다면
-      if (inOutDate[date] === 1 && el.isIncome === false) {
+      if (inOutDate[date] === 1 && !el.isIncome) {
         inOutDate[date] = 3;
-      } else if (inOutDate[date] === 2 && el.isIncome === true) {
+      } else if (inOutDate[date] === 2 && el.isIncome) {
         inOutDate[date] = 3;
       }
     }
@@ -194,22 +405,27 @@ const Main = ({ isLogin, userCards, cardsId }) => {
     // detail
     if (el.day === targetDate) {
       if (el.isIncome) {
+        //수입
         inOutDataList.detail.inComes = [
           ...inOutDataList.detail.inComes,
           {
             category: el.category,
             price: el.price,
+            isIncome: true,
           },
         ];
         inOutDataList.detail.inComesTotal += el.price;
       } else {
+        //지출
+
         inOutDataList.detail.outComes = [
           ...inOutDataList.detail.outComes,
           {
             category: el.category,
             price: el.price,
             isCash: el.outcomeIsCash,
-            card: cardsId[el.userCardId - 1].name,
+            card: cardsId[el.userCardId - 1],
+            isIncome: false,
           },
         ];
         inOutDataList.detail.outComesTotal += el.price;
@@ -219,7 +435,7 @@ const Main = ({ isLogin, userCards, cardsId }) => {
 
   //! console tets 영역
 
-  console.log(`Render! mainState:"${mainState}" date:${getDate}`);
+  console.log(`Render! mainState:"${mainState}" modifyState:"${modifyState}" date:${getDate}`);
   // console.log('Year:', targetYear);
   // console.log('Mont:', targetMonth);
   // console.log('Day:', targetDate);
@@ -236,49 +452,6 @@ const Main = ({ isLogin, userCards, cardsId }) => {
 
   //@ 날짜별 지출 수입내역 수입만true 1, 지출만 2, 지출 수입 모두 3.
   // 그중, 지출이 있는 날짜, 수입이 있는 날짜 정보만 필요 => main page에서 가공해서 props로 전달  => 배열형식 데이터로 인자는 객체, {year, month, date, 수입지출 상태}
-
-  //! 이벤트 발생
-
-  const token =
-    'accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5ZWNoYW5AZ21haWwuY29tIiwibmlja25hbWUiOiLsmIjssKwiLCJjcmVhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjIyOjQ0LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIxLTEyLTIwVDEyOjIyOjQ0LjAwMFoiLCJpYXQiOjE2NDAwMDQzMzksImV4cCI6MTY0MDE3NzEzOX0.YGrAFFmW3QpCSu3GKzFazrP_1aYrYwwA8y0PdakAwds; Path = /; HttpOnly; SameSite=None';
-
-  // 입력 클릭(in,out) transaction 업데이트 후 받아오기
-  const userCardId = cardsId.findIndex((el) => el.name === card) + 1 || null;
-  const isOutcomeCash = cash === '현금' ? true : false;
-  const isIncome = mainState === 'income' ? true : mainState === 'outcome' ? false : null;
-
-  const resData = {
-    year: targetYear,
-    month: targetMonth,
-    day: targetDate,
-    category,
-    isOutcomeCash,
-    userCardId,
-    price,
-    isIncome,
-  };
-
-  const submitHandler = () => {
-    console.log('axios 요청!');
-
-    axios
-      .post(
-        'http://localhost:4000/transaction/incomes', //
-        resData,
-        {
-          headers: {
-            'Content-Type': 'application/json', //
-            Cookie: token,
-          },
-          // withCredentials: true,
-        }
-      )
-      .then((res) => {
-        console.log(res);
-        console.log(res.messege);
-      })
-      .catch((err) => console.log(err));
-  };
 
   // 달력 화살표 클릭 => 해당 월에 해당하는 transaction 받아오기
   // 날짜 클릭
@@ -299,6 +472,9 @@ const Main = ({ isLogin, userCards, cardsId }) => {
           data={inOutDataList}
           transaction={transaction}
           modifyStateHandler={modifyStateHandler}
+          modifyState={modifyState}
+          buttonStateHandler={buttonStateHandler}
+          contentDeleter={contentDeleter}
         />
         <CenterContainer>
           <LeftMoney>
@@ -312,6 +488,9 @@ const Main = ({ isLogin, userCards, cardsId }) => {
             pickDateHandler={pickDateHandler}
             inOutDate={inOutDate}
             mainStateHandler={mainStateHandler}
+            setMainState={setModifyState}
+            modifyStateHandler={modifyStateHandler}
+            buttonStateHandler={buttonStateHandler}
           />
         </CenterContainer>
         <Submit
@@ -330,6 +509,8 @@ const Main = ({ isLogin, userCards, cardsId }) => {
           userCards={userCards}
           modifyState={modifyState}
           submitHandler={submitHandler}
+          buttonModifyState={buttonModifyState}
+          contentModifiyer={contentModifiyer}
         />
       </MainContainer>
     </>

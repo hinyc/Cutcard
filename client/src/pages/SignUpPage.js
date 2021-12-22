@@ -14,7 +14,8 @@ function SignUpPage({ cardsList }) {
   const [email, setEmail] = useState("");
   const [emailFocused, setEmailFocused] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
-  const [emailExists, setEmailExists] = useState(false);
+  const [isEmailBtnClick, setIsEmailBtnClick] = useState(false);
+  const [emailExists, setEmailExists] = useState(true);
 
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -23,8 +24,7 @@ function SignUpPage({ cardsList }) {
   const [userCardList, setUserCardList] = useState([]);
   const [selected, setSelected] = useState("");
   const [wantCut, setWantCut] = useState(false);
-
-  const [repaymentday, setRepaymentday] = useState(0);
+  const [repaymentDay, setRepaymentDay] = useState(0);
 
   const onNicknameChange = (e) => {
     setNickname(e.target.value);
@@ -43,6 +43,7 @@ function SignUpPage({ cardsList }) {
   };
 
   const emailExistsCheck = () => {
+    setIsEmailBtnClick(true);
     axios
       .post(
         "http://localhost:4000/users/exists",
@@ -53,8 +54,13 @@ function SignUpPage({ cardsList }) {
           },
         }
       )
-      .then((res) => console.log(res)); // TODO: status: 200 && message: "available email"
-    // TODO: setEmailExists(!emailExists);
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          setEmailExists(false);
+        }
+      })
+      .catch(() => setEmailExists(true));
   };
 
   const onPasswordChange = (e) => {
@@ -66,12 +72,14 @@ function SignUpPage({ cardsList }) {
   };
 
   const onCardChange = (e) => {
-    setSelected(e.target.value);
-    const newCards = cards.filter((obj) => e.target.value !== obj.name);
+    setSelected(e.target.value); // card name
+
+    const newCards = cards.filter((obj) => e.target.value !== obj.name); // 선택 옵션
     setCards(newCards);
-    const selectedData = cards.filter((obj) => obj.name === e.target.value);
-    const newUserCardList = userCardList.concat(selectedData);
-    // console.log(userCardList);
+
+    const selectedData = cards.filter((obj) => obj.name === e.target.value); // [{id, name}]
+    const selectedDataUpdate = { ...selectedData[0], isCut: false };
+    const newUserCardList = userCardList.concat(selectedDataUpdate);
     setUserCardList(newUserCardList);
   };
 
@@ -88,11 +96,16 @@ function SignUpPage({ cardsList }) {
   const onRepaymentDaySelect = (e) => {
     const value = e.target.value;
     const repaymentDay = value.slice(0, value.length - 1);
-    setRepaymentday(Number(repaymentDay));
+    setRepaymentDay(Number(repaymentDay));
   };
 
   const onWantCutCardSelect = (e) => {
-    setWantCut(!wantCut);
+    const value = e.target.innerText; // card name
+    const selected = userCardList.filter((obj) => obj.name === value)[0];
+    const index = userCardList.findIndex((obj) => obj.name === value);
+    selected.isCut = !selected.isCut;
+    userCardList[index] = selected;
+    setUserCardList([...userCardList]);
   };
 
   const onSignUpClick = () => {
@@ -103,8 +116,13 @@ function SignUpPage({ cardsList }) {
           email: email,
           password: password,
           nickname: nickname,
-          cards: userCardList, // ! isCut, repaymentdays
-          repaymentday: repaymentday,
+          repaymentDay: repaymentDay,
+          cards: userCardList.map((obj) => {
+            return {
+              id: obj.id,
+              isCut: obj.isCut,
+            };
+          }),
         },
         {
           headers: {
@@ -136,19 +154,21 @@ function SignUpPage({ cardsList }) {
         onFocus={onEmailFocus}
         onClick={emailExistsCheck}
         disabled={!isEmail}
-        opacity={!isEmail && "50%"}
-        hoverOpacity={!isEmail && "50%"}
-        cursor={!isEmail && "default"}
+        opacity={!isEmail ? "50%" : 0}
+        hoverOpacity={!isEmail ? "50%" : 0}
+        cursor={!isEmail ? "default" : "pointer"}
       />
       {emailFocused ? (
         email !== "" && isEmail ? (
-          emailExists ? (
-            <Notification color="#FF6B6B" margin="4px 160px 0 0">
-              * 이미 존재하는 이메일입니다.
-            </Notification>
-          ) : (
-            <Notification>* 사용 가능한 이메일입니다.</Notification>
-          )
+          isEmailBtnClick ? (
+            emailExists ? (
+              <Notification color="#FF6B6B" margin="4px 160px 0 0">
+                * 이미 존재하는 이메일입니다.
+              </Notification>
+            ) : (
+              <Notification>* 사용 가능한 이메일입니다.</Notification>
+            )
+          ) : null
         ) : (
           <Notification color="#FF6B6B" margin="4px 175px 0 0">
             * 이메일 형식을 지켜주세요
@@ -198,12 +218,13 @@ function SignUpPage({ cardsList }) {
             text={obj.name}
             onTextClick={onWantCutCardSelect}
             onClick={() => onCardDelete(obj.id)}
-            background={wantCut === true ? "#97bfb4" : "white"}
-            color={wantCut === true ? "white" : "#97bfb4"}
-            btnBackground={wantCut === true ? "#97bfb4" : "white"}
-            xColor={wantCut === true ? "white" : "#97bfb4"}
+            background={obj.isCut === true ? "#97bfb4" : "white"}
+            color={obj.isCut === true ? "white" : "#97bfb4"}
+            btnBackground={obj.isCut === true ? "#97bfb4" : "white"}
+            xColor={obj.isCut === true ? "white" : "#97bfb4"}
           />
         ))}
+        <div>삭제를 목표로 한다면 카드 이름을 클릭해주세요.</div>
       </FlexContainer>
       <Select
         label="카드 상환일"
