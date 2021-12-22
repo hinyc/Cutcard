@@ -46,24 +46,23 @@ export const SubTitle = styled.div`
   font-size: 18px;
 `;
 export const Amount = styled.div`
-  font-size: 26px; ;
+  font-size: 26px;
+`;
+
+export const Note = styled.span`
+  color: #ff6b6b;
+  font-size: 14px;
 `;
 
 const Main = ({ isLogin, userCards, cardsId, accessToken, transaction, setTransaction }) => {
-  // console.log(userTransaction);
-  const [leftMoney, setLeftMoney] = useState(1000000);
-  //leftMoney => 해달 월 수입계 - 해당월 현금 사용 - 전월 카드사용 ?
   const [mainState, setMainState] = useState('outcome');
   const [modifyState, setModifyState] = useState(false);
   const [buttonModifyState, setButtonModifyState] = useState(false);
   // const [transaction, setTransaction] = useState([]);
   const [temporaryData, setTemporaryData] = useState({});
   const [requestMessage, setRequestMessage] = useState('');
-
+  const [savemode, setSavemode] = useState(true);
   useBeforeunload((event) => event.preventDefault());
-  // useEffect(() => {
-  //   setTransaction(userTransaction);
-  // }, [accessToken]);
 
   console.log(transaction);
   // Calendar
@@ -84,7 +83,8 @@ const Main = ({ isLogin, userCards, cardsId, accessToken, transaction, setTransa
   const [cash, setCash] = useState('');
 
   //!
-  const url = 'http://localhost:4000/transaction';
+  // 마지막 '/'까지입력
+  const url = 'http://localhost:4000/transaction/';
   //!
 
   const categoryList = {
@@ -148,11 +148,11 @@ const Main = ({ isLogin, userCards, cardsId, accessToken, transaction, setTransa
 
     //데이터 입력이 모두 되었다면 API보내고 입력창 리셋
 
-    console.log(`url:  http://localhost:4000/transaction/${endPoint}s`);
+    console.log(`url:  ${url}${endPoint}s`);
     console.log('보내는거', resData);
     axios
       .post(
-        `http://localhost:4000/transaction/${endPoint}s`, //
+        `${url}${endPoint}s`, //
         resData,
         {
           headers: {
@@ -178,7 +178,7 @@ const Main = ({ isLogin, userCards, cardsId, accessToken, transaction, setTransa
     if (!isLogin) {
       return setRequestMessage('* 로그인이 필요합니다.');
     }
-    console.log(`http://localhost:4000/transaction/date`);
+    console.log(`${url}date`);
 
     const resDate = {
       year,
@@ -187,7 +187,7 @@ const Main = ({ isLogin, userCards, cardsId, accessToken, transaction, setTransa
 
     axios
       .post(
-        `http://localhost:4000/transaction/date`, //
+        `${url}date`, //
         resDate,
         {
           headers: {
@@ -210,14 +210,13 @@ const Main = ({ isLogin, userCards, cardsId, accessToken, transaction, setTransa
     if (!isLogin) {
       return setRequestMessage('* 로그인이 필요합니다.');
     }
-    console.log(`http://localhost:4000/transaction/delete`);
     const category = data.category || null;
     const price = data.price;
     const isIncome = data.isIncome;
     // console.log('isIncome', data.category ? );
     const outcomeIsCash = data.isCash === undefined ? null : data.isCash;
     const userCardId = data.card ? data.card.id : null;
-
+    const id = data.id;
     const resData = {
       year: targetYear,
       month: targetMonth,
@@ -227,10 +226,13 @@ const Main = ({ isLogin, userCards, cardsId, accessToken, transaction, setTransa
       isIncome,
       outcomeIsCash,
       userCardId,
+      id,
     };
+    console.log(`${url}elete`);
+    console.log('삭제요청데이터', resData);
     axios
       .post(
-        `http://localhost:4000/transaction/delete`, //
+        `${url}delete`, //
         resData,
         {
           headers: {
@@ -284,7 +286,7 @@ const Main = ({ isLogin, userCards, cardsId, accessToken, transaction, setTransa
     console.log('수정요청데이터', resData);
     axios
       .post(
-        `http://localhost:4000/transaction/correct`, //
+        `${url}correct`, //
         resData,
         {
           headers: {
@@ -467,6 +469,9 @@ const Main = ({ isLogin, userCards, cardsId, accessToken, transaction, setTransa
   //! console tets 영역
 
   console.log(`Render! mainState:"${mainState}" modifyState:"${modifyState}" date:${getDate}`);
+  const lestMonthCardUsage = 1789000;
+  const leftMoney = inOutDataList.inComes.totalPrice - inOutDataList.outComes.totalPrice;
+  const leftMoneyEceptLMCU = leftMoney - lestMonthCardUsage;
 
   return (
     <>
@@ -486,8 +491,15 @@ const Main = ({ isLogin, userCards, cardsId, accessToken, transaction, setTransa
         />
         <CenterContainer>
           <LeftMoney>
-            <SubTitle>잔여 금액</SubTitle>
-            <Amount>{`${leftMoney.toLocaleString('ko-KR')} 원`}</Amount>
+            <SubTitle>사용 가능 금액</SubTitle>
+            <Amount>{`${(savemode ? leftMoneyEceptLMCU : leftMoney).toLocaleString('ko-KR')} 원`}</Amount>
+            <Note onClick={() => setSavemode(!savemode)}>
+              <Note>
+                {savemode //
+                  ? `* 이번 달 카드결제 예정금액 포함`
+                  : `* 이번 달 카드결제 예정금액 미포함`}
+              </Note>
+            </Note>
           </LeftMoney>
           <Calendar //
             dateHandler={dateHandler}

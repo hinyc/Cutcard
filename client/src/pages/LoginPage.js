@@ -45,7 +45,6 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo, setIsLogin, isLo
         setUserCards(res.data.cards);
         setAccessToken(res.data.accessToken);
         setUserInfo(res.data.userInfo);
-        setTransaction(res.data.transaction);
         //? 이 안에서 main 페이지로 이동할 수 있도록 조적
       })
       .catch((err) => {

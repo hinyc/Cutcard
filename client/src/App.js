@@ -9,6 +9,7 @@ import AboutPage from './pages/AboutPage';
 import LoginPage from './pages/LoginPage';
 import MyPage from './pages/MyPage';
 import SignUpPage from './pages/SignUpPage';
+import { newdumy } from './dummyData';
 
 function App() {
   //테스트중 초기상태 임의지정
@@ -26,10 +27,11 @@ function App() {
   const [userInfo, setUserInfo] = useState({});
   const [userCards, setUserCards] = useState([]);
   const [accessToken, setAccessToken] = useState('');
-  const [transaction, setTransaction] = useState([]);
+  const [transaction, setTransaction] = useState(newdumy.transaction);
   console.log('userCards', userCards);
   console.log('accessToken', accessToken);
   console.log('userInfo', userInfo);
+  console.log('transaction', transaction);
 
   const userCardList = userCards.map((el) => {
     return {

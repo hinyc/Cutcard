@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { Input, Notification } from "../components/Input";
-import { BigButton } from "../components/Button";
-import { Container, Title } from "../components/Common";
-import { Link } from "react-router-dom";
-import { CardSelect, Select } from "../components/Select";
-import CardList from "../components/CardList";
-import { FlexContainer } from "../components/Common";
-import styled from "styled-components";
-import axios from "axios";
-import { useBeforeunload } from "react-beforeunload";
+import React, { useState } from 'react';
+import { Input, Notification } from '../components/Input';
+import { BigButton } from '../components/Button';
+import { Container, Title } from '../components/Common';
+import { Link } from 'react-router-dom';
+import { CardSelect, Select } from '../components/Select';
+import CardList from '../components/CardList';
+import { FlexContainer } from '../components/Common';
+import styled from 'styled-components';
+import axios from 'axios';
+import { useBeforeunload } from 'react-beforeunload';
 
 const Text = styled.div`
   font-size: 14px;
@@ -16,30 +16,17 @@ const Text = styled.div`
   text-decoration: underline;
 `;
 
-function MyPage({
-  setIsLogin,
-  accessToken,
-  setAccessToken,
-  cardsList,
-  userInfo,
-  setUserInfo,
-  userCards,
-  setUserCards,
-}) {
-  const [nickname, setNickname] = useState("");
+function MyPage({ setIsLogin, accessToken, setAccessToken, cardsList, userInfo, setUserInfo, userCards, setUserCards }) {
+  const [nickname, setNickname] = useState('');
 
-  const [password, setPassword] = useState("");
-  const [passwordCheck, setPasswordCheck] = useState("");
+  const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
 
-  const [selected, setSelected] = useState("");
-  const notSelectedCards = cardsList.filter(
-    (obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === false
-  );
+  const [selected, setSelected] = useState('');
+  const notSelectedCards = cardsList.filter((obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === false);
   const [cards, setCards] = useState(notSelectedCards);
 
-  const selectedCards = cardsList.filter(
-    (obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === true
-  );
+  const selectedCards = cardsList.filter((obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === true);
   const selectedCardsIsCut = selectedCards.map((select) => {
     return userCards
       .filter((userCard) => select.id === userCard.cardId)
@@ -109,7 +96,7 @@ function MyPage({
     if (password === passwordCheck) {
       axios
         .patch(
-          "http://localhost:4000/users/userinfo",
+          'http://localhost:4000/users/userinfo',
           {
             nickname: nickname,
             password: password,
@@ -124,13 +111,13 @@ function MyPage({
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
           }
         )
         .then((res) => {
           console.log(res);
-          setAccessToken("");
+          setAccessToken('');
           setUserCards([]);
           setUserInfo({});
         })
@@ -142,15 +129,15 @@ function MyPage({
 
   const onSignOutClick = () => {
     axios
-      .delete("http://localhost:4000/users/userinfo", {
+      .delete('http://localhost:4000/users/userinfo', {
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       })
       .then((res) => {
         console.log(res);
-        setAccessToken("");
+        setAccessToken('');
         setUserCards([]);
         setUserInfo({});
       })
@@ -164,56 +151,20 @@ function MyPage({
   return (
     <Container>
       <Title margin="66px 0 50px 0" text="회원정보 수정" />
-      <Input
-        label="닉네임"
-        type="text"
-        placeholder={userInfo.nickname}
-        margin="auto"
-        onChange={onNicknameChange}
-      />
-      <Input
-        label="이메일"
-        type="text"
-        margin="auto"
-        readOnly={true}
-        value={userInfo.email}
-      />
+      <Input label="닉네임" type="text" placeholder={userInfo.nickname} margin="auto" onChange={onNicknameChange} />
+      <Input label="이메일" type="text" margin="auto" readOnly={true} value={userInfo.email} />
       {/* Password */}
-      <Input
-        marginLabel="18px 226px 0 0"
-        label="비밀번호 수정"
-        type="password"
-        placeholder="비밀번호를 입력해주세요"
-        margin="auto"
-        value={password}
-        onChange={onPasswordChange}
-      />
-      <Input
-        marginLabel="18px 225px 0 0"
-        label="비밀번호 확인"
-        type="password"
-        placeholder="비밀번호를 한번 더 입력해주세요"
-        margin="auto"
-        value={passwordCheck}
-        onChange={onPasswordChangeCheck}
-      />
-      {password === "" ? null : password === passwordCheck ? (
-        <Notification margin="4px 186px 0 0">
-          * 비밀번호가 일치합니다.
-        </Notification>
+      <Input marginLabel="18px 226px 0 0" label="비밀번호 수정" type="password" placeholder="비밀번호를 입력해주세요" margin="auto" value={password} onChange={onPasswordChange} />
+      <Input marginLabel="18px 225px 0 0" label="비밀번호 확인" type="password" placeholder="비밀번호를 한번 더 입력해주세요" margin="auto" value={passwordCheck} onChange={onPasswordChangeCheck} />
+      {password === '' ? null : password === passwordCheck ? (
+        <Notification margin="4px 186px 0 0">* 비밀번호가 일치합니다.</Notification>
       ) : (
         <Notification color="#FF6B6B" margin="4px 152px 0 0">
           * 비밀번호가 일치하지 않습니다.
         </Notification>
       )}
       {/* Card */}
-      <CardSelect
-        label="카드 등록"
-        text="카드를 선택해주세요"
-        options={cards}
-        onChange={onCardChange}
-        margin="0"
-      />
+      <CardSelect label="카드 등록" text="카드를 선택해주세요" options={cards} onChange={onCardChange} margin="0" />
       <FlexContainer>
         {userCardList.map((obj) => (
           <CardList
@@ -221,10 +172,10 @@ function MyPage({
             text={obj.name}
             onTextClick={onWantCutCardSelect}
             onClick={() => onCardDelete(obj.id)}
-            background={obj.isCut ? "#97bfb4" : "white"}
-            color={obj.isCut ? "white" : "#97bfb4"}
-            btnBackground={obj.isCut ? "#97bfb4" : "white"}
-            xColor={obj.isCut ? "white" : "#97bfb4"}
+            background={obj.isCut ? '#97bfb4' : 'white'}
+            color={obj.isCut ? 'white' : '#97bfb4'}
+            btnBackground={obj.isCut ? '#97bfb4' : 'white'}
+            xColor={obj.isCut ? 'white' : '#97bfb4'}
           />
         ))}
       </FlexContainer>
@@ -232,25 +183,15 @@ function MyPage({
         padding="25px 238px 9px 0"
         label="카드 상환일"
         text={`카드 상환일을 선택해주세요 (현재 ${userCards[0].repaymentDay}일)`}
-        options={["1일", "5일", "10일", "15일", "20일", "25일"]}
+        options={['1일', '5일', '10일', '15일', '20일', '25일']}
         onChange={onRepaymentDaySelect}
       />
       {/* Button */}
       <Link to="/login">
-        <BigButton
-          text="수정하기"
-          margin="28px auto 12px auto"
-          onClick={onUpdateClick}
-        />
+        <BigButton text="수정하기" margin="28px auto 12px auto" onClick={onUpdateClick} />
       </Link>
       <Link to="/">
-        <BigButton
-          text="취소"
-          background="white"
-          color="#97BFB4"
-          border="1px solid #97BFB4"
-          margin="0 auto 50px auto"
-        />
+        <BigButton text="취소" background="white" color="#97BFB4" border="1px solid #97BFB4" margin="0 auto 50px auto" />
       </Link>
       <Container>
         <Link to="/">
