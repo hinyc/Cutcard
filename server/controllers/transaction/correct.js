@@ -46,9 +46,9 @@ module.exports = async (req, res) => {
       );
       await transactions.update(
         {
-          year: newYear,
-          month: newMonth,
-          day: newDay,
+          year,
+          month,
+          day,
           category: newCategory,
           price: newPrice,
         },
@@ -75,9 +75,9 @@ module.exports = async (req, res) => {
     } else {
       await transactions.update(
         {
-          year: newYear,
-          month: newMonth,
-          day: newDay,
+          year,
+          month,
+          day,
           category: newCategory,
           price: newPrice,
         },
