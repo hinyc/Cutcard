@@ -53,7 +53,11 @@ const Menu = styled.button`
 function Navbar({ isLogin, setIsLogin, accessToken, setAccessToken, setUserCards, setUserInfo, setTransaction }) {
   const onLogoutClick = () => {
     axios
+<<<<<<< HEAD
       .get('http://localhost:4000/users/logout')
+=======
+      .get("https://localhost:4000/users/logout")
+>>>>>>> a9ec609df71fdd3005d6f8b9ace72dabeeb0b943
       .then((res) => {
         console.log(res);
         setAccessToken('');
@@ -68,7 +72,11 @@ function Navbar({ isLogin, setIsLogin, accessToken, setAccessToken, setUserCards
 
   const onMyPageClick = () => {
     axios
+<<<<<<< HEAD
       .get('http://localhost:4000/users/userinfo', {
+=======
+      .get("https://localhost:4000/users/userinfo", {
+>>>>>>> a9ec609df71fdd3005d6f8b9ace72dabeeb0b943
         headers: {
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',

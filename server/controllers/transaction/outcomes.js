@@ -67,7 +67,15 @@ module.exports = async (req, res) => {
           userId: id,
         },
       });
-      res.status(201).json({ transaction: outcomeData });
+      const cardPrice = await transactions.findAll({
+        where: {
+          year,
+          month: month - 1,
+          userId: id,
+          outcomeIsCash: false,
+        },
+      });
+      res.status(201).json({ transaction: outcomeData, cardPrice: cardPrice });
     } else {
       await transactions.create({
         year,
@@ -95,7 +103,15 @@ module.exports = async (req, res) => {
           userId: id,
         },
       });
-      res.status(201).json({ transaction: outcomeData });
+      const cardPrice = await transactions.findAll({
+        where: {
+          year,
+          month: month - 1,
+          userId: id,
+          outcomeIsCash: false,
+        },
+      });
+      res.status(201).json({ transaction: outcomeData, cardPrice: cardPrice });
     }
   }
 };

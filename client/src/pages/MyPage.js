@@ -93,6 +93,7 @@ function MyPage({ setIsLogin, accessToken, setAccessToken, cardsList, userInfo, 
   };
 
   const onUpdateClick = () => {
+<<<<<<< HEAD
     if (password === passwordCheck) {
       axios
         .patch(
@@ -125,11 +126,47 @@ function MyPage({ setIsLogin, accessToken, setAccessToken, cardsList, userInfo, 
           setIsLogin(false);
         });
     }
+=======
+    axios
+      .patch(
+        "https://localhost:4000/users/userinfo",
+        {
+          nickname: nickname,
+          password: password,
+          repaymentDay,
+          cards: userCardList.map((obj) => {
+            return {
+              id: obj.id,
+              isCut: false,
+            };
+          }),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        setAccessToken("");
+        setUserCards([]);
+        setUserInfo({});
+      })
+      .then(() => {
+        setIsLogin(false);
+      });
+>>>>>>> a9ec609df71fdd3005d6f8b9ace72dabeeb0b943
   };
 
   const onSignOutClick = () => {
     axios
+<<<<<<< HEAD
       .delete('http://localhost:4000/users/userinfo', {
+=======
+      .delete("https://localhost:4000/users/userinfo", {
+>>>>>>> a9ec609df71fdd3005d6f8b9ace72dabeeb0b943
         headers: {
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',

@@ -26,7 +26,11 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo, setIsLogin, isLo
 
     axios
       .post(
+<<<<<<< HEAD
         'http://localhost:4000/users/login',
+=======
+        "https://localhost:4000/users/login",
+>>>>>>> a9ec609df71fdd3005d6f8b9ace72dabeeb0b943
         {
           email: email,
           password: password,
@@ -35,7 +39,12 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo, setIsLogin, isLo
         },
         {
           headers: {
+<<<<<<< HEAD
             'Content-Type': 'application/json',
+=======
+            "Content-Type": "application/json",
+            withCredentials: true,
+>>>>>>> a9ec609df71fdd3005d6f8b9ace72dabeeb0b943
           },
         }
       )

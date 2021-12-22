@@ -33,6 +33,15 @@ module.exports = async (req, res) => {
         },
       });
 
+      const cardPrice = await transactions.findAll({
+        where: {
+          year,
+          month: month - 1,
+          userId: userInfo.id,
+          outcomeIsCash: false,
+        },
+      });
+
       delete userInfo.dataValues.password;
       const accessToken = generateAccessToken(userInfo.dataValues);
       sendAccessToken(res, accessToken);
@@ -43,7 +52,14 @@ module.exports = async (req, res) => {
       //     cards: userCardInfos,
       //     transaction: transactionInfos,
       //   });
-      console.log(userInfo);
+      const userCreateYear = userInfo.createdAt.getFullYear();
+      const userCreateMonth = userInfo.createdAt.getMonth() + 1;
+      let userRepaymentDay = 0;
+      userCardInfos.filter((user) => {
+        if (userRepaymentDay !== user.dataValues.repaymentDay) {
+          userRepaymentDay = user.dataValues.repaymentDay;
+        }
+      });
       const cardInfos = await userCards.findAll({
         include: cards,
         where: {
@@ -55,26 +71,11 @@ module.exports = async (req, res) => {
             [Op.is]: true,
           },
           createdAt: {
-            [Op.gte]: new Date("2021/12/20"),
+            [Op.gte]: new Date(
+              `${userCreateYear}/${userCreateMonth}/${userRepaymentDay + 1}`
+            ),
           },
         },
-      });
-      console.log(cardInfos);
-
-      const cardIds = userCardInfos.filter((userCard) => {
-        const isCut = userCard.dataValues.isCut;
-        const remainValue = userCard.dataValues.remainValue;
-        const repaymentDay = userCard.dataValues.repaymentDay;
-        const createdMonth = new Date(userCard.dataValues.createdAt).getMonth();
-        const createdYear = new Date(
-          userCard.dataValues.createdAt
-        ).getFullYear();
-        const date = new Date();
-        const test = new Date("2021/12/20");
-        // 다음 달 상환일이 됐을 때부터
-        if (isCut && remainValue === 0 && test <= date) {
-          return userCard.dataValues;
-        }
       });
       if (!cardInfos) {
         return res.status(200).json({
@@ -82,6 +83,7 @@ module.exports = async (req, res) => {
           cards: userCardInfos,
           transaction: transactionInfos,
           accessToken: accessToken,
+          cardPrice: cardPrice,
         });
       } else {
         return res.status(200).json({
@@ -90,7 +92,7 @@ module.exports = async (req, res) => {
           transaction: transactionInfos,
           accessToken: accessToken,
           modal: cardInfos,
-          accessToken: accessToken,
+          cardPrice: cardPrice,
         });
       }
     }

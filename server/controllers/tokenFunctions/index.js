@@ -9,6 +9,7 @@ module.exports = {
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       sameSite: "None",
+      sercure: true,
     });
   },
   isAuthorized: (req, res) => {
@@ -20,6 +21,7 @@ module.exports = {
         .json({ data: null, message: "access token not provided!" });
     } else {
       const token = authorization.split(" ")[1];
+
       return verify(token, process.env.ACCESS_SECRET);
     }
   },

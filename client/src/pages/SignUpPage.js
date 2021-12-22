@@ -46,7 +46,7 @@ function SignUpPage({ cardsList }) {
     setIsEmailBtnClick(true);
     axios
       .post(
-        "http://localhost:4000/users/exists",
+        "https://localhost:4000/users/exists",
         { email: email },
         {
           headers: {
@@ -111,7 +111,7 @@ function SignUpPage({ cardsList }) {
   const onSignUpClick = () => {
     axios
       .post(
-        "http://localhost:4000/users/signup",
+        "https://localhost:4000/users/signup",
         {
           email: email,
           password: password,
