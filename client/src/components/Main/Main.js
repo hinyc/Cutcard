@@ -76,7 +76,7 @@ const Main = ({ isLogin, userCards, cardsId, accessToken }) => {
     inCome: {
       월급: 0,
       보너스: 0,
-      기타: 0,
+      기타수입: 0,
     },
     outCome: {
       식비: 0,
@@ -87,7 +87,7 @@ const Main = ({ isLogin, userCards, cardsId, accessToken }) => {
       "교육/육아": 0,
       "교통/차량": 0,
       "공과금/보험": 0,
-      기타: 0,
+      기타지출: 0,
     },
   };
   //! 이벤트 발생
