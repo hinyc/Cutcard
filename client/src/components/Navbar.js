@@ -60,7 +60,7 @@ function Navbar({
 }) {
   const onLogoutClick = () => {
     axios
-      .get("http://localhost:4000/users/logout")
+      .get("https://localhost:4000/users/logout")
       .then((res) => {
         console.log(res);
         setAccessToken("");
@@ -74,7 +74,7 @@ function Navbar({
 
   const onMyPageClick = () => {
     axios
-      .get("http://localhost:4000/users/userinfo", {
+      .get("https://localhost:4000/users/userinfo", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",

@@ -9,6 +9,7 @@ module.exports = {
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       sameSite: "None",
+      sercure: true,
     });
   },
   isAuthorized: (req, res) => {

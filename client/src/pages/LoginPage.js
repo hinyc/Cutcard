@@ -25,7 +25,7 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo }) {
 
     axios
       .post(
-        "http://localhost:4000/users/login",
+        "https://localhost:4000/users/login",
         {
           email: email,
           password: password,
@@ -35,6 +35,7 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo }) {
         {
           headers: {
             "Content-Type": "application/json",
+            withCredentials: true,
           },
         }
       )
