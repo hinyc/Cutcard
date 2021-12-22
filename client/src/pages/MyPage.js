@@ -112,7 +112,7 @@ function MyPage({
     if (password === passwordCheck) {
       axios
         .patch(
-          'http://localhost:4000/users/userinfo',
+          'https://localhost:4000/users/userinfo',
           {
             nickname: nickname,
             password: password,
@@ -146,7 +146,7 @@ function MyPage({
 
   const onSignOutClick = () => {
     axios
-      .delete('http://localhost:4000/users/userinfo', {
+      .delete('https://localhost:4000/users/userinfo', {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',

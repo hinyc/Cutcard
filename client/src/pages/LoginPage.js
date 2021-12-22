@@ -35,7 +35,7 @@ function LoginPage({
 
     axios
       .post(
-        'http://localhost:4000/users/login',
+        'https://localhost:4000/users/login',
         {
           email: email,
           password: password,
@@ -50,7 +50,7 @@ function LoginPage({
         },
       )
       .then((res) => {
-        console.log(res);
+        console.log('------------', res.data.modal[0].card);
         setIsLogin(true);
         setUserCards(res.data.cards);
         setAccessToken(res.data.accessToken);
