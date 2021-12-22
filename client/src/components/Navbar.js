@@ -57,6 +57,7 @@ function Navbar({
   setAccessToken,
   setUserCards,
   setUserInfo,
+  setTransaction,
 }) {
   const onLogoutClick = () => {
     axios
@@ -66,6 +67,7 @@ function Navbar({
         setAccessToken("");
         setUserCards([]);
         setUserInfo({});
+        setTransaction([]);
       })
       .then(() => {
         setIsLogin(false);
@@ -89,9 +91,9 @@ function Navbar({
         <Link to="/main">
           <Logo>Cut Card</Logo>
         </Link>
-        <Link to="/about">
+        {/* <Link to="/about">
           <Menu paddingTop="0px">소개</Menu>
-        </Link>
+        </Link> */}
       </Nav>
       {isLogin ? (
         <>

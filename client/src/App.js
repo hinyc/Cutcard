@@ -9,6 +9,7 @@ import AboutPage from "./pages/AboutPage";
 import LoginPage from "./pages/LoginPage";
 import MyPage from "./pages/MyPage";
 import SignUpPage from "./pages/SignUpPage";
+import { Modal } from "./components/Modal";
 
 function App() {
   //테스트중 초기상태 임의지정
@@ -26,6 +27,7 @@ function App() {
   const [userInfo, setUserInfo] = useState({});
   const [userCards, setUserCards] = useState([]);
   const [accessToken, setAccessToken] = useState("");
+  const [transaction, setTransaction] = useState([]);
   console.log("userCards", userCards);
   console.log("accessToken", accessToken);
   console.log("userInfo", userInfo);
@@ -53,7 +55,9 @@ function App() {
         setAccessToken={setAccessToken}
         setUserCards={setUserCards}
         setUserInfo={setUserInfo}
+        setTransaction={setTransaction}
       />
+      {/* <Modal /> */}
       <Routes>
         <Route path="/" element={<Navigate to="/main" />} />
         <Route
@@ -64,6 +68,8 @@ function App() {
               userCards={userCardList}
               cardsId={cards}
               accessToken={accessToken}
+              transaction={transaction}
+              setTransaction={setTransaction}
             />
           }
         />
@@ -72,11 +78,12 @@ function App() {
           path="/login"
           element={
             <LoginPage
+              setUserCards={setUserCards}
               isLogin={isLogin}
               setIsLogin={setIsLogin}
-              setUserCards={setUserCards}
               setUserInfo={setUserInfo}
               setAccessToken={setAccessToken}
+              setTransaction={setTransaction}
             />
           }
         />

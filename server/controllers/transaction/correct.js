@@ -1,26 +1,14 @@
-const { transactions, userCards } = require("./../../models");
-const { isAuthorized } = require("./../tokenFunctions");
+const { transactions, userCards } = require('./../../models');
+const { isAuthorized } = require('./../tokenFunctions');
 
 module.exports = async (req, res) => {
   const accessTokenData = await isAuthorized(req, res);
   if (!accessTokenData) {
-    return res
-      .status(401)
-      .json({ data: null, message: "Invalid access token!" });
+    return res.status(401).json({ data: null, message: 'Invalid access token!' });
   } else {
     const { id } = accessTokenData;
     // 수정 필요 항목
-    const {
-      year,
-      month,
-      day,
-      category,
-      newCategory,
-      price,
-      newPrice,
-      outcomeIsCash,
-      userCardId,
-    } = req.body;
+    const { year, month, day, category, newCategory, price, newPrice, outcomeIsCash, userCardId } = req.body;
     // 수정 필요 항목
     let userCard;
     console.log("correct body", req.body);
@@ -32,8 +20,7 @@ module.exports = async (req, res) => {
           userId: id,
         },
       });
-      userCard.dataValues.remainValue =
-        userCard.dataValues.remainValue - price + newPrice;
+      userCard.dataValues.remainValue = userCard.dataValues.remainValue - price + newPrice;
       await userCards.update(
         {
           remainValue: userCard.dataValues.remainValue,
@@ -72,6 +59,7 @@ module.exports = async (req, res) => {
           userId: id,
         },
       });
+      console.log(correctDate);
       res.status(200).json({ transaction: correctDate });
     } else {
       console.log("들어오니?");

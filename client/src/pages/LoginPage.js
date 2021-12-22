@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { LoginInput, PasswordInput } from "../components/Input";
 import { BigButton } from "../components/Button";
 import { Container, Title } from "../components/Common";
-import { Link } from "react-router-dom";
 import { Notification } from "../components/Input";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function LoginPage({
@@ -12,10 +12,13 @@ function LoginPage({
   setUserInfo,
   setIsLogin,
   isLogin,
+  setTransaction,
 }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isBtnClick, setIsBtnClick] = useState(false);
+
+  const navigate = useNavigate();
 
   const onEmailChange = (e) => {
     setEmail(e.target.value);
@@ -51,7 +54,10 @@ function LoginPage({
         setUserCards(res.data.cards);
         setAccessToken(res.data.accessToken);
         setUserInfo(res.data.userInfo);
-        //? 이 안에서 main 페이지로 이동할 수 있도록 조적
+        setTransaction(res.data.transaction);
+        // setTimeout(function () {
+        navigate("/");
+        // }, 800);
       })
       .catch((err) => {
         setIsBtnClick(true);
@@ -60,21 +66,21 @@ function LoginPage({
       });
   };
 
-  // const onLoginPress = (e) => {
-  //   if (e.key === "Enter") {
-  //     onLoginClick();
-  //     history.push("/main");
-  //   }
-  // };
+  const onLoginPress = (e) => {
+    if (e.key === "Enter") {
+      onLoginClick();
+    }
+  };
+
+  const onSignUpClick = () => {
+    navigate("/signup");
+  };
 
   return (
     <Container>
       <Title margin="66px 0 53px 0" text="로그인" />
       <LoginInput onChange={onEmailChange} />
-      <PasswordInput
-        onChange={onPasswordChange}
-        // onKeyPress={onLoginPress}
-      />
+      <PasswordInput onChange={onPasswordChange} onKeyPress={onLoginPress} />
       {isBtnClick ? (
         isLogin ? null : (
           <Notification color="#FF6B6B" margin="4px 186px 0 0">
@@ -82,30 +88,19 @@ function LoginPage({
           </Notification>
         )
       ) : null}
-      {isLogin ? (
-        <Link to="/">
-          <BigButton
-            text="로그인"
-            margin="62px auto 12px auto"
-            onClick={onLoginClick}
-          />
-        </Link>
-      ) : (
-        <BigButton
-          text="로그인"
-          margin="62px auto 12px auto"
-          onClick={onLoginClick}
-        />
-      )}
-      <Link to="/signup">
-        <BigButton
-          text="회원가입"
-          background="white"
-          color="#97BFB4"
-          border="1px solid #97BFB4"
-          margin="0 auto 50px auto"
-        />
-      </Link>
+      <BigButton
+        text="로그인"
+        margin="62px auto 12px auto"
+        onClick={onLoginClick}
+      />
+      <BigButton
+        text="회원가입"
+        background="white"
+        color="#97BFB4"
+        border="1px solid #97BFB4"
+        margin="0 auto 50px auto"
+        onClick={onSignUpClick}
+      />
     </Container>
   );
 }
