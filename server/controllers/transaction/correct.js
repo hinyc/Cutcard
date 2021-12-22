@@ -9,27 +9,26 @@ module.exports = async (req, res) => {
       .json({ data: null, message: "Invalid access token!" });
   } else {
     const { id } = accessTokenData;
+    // 수정 필요 항목
     const {
       year,
       month,
       day,
-      newYear,
-      newMonth,
-      newDay,
       category,
       newCategory,
       price,
       newPrice,
-      isIncome,
       outcomeIsCash,
       userCardId,
     } = req.body;
+    // 수정 필요 항목
     let userCard;
 
-    if (!cash) {
+    if (!outcomeIsCash) {
       userCard = await userCards.findOne({
         where: {
-          cardId: card,
+          cardId: userCardId,
+          userId: id,
         },
       });
       userCard.dataValues.remainValue =
@@ -40,7 +39,8 @@ module.exports = async (req, res) => {
         },
         {
           where: {
-            cardId: card,
+            cardId: userCardId,
+            userId: id,
           },
         }
       );
@@ -51,7 +51,6 @@ module.exports = async (req, res) => {
           day: newDay,
           category: newCategory,
           price: newPrice,
-          isIncome,
         },
         {
           where: {
@@ -60,8 +59,8 @@ module.exports = async (req, res) => {
             day,
             category,
             price,
-            isIncome,
             userId: id,
+            userCardId,
           },
         }
       );
@@ -70,7 +69,6 @@ module.exports = async (req, res) => {
           year,
           month,
           userId: id,
-          isIncome,
         },
       });
       res.status(200).json({ transaction: correctDate });
@@ -82,7 +80,6 @@ module.exports = async (req, res) => {
           day: newDay,
           category: newCategory,
           price: newPrice,
-          isIncome,
         },
         {
           where: {
@@ -91,7 +88,6 @@ module.exports = async (req, res) => {
             day,
             category,
             price,
-            isIncome,
             userId: id,
           },
         }
@@ -101,7 +97,6 @@ module.exports = async (req, res) => {
           year,
           month,
           userId: id,
-          isIncome,
         },
       });
       res.status(200).json({ transaction: correctDate });
