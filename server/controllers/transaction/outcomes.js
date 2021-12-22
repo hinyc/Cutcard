@@ -21,6 +21,7 @@ module.exports = async (req, res) => {
       isIncome,
     } = req.body;
     let userCard;
+    console.log("body", req.body);
 
     if (!outcomeIsCash) {
       userCard = await userCards.findOne({
@@ -29,6 +30,7 @@ module.exports = async (req, res) => {
           cardId: userCardId,
         },
       });
+      console.log("userCard", userCard.dataValues);
       userCard.dataValues.remainValue += price;
       await userCards.update(
         {

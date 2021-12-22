@@ -13,13 +13,13 @@ module.exports = {
   },
   isAuthorized: (req, res) => {
     const authorization = req.headers["authorization"];
+
     if (!authorization) {
       return res
         .status(401)
         .json({ data: null, message: "access token not provided!" });
     } else {
       const token = authorization.split(" ")[1];
-
       return verify(token, process.env.ACCESS_SECRET);
     }
   },

@@ -107,7 +107,7 @@ function MyPage({
     selected.isCut = !selected.isCut;
     userCardList[index] = selected;
     setUserCardList([...userCardList]);
-    console.log("userCards ", userCards, "userCardList", userCardList); //!!!!!!!!!!!!!
+    console.log("userCards ", userCards, "userCardList", userCardList);
   };
 
   const onUpdateClick = () => {

@@ -30,6 +30,20 @@ function App() {
   console.log("accessToken", accessToken);
   console.log("userInfo", userInfo);
 
+  const userCardList = userCards.map((el) => {
+    return {
+      cardId: el.cardId,
+      createdAt: el.createdAt,
+      id: el.id,
+      isCut: el.isCut,
+      remainValue: el.remainValue,
+      repaymentDay: el.repaymentDay,
+      updatedAt: el.updatedAt,
+      cardName: cards[el.cardId - 1].name,
+      userId: 1,
+    };
+  });
+
   return (
     <>
       <Navbar
@@ -45,7 +59,12 @@ function App() {
         <Route
           path="/main"
           element={
-            <Main isLogin={isLogin} userCards={userCards} cardsId={cards} />
+            <Main
+              isLogin={isLogin}
+              userCards={userCardList}
+              cardsId={cards}
+              accessToken={accessToken}
+            />
           }
         />
         <Route path="/about" element={<AboutPage />} />
