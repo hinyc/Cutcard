@@ -7,8 +7,8 @@ import { CardSelect, Select } from "../components/Select";
 import CardList from "../components/CardList";
 import { FlexContainer } from "../components/Common";
 import styled from "styled-components";
-
-import { dummy } from "../dummyData";
+import axios from "axios";
+import { useBeforeunload } from "react-beforeunload";
 
 const Text = styled.div`
   font-size: 14px;
@@ -16,16 +16,46 @@ const Text = styled.div`
   text-decoration: underline;
 `;
 
-function MyPage({ cardsList, userCards }) {
+function MyPage({
+  setIsLogin,
+  accessToken,
+  setAccessToken,
+  cardsList,
+  userInfo,
+  setUserInfo,
+  userCards,
+  setUserCards,
+}) {
+  const [nickname, setNickname] = useState("");
+
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
 
+  const [selected, setSelected] = useState("");
   const notSelectedCards = cardsList.filter(
     (obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === false
   );
   const [cards, setCards] = useState(notSelectedCards);
-  const [userCardList, setUserCardList] = useState(userCards);
-  const [selected, setSelected] = useState("");
+
+  const selectedCards = cardsList.filter(
+    (obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === true
+  );
+  const selectedCardsIsCut = selectedCards.map((select) => {
+    return userCards
+      .filter((userCard) => select.id === userCard.cardId)
+      .map((userCard) => {
+        return {
+          ...select,
+          isCut: userCard.isCut,
+        };
+      })[0];
+  });
+  const [userCardList, setUserCardList] = useState(selectedCardsIsCut);
+  const [repaymentDay, setRepaymentDay] = useState(userCards[0].repaymentDay);
+
+  const onNicknameChange = (e) => {
+    setNickname(e.target.value);
+  };
 
   const onPasswordChange = (e) => {
     setPassword(e.target.value);
@@ -36,53 +66,100 @@ function MyPage({ cardsList, userCards }) {
   };
 
   const onCardChange = (e) => {
-    //* 카드 옵션에서 선택된 옵션 제외
     setSelected(e.target.value); // card name
+
     const newCards = cards.filter((obj) => e.target.value !== obj.name);
     setCards(newCards);
 
-    //* 선택된 카드 유저 리스트에 추가
     const selectedData = cards.filter((obj) => obj.name === e.target.value);
-    const inputData = {
-      id: userCardList.length, //
-      cardId: selectedData[0].id,
-      cardName: selectedData[0].name,
-      isCut: false,
-    };
-    const newUserCardList = userCardList.concat(inputData);
+    const selectedDataUpdate = { ...selectedData[0], isCut: false };
+    const newUserCardList = userCardList.concat(selectedDataUpdate);
     setUserCardList(newUserCardList);
   };
 
-  const onCardDelete = (cardId) => {
-    const deletedCard = userCardList.filter((obj) => obj.cardId === cardId);
-
-    //* 삭제한 카드 리스트에 추가
+  const onCardDelete = (id) => {
+    const deletedCard = userCardList.filter((obj) => obj.id === id);
     const updateCards = cards.concat({
-      id: deletedCard[0].cardId,
-      name: deletedCard[0].cardName,
+      id: deletedCard[0].id,
+      name: deletedCard[0].name,
     });
     updateCards.sort((a, b) => a.id - b.id);
     setCards(updateCards);
 
-    //* 삭제한 카드 유저 목록에서 제거
-    const updateUserCardList = userCardList.filter(
-      (obj) => obj.cardId !== cardId
-    );
+    const updateUserCardList = userCardList.filter((obj) => obj.id !== id);
     setUserCardList(updateUserCardList);
   };
 
   const onRepaymentDaySelect = (e) => {
     const value = e.target.value;
     const repaymentDay = value.slice(0, value.length - 1);
-    userCardList.map((obj) => (obj.repaymentDay = Number(repaymentDay)));
+    setRepaymentDay(Number(repaymentDay));
   };
 
-  const onWantCutCardSelect = (obj) => {
-    obj.isCut = !obj.isCut;
-    console.log(obj);
-    console.log(userCardList);
-    return setUserCardList(userCardList);
+  const onWantCutCardSelect = (e) => {
+    const value = e.target.innerText; // card name
+    const selected = userCardList.filter((obj) => obj.name === value)[0]; // {}
+    const index = userCardList.findIndex((obj) => obj.name === value);
+    selected.isCut = !selected.isCut;
+    userCardList[index] = selected;
+    setUserCardList([...userCardList]);
   };
+
+  const onUpdateClick = () => {
+    if (password === passwordCheck) {
+      axios
+        .patch(
+          "http://localhost:4000/users/userinfo",
+          {
+            nickname: nickname,
+            password: password,
+            repaymentDay: repaymentDay,
+            cards: userCardList.map((obj) => {
+              return {
+                id: obj.id,
+                isCut: obj.isCut,
+              };
+            }),
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          setAccessToken("");
+          setUserCards([]);
+          setUserInfo({});
+        })
+        .then(() => {
+          setIsLogin(false);
+        });
+    }
+  };
+
+  const onSignOutClick = () => {
+    axios
+      .delete("http://localhost:4000/users/userinfo", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setAccessToken("");
+        setUserCards([]);
+        setUserInfo({});
+      })
+      .then(() => {
+        setIsLogin(false);
+      });
+  };
+
+  useBeforeunload((event) => event.preventDefault());
 
   return (
     <Container>
@@ -90,10 +167,17 @@ function MyPage({ cardsList, userCards }) {
       <Input
         label="닉네임"
         type="text"
-        placeholder="닉네임을 입력해주세요"
+        placeholder={userInfo.nickname}
         margin="auto"
+        onChange={onNicknameChange}
       />
-      <Input label="이메일" type="text" margin="auto" readOnly={true} />
+      <Input
+        label="이메일"
+        type="text"
+        margin="auto"
+        readOnly={true}
+        value={userInfo.email}
+      />
       {/* Password */}
       <Input
         marginLabel="18px 226px 0 0"
@@ -133,10 +217,10 @@ function MyPage({ cardsList, userCards }) {
       <FlexContainer>
         {userCardList.map((obj) => (
           <CardList
-            key={obj.cardId}
-            text={obj.cardName}
-            onTextClick={() => onWantCutCardSelect(obj)}
-            onClick={() => onCardDelete(obj.cardId)}
+            key={obj.id}
+            text={obj.name}
+            onTextClick={onWantCutCardSelect}
+            onClick={() => onCardDelete(obj.id)}
             background={obj.isCut ? "#97bfb4" : "white"}
             color={obj.isCut ? "white" : "#97bfb4"}
             btnBackground={obj.isCut ? "#97bfb4" : "white"}
@@ -147,13 +231,17 @@ function MyPage({ cardsList, userCards }) {
       <Select
         padding="25px 238px 9px 0"
         label="카드 상환일"
-        text="카드 상환일을 선택해주세요 (1개 선택 가능)"
+        text={`카드 상환일을 선택해주세요 (현재 ${userCards[0].repaymentDay}일)`}
         options={["1일", "5일", "10일", "15일", "20일", "25일"]}
         onChange={onRepaymentDaySelect}
       />
       {/* Button */}
       <Link to="/login">
-        <BigButton text="수정하기" margin="28px auto 12px auto" />
+        <BigButton
+          text="수정하기"
+          margin="28px auto 12px auto"
+          onClick={onUpdateClick}
+        />
       </Link>
       <Link to="/">
         <BigButton
@@ -166,7 +254,7 @@ function MyPage({ cardsList, userCards }) {
       </Link>
       <Container>
         <Link to="/">
-          <Text>회원탈퇴</Text>
+          <Text onClick={onSignOutClick}>회원탈퇴</Text>
         </Link>
       </Container>
     </Container>

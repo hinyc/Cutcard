@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
+import axios from "axios";
+
 const Header = styled.header`
   box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.07);
   display: flex;
@@ -48,15 +50,37 @@ const Menu = styled.button`
   }
 `;
 
-function Navbar({ isLogin }) {
-  const [login, setIsLogin] = useState(isLogin);
-
-  const LoginClick = () => {
-    setIsLogin(true);
+function Navbar({
+  isLogin,
+  setIsLogin,
+  accessToken,
+  setAccessToken,
+  setUserCards,
+  setUserInfo,
+}) {
+  const onLogoutClick = () => {
+    axios
+      .get("http://localhost:4000/users/logout")
+      .then((res) => {
+        console.log(res);
+        setAccessToken("");
+        setUserCards([]);
+        setUserInfo({});
+      })
+      .then(() => {
+        setIsLogin(false);
+      });
   };
 
-  const LogoutClick = () => {
-    setIsLogin(false);
+  const onMyPageClick = () => {
+    axios
+      .get("http://localhost:4000/users/userinfo", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => console.log(res));
   };
 
   return (
@@ -69,16 +93,20 @@ function Navbar({ isLogin }) {
           <Menu paddingTop="0px">소개</Menu>
         </Link>
       </Nav>
-      {login ? (
+      {isLogin ? (
         <>
           <Link to="/mypage">
-            <Menu marginRight="20px">마이페이지</Menu>
+            <Menu marginRight="20px" onClick={onMyPageClick}>
+              마이페이지
+            </Menu>
           </Link>
-          <Menu onClick={LogoutClick}>로그아웃</Menu>
+          <Link to="/">
+            <Menu onClick={onLogoutClick}>로그아웃</Menu>
+          </Link>
         </>
       ) : (
         <Link to="/login">
-          <Menu onClick={LoginClick}>회원가입 / 로그인</Menu>
+          <Menu>회원가입 / 로그인</Menu>
         </Link>
       )}
     </Header>

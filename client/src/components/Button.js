@@ -59,7 +59,14 @@ export function SmallButton(props) {
   );
 }
 
-export function BigButton({ text, background, color, border, margin }) {
+export function BigButton({
+  text,
+  background,
+  color,
+  border,
+  margin,
+  onClick,
+}) {
   return (
     <ButtonStyle
       width="335px"
@@ -68,6 +75,7 @@ export function BigButton({ text, background, color, border, margin }) {
       color={color}
       border={border}
       margin={margin}
+      onClick={onClick}
     >
       {text}
     </ButtonStyle>
