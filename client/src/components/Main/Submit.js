@@ -2,12 +2,15 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { Input } from '../Input';
 import { SmallButton } from '../Button';
-import { Select } from '../Select';
+import { InputSelect, Select } from '../Select';
 
 //! Right
 export const SubmitContainer = styled.div`
   box-sizing: border-box;
   /* border: solid 2px #97bfb4; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 300px;
   position: relative;
 `;
@@ -26,7 +29,7 @@ export const InputContainer = styled.div`
   flex-direction: column;
   align-items: center;
   position: absolute;
-  top: 100px;
+  top: 130px;
 `;
 
 export const InputDate = styled.div`
@@ -58,6 +61,24 @@ export const InputDate = styled.div`
     outline: 1px solid #7c8986;
   }
 `;
+const wrap = styled.div`
+  width: ${(props) => props.width || '40px'};
+  height: ${(props) => props.height || '40px'};
+  top: ${(props) => props.top || '0px'};
+  left: ${(props) => props.left || '0px'};
+  right: ${(props) => props.right || '0px'};
+  bottom: ${(props) => props.bottom || '0px'};
+  position: ${(props) => props.position || '40px'};
+  color: ${(props) => props.color || 'none'};
+  margin: ${(props) => props.margin || '0'};
+`;
+const RequestMessage = styled.div`
+  color: #ff6b6b;
+  font-size: 14px;
+  font-weight: 700;
+  position: absolute;
+  bottom: 150px;
+`;
 
 const AddInCome = (props) => {
   const {
@@ -71,44 +92,24 @@ const AddInCome = (props) => {
     submitHandler,
     contentModifiyer,
     buttonModifyState,
+    requestMessage,
   } = props;
+  console.log(requestMessage);
   return (
     <>
       <InputContainer>
         <InputDate placeholder="날짜" width={`200px`}>
           {getDate}
         </InputDate>
-        <Select text="수입 카테고리" width={`200px`} options={inComeCategorys} onChange={categoryHandler} value={category} margin={'0'} />
-        <Input
-          placeholder="금액을 입력해주세요" //
+        <Select
+          text="수입 유형" //
           width={`200px`}
-          onChange={priceHandler}
-          value={price}
-          type={`number`}
-          min={`0`}
-          max={`999999999`}
+          options={inComeCategorys}
+          onChange={categoryHandler}
+          value={category}
+          margin={`15px 0 10px 0`}
+          padding={`0`}
         />
-        {buttonModifyState ? (
-          <SmallButton //
-            text="수정"
-            width={`200px`}
-            margin={`18px 0 0 0 `}
-            onClick={() => {
-              contentModifiyer();
-              inputResetHandler(true);
-            }}
-          />
-        ) : (
-          <SmallButton //
-            text="입력"
-            width={`200px`}
-            margin={`18px 0 0 0 `}
-            onClick={() => {
-              submitHandler('incomes');
-              inputResetHandler(true);
-            }}
-          />
-        )}
       </InputContainer>
     </>
   );
@@ -130,49 +131,46 @@ const AddOutCome = (props) => {
     userCards,
     submitHandler,
     contentModifiyer,
-
     buttonModifyState,
+    requestMessage,
   } = props;
   const cardsList = userCards.map((el) => el.cardName);
+
   return (
     <>
       <InputContainer>
         <InputDate placeholder="날짜" width={`200px`}>
           {getDate}
         </InputDate>
-        <Select text="지출 카테고리" width={`200px`} options={outComeCategorys} onChange={categoryHandler} value={category} margin={'0'} />
-        <Select text="현금, 카드" width={`200px`} onChange={cashHandler} options={['현금', '카드']} value={cash} margin={'0'} />
-        <Select text="카드를 선택하세요" width={`200px`} onChange={cardHandler} options={cardsList} value={card} margin={'0'} />
-        <Input
-          placeholder="금액을 입력해주세요" //
+        <Select
+          text="지출 유형" //
           width={`200px`}
-          onChange={priceHandler}
-          value={price}
-          type={`number`}
-          min={`0`}
-          max={`999999999`}
+          options={outComeCategorys}
+          onChange={categoryHandler}
+          value={category}
+          margin={`15px 0 10px 0`}
+          padding={`0`}
         />
-        {buttonModifyState ? (
-          <SmallButton //
-            text="수정"
+        <Select
+          text="결제 수단" //
+          width={`200px`}
+          onChange={cashHandler}
+          options={['현금', '카드']}
+          value={cash}
+          margin={`0 0 10px 0`}
+          padding={`0`}
+        />
+        {cash === '카드' ? ( //
+          <Select
+            text="카드 목록" //
             width={`200px`}
-            margin={`18px 0 0 0 `}
-            onClick={() => {
-              inputResetHandler(false);
-              contentModifiyer();
-            }}
+            onChange={cardHandler}
+            options={cardsList}
+            value={card}
+            margin={`0 0 10px 0`}
+            padding={`0`}
           />
-        ) : (
-          <SmallButton //
-            text="입력"
-            width={`200px`}
-            margin={`18px 0 0 0 `}
-            onClick={() => {
-              submitHandler('outcomes');
-              inputResetHandler(false);
-            }}
-          />
-        )}
+        ) : null}
       </InputContainer>
     </>
   );
@@ -197,6 +195,7 @@ const Submit = (props) => {
     submitHandler,
     buttonModifyState,
     contentModifiyer,
+    requestMessage,
   } = props;
 
   const inComeCategorys = Object.keys(categoryList.inCome);
@@ -218,6 +217,7 @@ const Submit = (props) => {
             modifyState={modifyState}
             buttonModifyState={buttonModifyState}
             contentModifiyer={contentModifiyer}
+            requestMessage={requestMessage}
           />
         ) : (
           <AddOutCome //
@@ -237,8 +237,32 @@ const Submit = (props) => {
             modifyState={modifyState}
             buttonModifyState={buttonModifyState}
             contentModifiyer={contentModifiyer}
+            requestMessage={requestMessage}
           />
         )}
+
+        <Input
+          placeholder="금액을 입력해주세요" //
+          width={`200px`}
+          onChange={priceHandler}
+          value={price}
+          type={`number`}
+          min={`0`}
+          max={`999999999`}
+          position={`absolute`}
+          bottom={`170px`}
+        />
+
+        <RequestMessage>{requestMessage}</RequestMessage>
+
+        <SmallButton //
+          text={buttonModifyState ? '수정' : '입력'}
+          width={`200px`}
+          margin={`18px 0 0 0 `}
+          position={`absolute`}
+          bottom={`110px`}
+          onClick={buttonModifyState ? contentModifiyer : () => submitHandler(mainState)}
+        />
       </SubmitContainer>
     </>
   );
