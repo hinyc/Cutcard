@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import Calendar from './Calendar';
-import Input from '../Input';
-import { Select } from '../Select';
 import View from './View';
 import Submit from './Submit';
 // dumydata
 import { newdumy } from '../../dummyData';
 import axios from 'axios';
-
+//asdfsafd
 export const MainContainer = styled.div`
   width: 1130px;
   height: 550px;
@@ -307,6 +305,7 @@ const Main = ({ isLogin, userCards, cardsId, accessToken }) => {
     setMainState(state);
     setModifyState(modifyState);
     inputResetHandler(category, price, card, cash);
+    setRequestMessage('');
   };
   const buttonStateHandler = (state) => {
     setButtonModifyState(state);
@@ -325,6 +324,7 @@ const Main = ({ isLogin, userCards, cardsId, accessToken }) => {
       setMainState(state);
     }
     inputResetHandler(category, price, card, cash);
+    setRequestMessage('');
   };
   //Calendar
   const pickDateHandler = (year, month) => {
