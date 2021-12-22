@@ -211,7 +211,6 @@ const Main = ({ isLogin, userCards, cardsId, accessToken }) => {
       outcomeIsCash,
       userCardId,
     };
-    console.log(resData);
     axios
       .post(
         `http://localhost:4000/transaction/delete`, //
@@ -245,8 +244,8 @@ const Main = ({ isLogin, userCards, cardsId, accessToken }) => {
       // newDay: dataForModify.day,
       category: dataForModify.category,
       newCategory: category,
-      price: Number(price),
-      newPrice: dataForModify.price,
+      price: dataForModify.price,
+      newPrice: Number(price),
       outcomeIsCash,
       userCardId,
     };
