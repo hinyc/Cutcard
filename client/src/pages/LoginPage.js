@@ -1,16 +1,11 @@
-import React, { useState } from "react";
-import { LoginInput, PasswordInput } from "../components/Input";
-import { BigButton } from "../components/Button";
-import { Container, Title } from "../components/Common";
-import { Notification } from "../components/Input";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
-<<<<<<< HEAD
+import React, { useState } from 'react';
+import { LoginInput, PasswordInput } from '../components/Input';
+import { BigButton } from '../components/Button';
+import { Container, Title } from '../components/Common';
+import { Notification } from '../components/Input';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-=======
->>>>>>> 7c20fbd987b45cd1c11c19354307b8d63f60e5fc
 function LoginPage({
   setAccessToken,
   setUserCards,
@@ -19,13 +14,8 @@ function LoginPage({
   isLogin,
   setTransaction,
 }) {
-<<<<<<< HEAD
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-=======
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
->>>>>>> 7c20fbd987b45cd1c11c19354307b8d63f60e5fc
   const [isBtnClick, setIsBtnClick] = useState(false);
 
   const navigate = useNavigate();
@@ -45,7 +35,7 @@ function LoginPage({
 
     axios
       .post(
-        "http://localhost:4000/users/login",
+        'http://localhost:4000/users/login',
         {
           email: email,
           password: password,
@@ -54,12 +44,8 @@ function LoginPage({
         },
         {
           headers: {
-<<<<<<< HEAD
             'Content-Type': 'application/json',
             withCredentials: true,
-=======
-            "Content-Type": "application/json",
->>>>>>> 7c20fbd987b45cd1c11c19354307b8d63f60e5fc
           },
         },
       )
@@ -69,14 +55,10 @@ function LoginPage({
         setUserCards(res.data.cards);
         setAccessToken(res.data.accessToken);
         setUserInfo(res.data.userInfo);
-<<<<<<< HEAD
-        //? 이 안에서 main 페이지로 이동할 수 있도록 조적
-=======
         setTransaction(res.data.transaction);
         // setTimeout(function () {
-        navigate("/");
+        navigate('/');
         // }, 800);
->>>>>>> 7c20fbd987b45cd1c11c19354307b8d63f60e5fc
       })
       .catch((err) => {
         setIsBtnClick(true);
@@ -86,13 +68,13 @@ function LoginPage({
   };
 
   const onLoginPress = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       onLoginClick();
     }
   };
 
   const onSignUpClick = () => {
-    navigate("/signup");
+    navigate('/signup');
   };
 
   return (
@@ -107,32 +89,6 @@ function LoginPage({
           </Notification>
         )
       ) : null}
-<<<<<<< HEAD
-      {isLogin ? (
-        <Link to="/">
-          <BigButton
-            text="로그인"
-            margin="62px auto 12px auto"
-            onClick={onLoginClick}
-          />
-        </Link>
-      ) : (
-        <BigButton
-          text="로그인"
-          margin="62px auto 12px auto"
-          onClick={onLoginClick}
-        />
-      )}
-      <Link to="/signup">
-        <BigButton
-          text="회원가입"
-          background="white"
-          color="#97BFB4"
-          border="1px solid #97BFB4"
-          margin="0 auto 50px auto"
-        />
-      </Link>
-=======
       <BigButton
         text="로그인"
         margin="62px auto 12px auto"
@@ -146,7 +102,6 @@ function LoginPage({
         margin="0 auto 50px auto"
         onClick={onSignUpClick}
       />
->>>>>>> 7c20fbd987b45cd1c11c19354307b8d63f60e5fc
     </Container>
   );
 }

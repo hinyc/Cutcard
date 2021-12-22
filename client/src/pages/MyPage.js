@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState } from 'react';
 import { Input, Notification } from '../components/Input';
 import { BigButton } from '../components/Button';
@@ -10,20 +9,7 @@ import { FlexContainer } from '../components/Common';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useBeforeunload } from 'react-beforeunload';
-=======
-import React, { useState } from "react";
-import { Input, Notification } from "../components/Input";
-import { BigButton } from "../components/Button";
-import { Container, Title } from "../components/Common";
-import { Link } from "react-router-dom";
-import { CardSelect, Select } from "../components/Select";
-import CardList from "../components/CardList";
-import { FlexContainer } from "../components/Common";
-import styled from "styled-components";
-import axios from "axios";
-import { useBeforeunload } from "react-beforeunload";
-import { useNavigate } from "react-router-dom";
->>>>>>> 7c20fbd987b45cd1c11c19354307b8d63f60e5fc
+import { useNavigate } from 'react-router-dom';
 
 const Text = styled.div`
   font-size: 14px;
@@ -150,7 +136,7 @@ function MyPage({
           setAccessToken('');
           setUserCards([]);
           setUserInfo({});
-          navigate("/");
+          navigate('/');
         })
         .then(() => {
           setIsLogin(false);
@@ -171,7 +157,7 @@ function MyPage({
         setAccessToken('');
         setUserCards([]);
         setUserInfo({});
-        navigate("/");
+        navigate('/');
       })
       .then(() => {
         setIsLogin(false);
