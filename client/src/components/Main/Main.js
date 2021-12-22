@@ -247,7 +247,7 @@ const Main = ({ isLogin, userCards, cardsId, accessToken }) => {
       newCategory: category,
       price: Number(price),
       newPrice: dataForModify.price,
-      isIncome,
+
       outcomeIsCash,
       userCardId,
     };
