@@ -1,16 +1,28 @@
-import React, { useState } from 'react';
-import { LoginInput, PasswordInput } from '../components/Input';
-import { BigButton } from '../components/Button';
-import { Container, Title } from '../components/Common';
-import { Link } from 'react-router-dom';
-import { Notification } from '../components/Input';
+import React, { useState } from "react";
+import { LoginInput, PasswordInput } from "../components/Input";
+import { BigButton } from "../components/Button";
+import { Container, Title } from "../components/Common";
+import { Link } from "react-router-dom";
+import { Notification } from "../components/Input";
+import { useNavigate } from "react-router-dom";
 
-import axios from 'axios';
+import axios from "axios";
+import Modal from "../components/Modal";
 
-function LoginPage({ setAccessToken, setUserCards, setUserInfo, setIsLogin, isLogin, setTransaction }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+function LoginPage({
+  setAccessToken,
+  setUserCards,
+  setUserInfo,
+  setIsLogin,
+  isLogin,
+  setTransaction,
+}) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isBtnClick, setIsBtnClick] = useState(false);
+
+  const navigate = useNavigate();
+
   const onEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -26,7 +38,7 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo, setIsLogin, isLo
 
     axios
       .post(
-        'http://localhost:4000/users/login',
+        "http://localhost:4000/users/login",
         {
           email: email,
           password: password,
@@ -35,7 +47,7 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo, setIsLogin, isLo
         },
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         }
       )
@@ -46,7 +58,7 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo, setIsLogin, isLo
         setAccessToken(res.data.accessToken);
         setUserInfo(res.data.userInfo);
         setTransaction(res.data.transaction);
-        //? 이 안에서 main 페이지로 이동할 수 있도록 조적
+        navigate("/");
       })
       .catch((err) => {
         setIsBtnClick(true);
@@ -55,21 +67,21 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo, setIsLogin, isLo
       });
   };
 
-  // const onLoginPress = (e) => {
-  //   if (e.key === "Enter") {
-  //     onLoginClick();
-  //     history.push("/main");
-  //   }
-  // };
+  const onLoginPress = (e) => {
+    if (e.key === "Enter") {
+      onLoginClick();
+    }
+  };
+
+  const onSignUpClick = () => {
+    navigate("/signup");
+  };
 
   return (
     <Container>
       <Title margin="66px 0 53px 0" text="로그인" />
       <LoginInput onChange={onEmailChange} />
-      <PasswordInput
-        onChange={onPasswordChange}
-        // onKeyPress={onLoginPress}
-      />
+      <PasswordInput onChange={onPasswordChange} onKeyPress={onLoginPress} />
       {isBtnClick ? (
         isLogin ? null : (
           <Notification color="#FF6B6B" margin="4px 186px 0 0">
@@ -77,16 +89,22 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo, setIsLogin, isLo
           </Notification>
         )
       ) : null}
-      {isLogin ? (
-        <Link to="/">
-          <BigButton text="로그인" margin="62px auto 12px auto" onClick={onLoginClick} />
-        </Link>
-      ) : (
-        <BigButton text="로그인" margin="62px auto 12px auto" onClick={onLoginClick} />
-      )}
-      <Link to="/signup">
-        <BigButton text="회원가입" background="white" color="#97BFB4" border="1px solid #97BFB4" margin="0 auto 50px auto" />
-      </Link>
+      {/* {isLogin ? null : (
+        <Modal messageText="message text!" buttonText="button text" />
+      )} */}
+      <BigButton
+        text="로그인"
+        margin="62px auto 12px auto"
+        onClick={onLoginClick}
+      />
+      <BigButton
+        text="회원가입"
+        background="white"
+        color="#97BFB4"
+        border="1px solid #97BFB4"
+        margin="0 auto 50px auto"
+        onClick={onSignUpClick}
+      />
     </Container>
   );
 }
