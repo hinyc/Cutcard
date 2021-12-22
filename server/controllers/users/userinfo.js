@@ -58,8 +58,8 @@ module.exports = {
       // 회원가입시 기록했던 유저 카드 목록에서 id만 추출
       const userCardId = userCardInfos.map((data) => data.cardId);
       // 회원가입시 기록했던 유저 카드 목록과 보유한 카드 목록에 중복으로 존재하는 카드의 정보
-      const notChangingCard = userCardList.filter((data) =>
-        remainingCardId.includes(data[0])
+      const notChangingCard = remainingCards.filter((data) =>
+        userCardId.includes(data[0])
       );
       // 회원가입시 기록했던 유저 카드 목록에서 보유한 카드 목록과 겹치는 부분을 filter = 할당되는 배열은 제거할 카드의 정보
       const deleteCardList = userCardList.filter(

@@ -218,10 +218,10 @@ function SignUpPage({ cardsList }) {
             text={obj.name}
             onTextClick={onWantCutCardSelect}
             onClick={() => onCardDelete(obj.id)}
-            background={obj.isCut === true ? "#97bfb4" : "white"}
-            color={obj.isCut === true ? "white" : "#97bfb4"}
-            btnBackground={obj.isCut === true ? "#97bfb4" : "white"}
-            xColor={obj.isCut === true ? "white" : "#97bfb4"}
+            background={obj.isCut ? "#97bfb4" : "white"}
+            color={obj.isCut ? "white" : "#97bfb4"}
+            btnBackground={obj.isCut ? "#97bfb4" : "white"}
+            xColor={obj.isCut ? "white" : "#97bfb4"}
           />
         ))}
         <div>삭제를 목표로 한다면 카드 이름을 클릭해주세요.</div>

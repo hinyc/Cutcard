@@ -77,19 +77,17 @@ function MyPage({
     setUserCardList(newUserCardList);
   };
 
-  const onCardDelete = (cardId) => {
-    const deletedCard = userCardList.filter((obj) => obj.cardId === cardId);
-
+  const onCardDelete = (id) => {
+    const deletedCard = userCardList.filter((obj) => obj.id === id);
     const updateCards = cards.concat({
-      id: deletedCard[0].cardId,
-      name: deletedCard[0].cardName,
+      id: deletedCard[0].id,
+      name: deletedCard[0].name,
     });
     updateCards.sort((a, b) => a.id - b.id);
+    console.log("updateCards", updateCards);
     setCards(updateCards);
 
-    const updateUserCardList = userCardList.filter(
-      (obj) => obj.cardId !== cardId
-    );
+    const updateUserCardList = userCardList.filter((obj) => obj.id !== id);
     setUserCardList(updateUserCardList);
   };
 
@@ -102,15 +100,24 @@ function MyPage({
 
   const onWantCutCardSelect = (e) => {
     const value = e.target.innerText; // card name
-    const selected = userCardList.filter((obj) => obj.name === value)[0];
+    const selected = userCardList.filter((obj) => obj.name === value)[0]; // {}
     const index = userCardList.findIndex((obj) => obj.name === value);
     selected.isCut = !selected.isCut;
     userCardList[index] = selected;
     setUserCardList([...userCardList]);
-    console.log("userCards ", userCards, "userCardList", userCardList);
+    console.log("userCardList click", userCardList);
   };
 
   const onUpdateClick = () => {
+    console.log(
+      "userCardList update",
+      userCardList.map((obj) => {
+        return {
+          id: obj.id,
+          isCut: obj.isCut,
+        };
+      })
+    );
     if (password === passwordCheck) {
       axios
         .patch(
@@ -223,7 +230,7 @@ function MyPage({
             key={obj.id}
             text={obj.name}
             onTextClick={onWantCutCardSelect}
-            onClick={() => onCardDelete(obj.cardId)}
+            onClick={() => onCardDelete(obj.id)}
             background={obj.isCut ? "#97bfb4" : "white"}
             color={obj.isCut ? "white" : "#97bfb4"}
             btnBackground={obj.isCut ? "#97bfb4" : "white"}
@@ -235,7 +242,7 @@ function MyPage({
         padding="25px 238px 9px 0"
         label="카드 상환일"
         text={`카드 상환일을 선택해주세요 (현재 ${userCards[0].repaymentDay}일)`}
-        options={["1일", "5일", "10일", "15일", "20일", "25일"]} //! 해당없음?
+        options={["1일", "5일", "10일", "15일", "20일", "25일"]}
         onChange={onRepaymentDaySelect}
       />
       {/* Button */}
