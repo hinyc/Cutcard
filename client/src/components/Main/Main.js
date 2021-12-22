@@ -6,6 +6,8 @@ import Submit from './Submit';
 // dumydata
 import { newdumy } from '../../dummyData';
 import axios from 'axios';
+import { useBeforeunload } from 'react-beforeunload';
+
 //asdfsafd
 export const MainContainer = styled.div`
   width: 1130px;
@@ -58,6 +60,7 @@ const Main = ({ isLogin, userCards, cardsId, accessToken, transaction, setTransa
   const [temporaryData, setTemporaryData] = useState({});
   const [requestMessage, setRequestMessage] = useState('');
 
+  useBeforeunload((event) => event.preventDefault());
   // useEffect(() => {
   //   setTransaction(userTransaction);
   // }, [accessToken]);
