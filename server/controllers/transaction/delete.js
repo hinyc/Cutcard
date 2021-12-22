@@ -65,7 +65,15 @@ module.exports = async (req, res) => {
           userId: id,
         },
       });
-      res.status(200).json({ transaction: deleteData });
+      const cardPrice = await transactions.findAll({
+        where: {
+          year,
+          month: month - 1,
+          userId: id,
+          outcomeIsCash: false,
+        },
+      });
+      res.status(200).json({ transaction: deleteData, cardPrice: cardPrice });
     } else {
       await transactions.destroy({
         where: {
@@ -91,7 +99,15 @@ module.exports = async (req, res) => {
           userId: id,
         },
       });
-      res.status(200).json({ transaction: deleteData });
+      const cardPrice = await transactions.findAll({
+        where: {
+          year,
+          month: month - 1,
+          userId: id,
+          outcomeIsCash: false,
+        },
+      });
+      res.status(200).json({ transaction: deleteData, cardPrice: cardPrice });
     }
   }
 };

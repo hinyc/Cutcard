@@ -19,8 +19,14 @@ module.exports = async (req, res) => {
         userId: id,
       },
     });
-    console.log(`res 3`);
-    console.log(dataOfDate.length);
-    res.status(200).json({ transaction: dataOfDate });
+    const cardPrice = await transactions.findAll({
+      where: {
+        year,
+        month: month - 1,
+        userId: id,
+        outcomeIsCash: false,
+      },
+    });
+    res.status(200).json({ transaction: dataOfDate, cardPrice: cardPrice });
   }
 };

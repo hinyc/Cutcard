@@ -38,6 +38,14 @@ module.exports = async (req, res) => {
       },
     });
 
-    res.status(201).json({ transaction: incomeData });
+    const cardPrice = await transactions.findAll({
+      where: {
+        year,
+        month: month - 1,
+        userId: id,
+        outcomeIsCash: false,
+      },
+    });
+    res.status(201).json({ transaction: incomeData, cardPrice });
   }
 };

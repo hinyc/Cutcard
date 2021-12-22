@@ -161,6 +161,7 @@ const Main = ({ isLogin, userCards, cardsId, accessToken }) => {
       .then((res) => {
         setTransaction(res.data.transaction);
         console.log("응답데이터", res.data.transaction);
+        console.log("카드요금", res.data.cardPrice);
       })
       .catch((err) => console.log(err));
     inputResetHandler();
@@ -285,7 +286,7 @@ const Main = ({ isLogin, userCards, cardsId, accessToken }) => {
     axios
       .post(
         `https://localhost:4000/transaction/correct`, //
-        resCorrectData,
+        resData,
         {
           headers: {
             "Content-Type": "application/json", //
