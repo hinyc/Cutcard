@@ -29,13 +29,16 @@ const AdateContainer = styled.div`
   }
 `;
 const DateNum = styled.div`
+  font-weight: 500;
   color: ${(props) => props.color || 'black'};
 `;
 const DateNumSat = styled.div`
-  color: ${(props) => props.color || 'blue'};
+  font-weight: 500;
+  color: ${(props) => props.color || '#6B95FF'};
 `;
 const DateNumSun = styled.div`
-  color: ${(props) => props.color || 'red'};
+  font-weight: 500;
+  color: ${(props) => props.color || '#FF6B6B'};
 `;
 
 const StateContainer = styled.div`

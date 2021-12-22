@@ -57,14 +57,14 @@ export const Day = styled.div`
 export const DaySat = styled.div`
   text-align: center;
   box-sizing: border-box;
-  color: blue;
+  color: #6b95ff;
   width: 66px;
   height: 30px;
 `;
 export const DaySun = styled.div`
   text-align: center;
   box-sizing: border-box;
-  color: red;
+  color: #ff6b6b;
   width: 66px;
   height: 30px;
 `;
@@ -86,7 +86,7 @@ const Calendar = (props) => {
     targetMonth,
     pickDateHandler,
     inOutDate,
-    mainStateHandler,
+    setModifyState,
     modifyStateHandler,
     buttonStateHandler,
   } = props;
@@ -124,12 +124,9 @@ const Calendar = (props) => {
   const dates = prevDates.concat(thisDates, nextDates);
   //! -----------
 
-  const prevMonthHandler = () => {
-    pickDateHandler(targetYear, targetMonth - 1);
-  };
-
-  const nextMonthHandler = () => {
-    pickDateHandler(targetYear, targetMonth + 1);
+  const moveMonthHandler = (num) => {
+    pickDateHandler(targetYear, targetMonth + num);
+    setModifyState(false);
   };
 
   return (
@@ -137,10 +134,10 @@ const Calendar = (props) => {
       <CalendarContainer>
         <Head>
           <Nav>
-            <Arrow onClick={prevMonthHandler}>&lt;</Arrow>
+            <Arrow onClick={() => moveMonthHandler(-1)}>&lt;</Arrow>
             <YearMonth>{`${targetYear}년 ${targetMonth}월`}</YearMonth>
             {/* <Today>Today</Today> */}
-            <Arrow onClick={nextMonthHandler}>&gt;</Arrow>
+            <Arrow onClick={() => moveMonthHandler(1)}>&gt;</Arrow>
           </Nav>
         </Head>
 
