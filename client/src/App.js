@@ -28,6 +28,7 @@ function App() {
   const [userInfo, setUserInfo] = useState({});
   const [userCards, setUserCards] = useState([]);
   const [accessToken, setAccessToken] = useState('');
+  const [transaction, setTransaction] = useState([]);
   console.log('userCards', userCards);
   console.log('accessToken', accessToken);
   console.log('userInfo', userInfo);
@@ -55,12 +56,20 @@ function App() {
 
   return (
     <>
-      <Navbar isLogin={isLogin} setIsLogin={setIsLogin} accessToken={accessToken} setAccessToken={setAccessToken} setUserCards={setUserCards} setUserInfo={setUserInfo} />
+      <Navbar
+        isLogin={isLogin}
+        setIsLogin={setIsLogin}
+        accessToken={accessToken}
+        setAccessToken={setAccessToken}
+        setUserCards={setUserCards}
+        setUserInfo={setUserInfo}
+        setTransaction={setTransaction}
+      />
       <Routes>
         <Route path="/" element={<Navigate to="/main" />} />
-        <Route path="/main" element={<Main isLogin={isLogin} userCards={userCardList} cardsId={cards} accessToken={accessToken} />} />
+        <Route path="/main" element={<Main isLogin={isLogin} userCards={userCardList} cardsId={cards} accessToken={accessToken} transaction={transaction} setTransaction={setTransaction} />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/login" element={<LoginPage setUserCards={setUserCards} setUserInfo={setUserInfo} setAccessToken={setAccessToken} />} />
+        <Route path="/login" element={<LoginPage setUserCards={setUserCards} setUserInfo={setUserInfo} setAccessToken={setAccessToken} setTransaction={setTransaction} />} />
         <Route
           path="/mypage"
           element={

@@ -7,10 +7,11 @@ const SelectStyle = styled.select`
   width: ${(props) => props.width || '335px'};
   padding: 0 13px;
   font-size: 16px;
-  border: 1px solid #bfc5c4;
+  border: ${(props) => props.border || `1px solid #bfc5c4`};
   border-radius: 5px;
   color: #7c8986;
   margin: ${(props) => props.margin || '0 0 27px 0'};
+  transition: ${(props) => props.transition || '0'};
 
   &:focus {
     outline: 1px solid #7c8986;
@@ -37,11 +38,14 @@ export function Select(props) {
     value,
     margin,
     padding,
+    thisHeight,
+    border,
+    transition,
   } = props;
   return (
     <>
       <LabelStyle padding={padding}>{label}</LabelStyle>
-      <SelectStyle width={width} hidden={height} onChange={onChange} value={value} margin={margin}>
+      <SelectStyle width={width} hidden={height} height={thisHeight} onChange={onChange} value={value} margin={margin} border={border} transition={transition}>
         <Option>{text}</Option>
         {options.map((option, index) => (
           <Option key={index} value={option}>
