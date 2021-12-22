@@ -47,10 +47,6 @@ function MyPage({
     setNickname(e.target.value);
   };
 
-  const onNicknameChange = (e) => {
-    setNickname(e.target.value);
-  };
-
   const onPasswordChange = (e) => {
     setPassword(e.target.value);
   };

@@ -49,13 +49,14 @@ export const Amount = styled.div`
   font-size: 26px; ;
 `;
 
-const Main = ({ isLogin, userCards, cardsId }) => {
+const Main = ({ isLogin, userCards, cardsId, accessToken }) => {
   const [leftMoney, setLeftMoney] = useState(1000000);
   //leftMoney => 해달 월 수입계 - 해당월 현금 사용 - 전월 카드사용 ?
   const [mainState, setMainState] = useState('outcome');
   const [modifyState, setModifyState] = useState(false);
   const [buttonModifyState, setButtonModifyState] = useState(false);
   const [transaction, setTransaction] = useState(newdumy.transaction);
+  const [dataForModify, setDataForModify] = useState({});
   // Calendar
   const [pickDate, setPickDate] = useState(new Date());
   // const [targetDate, setTargetDate] = useState(pickDate.getDate());
@@ -63,12 +64,6 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   const targetYear = pickDate.getFullYear();
   const targetMonth = pickDate.getMonth() + 1;
   const getDate = `${targetYear}-${targetMonth}-${targetDate}`;
-
-  //!------------------------------------------------------
-  //!------------------------------------------------------
-  console.log('1');
-  //!------------------------------------------------------
-  //!------------------------------------------------------
 
   //Submit
   const [category, setCategory] = useState('');
@@ -80,24 +75,24 @@ const Main = ({ isLogin, userCards, cardsId }) => {
     inCome: {
       월급: 0,
       보너스: 0,
-      기타: 0,
+      기타수입: 0,
     },
     outCome: {
       식비: 0,
       '주거/통신': 0,
       생활용품: 0,
-      '의복/미용': 0,
-      '건강/문화': 0,
-      '교육/육아': 0,
-      '교통/차량': 0,
-      '공과금/보험': 0,
-      기타: 0,
+      "의복/미용": 0,
+      "건강/문화": 0,
+      "교육/육아": 0,
+      "교통/차량": 0,
+      "공과금/보험": 0,
+      기타지출: 0,
     },
   };
   //! 이벤트 발생
 
-  const token =
-    'accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5ZWNoYW5AZ21haWwuY29tIiwibmlja25hbWUiOiLsmIjssKwiLCJjcmVhdGVkQXQiOiIyMDIxLTEyLTIxVDA0OjA4OjMwLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIxLTEyLTIxVDA0OjA4OjMwLjAwMFoiLCJpYXQiOjE2NDAwNTk3NzAsImV4cCI6MTY0MDIzMjU3MH0.UBZeZKdSf-y4umJAbzYNEZE1x_YEfOh_VozhHpHrjBM; Path=/; HttpOnly; SameSite=None';
+  const token = accessToken;
+
 
   // 입력 클릭(in,out) transaction 업데이트 후 받아오기
   const userCardId = cardsId.findIndex((el) => el.name === card) + 1 || null;
@@ -115,9 +110,8 @@ const Main = ({ isLogin, userCards, cardsId }) => {
     isIncome,
   };
 
-  //! API---------------------------------------------------------------
-  //! API---------------------------------------------------------------
-  //! API---------------------------------------------------------------
+  //! API
+  //* 수입, 지출 입력
   const submitHandler = (endPoint) => {
     console.log(`url:  http://localhost:4000/transaction/${endPoint}`);
     console.log('보내는거', resData);
@@ -125,7 +119,28 @@ const Main = ({ isLogin, userCards, cardsId }) => {
     //   resData.category === "" ||
 
     // ) {
+    // if (resData.isIncome) {
+    //   //현금
 
+    //   if (!resData.category.length) {
+    //     return console.log('카테고리를 선택해주세요');
+    //   } else if (resData.price === 0) {
+    //     return console.log('금액을 입력해주세요 ');
+    //   }
+    // } else {
+    //   //카드
+    //   if (!resData.category.length) {
+    //     return console.log('카테고리를 선택해주세요');
+    //   } else if (!resData.userCardId) {
+    //     return console.log('카드를 선택해주세요');
+    //     //! 현금인지 카든지 state로 관리해야됨!
+    //   } else if (resData.price === 0) {
+    //     return console.log('금액을 입력해주세요 ');
+    //   } else if (resData.price === 0) {
+    //     return console.log('금액을 입력해주세요 ');
+    //   }
+    //   console.log('12319303939393933123');
+    // }
     // }
 
     axios
@@ -134,8 +149,9 @@ const Main = ({ isLogin, userCards, cardsId }) => {
         resData,
         {
           headers: {
-            'Content-Type': 'application/json', //
-            authorization: token,
+            "Content-Type": "application/json", //
+            authorization: `Bearer ${token}`,
+
           },
           // withCredentials: true,
         }
@@ -147,10 +163,10 @@ const Main = ({ isLogin, userCards, cardsId }) => {
       .catch((err) => console.log(err));
   };
 
-  //todo
+  //! API
+  //* 달력 월이동시 해당월 데이터 불러오기
   const calendarMover = (year, month) => {
     console.log(`http://localhost:4000/transaction/date`);
-    console.log('move 1');
 
     const resDate = {
       year,
@@ -163,18 +179,22 @@ const Main = ({ isLogin, userCards, cardsId }) => {
         resDate,
         {
           headers: {
-            'Content-Type': 'application/json', //
-            authorization: token,
+            "Content-Type": "application/json", //
+            authorization: `Bearer ${token}`,
+
           },
           // withCredentials: true,
         }
       )
       .then((res) => {
         setTransaction(res.data.transaction);
+        console.log("move 2");
       })
       .catch((err) => console.log(err));
   };
 
+  //! API
+  //* 수입, 지출 데이터 삭제
   const contentDeleter = (data) => {
     console.log(`http://localhost:4000/transaction/delete`);
     const category = data.category || null;
@@ -201,8 +221,9 @@ const Main = ({ isLogin, userCards, cardsId }) => {
         resData,
         {
           headers: {
-            'Content-Type': 'application/json', //
-            authorization: token,
+            "Content-Type": "application/json", //
+            authorization: `Bearer ${token}`,
+
           },
           // withCredentials: true,
         }
@@ -214,13 +235,44 @@ const Main = ({ isLogin, userCards, cardsId }) => {
       .catch((err) => console.log(err));
   };
 
+  //! API
+  //* 데이터 수정!
   const contentModifiyer = () => {
-    console.log('modify');
-  };
 
-  //!--------------------------------------------------------------API
-  //!--------------------------------------------------------------API
-  //!--------------------------------------------------------------API
+    const resCorrectData = {
+      year: targetYear,
+      month: targetMonth,
+      day: targetDate,
+      // newYear: dataForModify.year,
+      // newMonth: dataForModify.month,
+      // newDay: dataForModify.day,
+      category: dataForModify.category,
+      newCategory: category,
+      price: dataForModify.price,
+      newPrice: Number(price),
+      outcomeIsCash,
+      userCardId,
+    };
+
+    console.log("수정요청데이터", resCorrectData);
+    axios
+      .post(
+        `http://localhost:4000/transaction/correct`, //
+        resCorrectData,
+        {
+          headers: {
+            "Content-Type": "application/json", //
+            authorization: `Bearer ${token}`,
+          },
+          // withCredentials: true,
+        }
+      )
+      .then((res) => {
+        setTransaction(res.data.transaction);
+        console.log("correct!", res.data.transaction);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const mainStateHandler = (state, modifyState, category, price, card, cash) => {
     setMainState(state);
@@ -233,6 +285,14 @@ const Main = ({ isLogin, userCards, cardsId }) => {
 
   const modifyStateHandler = (state, category, price, card, cash) => {
     setModifyState(true);
+    setDataForModify({
+      year: targetYear,
+      month: targetMonth,
+      day: targetDate,
+      category,
+      price,
+    });
+    console.log(dataForModify);
     if (state) {
       setMainState(state);
     }
@@ -240,12 +300,10 @@ const Main = ({ isLogin, userCards, cardsId }) => {
   };
   //Calendar
   const pickDateHandler = (year, month) => {
-
     const newDate = new Date(year, month, 0);
     setPickDate(newDate);
 
     calendarMover(newDate.getFullYear(), newDate.getMonth() + 1);
-
   };
 
   const dateHandler = (year, month, date, move) => {
@@ -266,9 +324,10 @@ const Main = ({ isLogin, userCards, cardsId }) => {
 
   const inputResetHandler = (category, price, card, cash) => {
     // const cardName = cardsId[card - 1].name;
-    setCategory(category || '');
-    setPrice(price || '');
-    setCard(card || '');
+
+    setCategory(category || "");
+    setPrice(price || "");
+    setCard(card ? card.name : "");
     if (cash === undefined) {
       setCash('');
     } else if (cash) {
