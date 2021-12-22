@@ -2,12 +2,9 @@ import React, { useState } from "react";
 import { LoginInput, PasswordInput } from "../components/Input";
 import { BigButton } from "../components/Button";
 import { Container, Title } from "../components/Common";
-import { Link } from "react-router-dom";
 import { Notification } from "../components/Input";
 import { useNavigate } from "react-router-dom";
-
 import axios from "axios";
-import Modal from "../components/Modal";
 
 function LoginPage({
   setAccessToken,
@@ -58,7 +55,9 @@ function LoginPage({
         setAccessToken(res.data.accessToken);
         setUserInfo(res.data.userInfo);
         setTransaction(res.data.transaction);
+        // setTimeout(function () {
         navigate("/");
+        // }, 800);
       })
       .catch((err) => {
         setIsBtnClick(true);
@@ -89,9 +88,6 @@ function LoginPage({
           </Notification>
         )
       ) : null}
-      {/* {isLogin ? null : (
-        <Modal messageText="message text!" buttonText="button text" />
-      )} */}
       <BigButton
         text="로그인"
         margin="62px auto 12px auto"

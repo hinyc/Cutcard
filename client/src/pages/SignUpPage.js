@@ -242,7 +242,6 @@ function SignUpPage({ cardsList }) {
         margin="0"
       />
       {/* Button */}
-
       <BigButton
         text="가입하기"
         margin="28px auto 12px auto"

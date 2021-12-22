@@ -9,6 +9,7 @@ import { FlexContainer } from "../components/Common";
 import styled from "styled-components";
 import axios from "axios";
 import { useBeforeunload } from "react-beforeunload";
+import { useNavigate } from "react-router-dom";
 
 const Text = styled.div`
   font-size: 14px;
@@ -52,6 +53,8 @@ function MyPage({
   });
   const [userCardList, setUserCardList] = useState(selectedCardsIsCut);
   const [repaymentDay, setRepaymentDay] = useState(userCards[0].repaymentDay);
+
+  const navigate = useNavigate();
 
   const onNicknameChange = (e) => {
     setNickname(e.target.value);
@@ -133,6 +136,7 @@ function MyPage({
           setAccessToken("");
           setUserCards([]);
           setUserInfo({});
+          navigate("/");
         })
         .then(() => {
           setIsLogin(false);
@@ -153,6 +157,7 @@ function MyPage({
         setAccessToken("");
         setUserCards([]);
         setUserInfo({});
+        navigate("/");
       })
       .then(() => {
         setIsLogin(false);
