@@ -247,29 +247,28 @@ const Main = ({ isLogin, userCards, cardsId, accessToken }) => {
       newCategory: category,
       price: Number(price),
       newPrice: dataForModify.price,
-
       outcomeIsCash,
       userCardId,
     };
 
     console.log('수정요청데이터', resCorrectData);
-    // axios
-    //   .post(
-    //     `http://localhost:4000/transaction/correct`, //
-    //     resCorrectData,
-    //     {
-    //       headers: {
-    //         'Content-Type': 'application/json', //
-    //         authorization: `Bearer ${token}`,
-    //       },
-    //       // withCredentials: true,
-    //     }
-    //   )
-    //   .then((res) => {
-    //     setTransaction(res.data.transaction);
-    //     console.log('delet!', res.data.transaction);
-    //   })
-    //   .catch((err) => console.log(err));
+    axios
+      .post(
+        `http://localhost:4000/transaction/correct`, //
+        resCorrectData,
+        {
+          headers: {
+            'Content-Type': 'application/json', //
+            authorization: `Bearer ${token}`,
+          },
+          // withCredentials: true,
+        }
+      )
+      .then((res) => {
+        setTransaction(res.data.transaction);
+        console.log('correct!', res.data.transaction);
+      })
+      .catch((err) => console.log(err));
   };
 
   const mainStateHandler = (state, modifyState, category, price, card, cash) => {
