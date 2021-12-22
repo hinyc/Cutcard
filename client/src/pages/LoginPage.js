@@ -7,7 +7,14 @@ import { Notification } from '../components/Input';
 
 import axios from 'axios';
 
-function LoginPage({ setAccessToken, setUserCards, setUserInfo, setIsLogin, isLogin, setTransaction }) {
+function LoginPage({
+  setAccessToken,
+  setUserCards,
+  setUserInfo,
+  setIsLogin,
+  isLogin,
+  setTransaction,
+}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isBtnClick, setIsBtnClick] = useState(false);
@@ -26,11 +33,7 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo, setIsLogin, isLo
 
     axios
       .post(
-<<<<<<< HEAD
         'http://localhost:4000/users/login',
-=======
-        "https://localhost:4000/users/login",
->>>>>>> a9ec609df71fdd3005d6f8b9ace72dabeeb0b943
         {
           email: email,
           password: password,
@@ -39,14 +42,10 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo, setIsLogin, isLo
         },
         {
           headers: {
-<<<<<<< HEAD
             'Content-Type': 'application/json',
-=======
-            "Content-Type": "application/json",
             withCredentials: true,
->>>>>>> a9ec609df71fdd3005d6f8b9ace72dabeeb0b943
           },
-        }
+        },
       )
       .then((res) => {
         console.log(res);
@@ -87,13 +86,27 @@ function LoginPage({ setAccessToken, setUserCards, setUserInfo, setIsLogin, isLo
       ) : null}
       {isLogin ? (
         <Link to="/">
-          <BigButton text="로그인" margin="62px auto 12px auto" onClick={onLoginClick} />
+          <BigButton
+            text="로그인"
+            margin="62px auto 12px auto"
+            onClick={onLoginClick}
+          />
         </Link>
       ) : (
-        <BigButton text="로그인" margin="62px auto 12px auto" onClick={onLoginClick} />
+        <BigButton
+          text="로그인"
+          margin="62px auto 12px auto"
+          onClick={onLoginClick}
+        />
       )}
       <Link to="/signup">
-        <BigButton text="회원가입" background="white" color="#97BFB4" border="1px solid #97BFB4" margin="0 auto 50px auto" />
+        <BigButton
+          text="회원가입"
+          background="white"
+          color="#97BFB4"
+          border="1px solid #97BFB4"
+          margin="0 auto 50px auto"
+        />
       </Link>
     </Container>
   );

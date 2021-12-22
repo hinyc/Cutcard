@@ -16,17 +16,30 @@ const Text = styled.div`
   text-decoration: underline;
 `;
 
-function MyPage({ setIsLogin, accessToken, setAccessToken, cardsList, userInfo, setUserInfo, userCards, setUserCards }) {
+function MyPage({
+  setIsLogin,
+  accessToken,
+  setAccessToken,
+  cardsList,
+  userInfo,
+  setUserInfo,
+  userCards,
+  setUserCards,
+}) {
   const [nickname, setNickname] = useState('');
 
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
 
   const [selected, setSelected] = useState('');
-  const notSelectedCards = cardsList.filter((obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === false);
+  const notSelectedCards = cardsList.filter(
+    (obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === false,
+  );
   const [cards, setCards] = useState(notSelectedCards);
 
-  const selectedCards = cardsList.filter((obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === true);
+  const selectedCards = cardsList.filter(
+    (obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === true,
+  );
   const selectedCardsIsCut = selectedCards.map((select) => {
     return userCards
       .filter((userCard) => select.id === userCard.cardId)
@@ -93,7 +106,6 @@ function MyPage({ setIsLogin, accessToken, setAccessToken, cardsList, userInfo, 
   };
 
   const onUpdateClick = () => {
-<<<<<<< HEAD
     if (password === passwordCheck) {
       axios
         .patch(
@@ -114,7 +126,7 @@ function MyPage({ setIsLogin, accessToken, setAccessToken, cardsList, userInfo, 
               Authorization: `Bearer ${accessToken}`,
               'Content-Type': 'application/json',
             },
-          }
+          },
         )
         .then((res) => {
           console.log(res);
@@ -126,47 +138,11 @@ function MyPage({ setIsLogin, accessToken, setAccessToken, cardsList, userInfo, 
           setIsLogin(false);
         });
     }
-=======
-    axios
-      .patch(
-        "https://localhost:4000/users/userinfo",
-        {
-          nickname: nickname,
-          password: password,
-          repaymentDay,
-          cards: userCardList.map((obj) => {
-            return {
-              id: obj.id,
-              isCut: false,
-            };
-          }),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((res) => {
-        console.log(res);
-        setAccessToken("");
-        setUserCards([]);
-        setUserInfo({});
-      })
-      .then(() => {
-        setIsLogin(false);
-      });
->>>>>>> a9ec609df71fdd3005d6f8b9ace72dabeeb0b943
   };
 
   const onSignOutClick = () => {
     axios
-<<<<<<< HEAD
       .delete('http://localhost:4000/users/userinfo', {
-=======
-      .delete("https://localhost:4000/users/userinfo", {
->>>>>>> a9ec609df71fdd3005d6f8b9ace72dabeeb0b943
         headers: {
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
@@ -188,20 +164,56 @@ function MyPage({ setIsLogin, accessToken, setAccessToken, cardsList, userInfo, 
   return (
     <Container>
       <Title margin="66px 0 50px 0" text="회원정보 수정" />
-      <Input label="닉네임" type="text" placeholder={userInfo.nickname} margin="auto" onChange={onNicknameChange} />
-      <Input label="이메일" type="text" margin="auto" readOnly={true} value={userInfo.email} />
+      <Input
+        label="닉네임"
+        type="text"
+        placeholder={userInfo.nickname}
+        margin="auto"
+        onChange={onNicknameChange}
+      />
+      <Input
+        label="이메일"
+        type="text"
+        margin="auto"
+        readOnly={true}
+        value={userInfo.email}
+      />
       {/* Password */}
-      <Input marginLabel="18px 226px 0 0" label="비밀번호 수정" type="password" placeholder="비밀번호를 입력해주세요" margin="auto" value={password} onChange={onPasswordChange} />
-      <Input marginLabel="18px 225px 0 0" label="비밀번호 확인" type="password" placeholder="비밀번호를 한번 더 입력해주세요" margin="auto" value={passwordCheck} onChange={onPasswordChangeCheck} />
+      <Input
+        marginLabel="18px 226px 0 0"
+        label="비밀번호 수정"
+        type="password"
+        placeholder="비밀번호를 입력해주세요"
+        margin="auto"
+        value={password}
+        onChange={onPasswordChange}
+      />
+      <Input
+        marginLabel="18px 225px 0 0"
+        label="비밀번호 확인"
+        type="password"
+        placeholder="비밀번호를 한번 더 입력해주세요"
+        margin="auto"
+        value={passwordCheck}
+        onChange={onPasswordChangeCheck}
+      />
       {password === '' ? null : password === passwordCheck ? (
-        <Notification margin="4px 186px 0 0">* 비밀번호가 일치합니다.</Notification>
+        <Notification margin="4px 186px 0 0">
+          * 비밀번호가 일치합니다.
+        </Notification>
       ) : (
         <Notification color="#FF6B6B" margin="4px 152px 0 0">
           * 비밀번호가 일치하지 않습니다.
         </Notification>
       )}
       {/* Card */}
-      <CardSelect label="카드 등록" text="카드를 선택해주세요" options={cards} onChange={onCardChange} margin="0" />
+      <CardSelect
+        label="카드 등록"
+        text="카드를 선택해주세요"
+        options={cards}
+        onChange={onCardChange}
+        margin="0"
+      />
       <FlexContainer>
         {userCardList.map((obj) => (
           <CardList
@@ -225,10 +237,20 @@ function MyPage({ setIsLogin, accessToken, setAccessToken, cardsList, userInfo, 
       />
       {/* Button */}
       <Link to="/login">
-        <BigButton text="수정하기" margin="28px auto 12px auto" onClick={onUpdateClick} />
+        <BigButton
+          text="수정하기"
+          margin="28px auto 12px auto"
+          onClick={onUpdateClick}
+        />
       </Link>
       <Link to="/">
-        <BigButton text="취소" background="white" color="#97BFB4" border="1px solid #97BFB4" margin="0 auto 50px auto" />
+        <BigButton
+          text="취소"
+          background="white"
+          color="#97BFB4"
+          border="1px solid #97BFB4"
+          margin="0 auto 50px auto"
+        />
       </Link>
       <Container>
         <Link to="/">
