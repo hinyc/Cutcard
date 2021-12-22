@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Input, EmailInput, Notification } from "../components/Input";
 import { BigButton } from "../components/Button";
 import { Container, Title } from "../components/Common";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CardSelect, Select } from "../components/Select";
 import CardList from "../components/CardList";
 import { FlexContainer } from "../components/Common";
@@ -23,14 +23,16 @@ function SignUpPage({ cardsList }) {
   const [cards, setCards] = useState(cardsList);
   const [userCardList, setUserCardList] = useState([]);
   const [selected, setSelected] = useState("");
-  const [wantCut, setWantCut] = useState(false);
   const [repaymentDay, setRepaymentDay] = useState(0);
+
+  const navigate = useNavigate();
 
   const onNicknameChange = (e) => {
     setNickname(e.target.value);
   };
 
   const onEmailChange = (e) => {
+    setIsEmailBtnClick(false);
     const emailValidator =
       /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     const result = emailValidator.test(e.target.value);
@@ -130,7 +132,14 @@ function SignUpPage({ cardsList }) {
           },
         }
       )
-      .then((res) => console.log(res));
+      .then((res) => {
+        console.log(res);
+        navigate("/login");
+      });
+  };
+
+  const onCancelClick = () => {
+    navigate("/");
   };
 
   return (
@@ -218,13 +227,12 @@ function SignUpPage({ cardsList }) {
             text={obj.name}
             onTextClick={onWantCutCardSelect}
             onClick={() => onCardDelete(obj.id)}
-            background={obj.isCut === true ? "#97bfb4" : "white"}
-            color={obj.isCut === true ? "white" : "#97bfb4"}
-            btnBackground={obj.isCut === true ? "#97bfb4" : "white"}
-            xColor={obj.isCut === true ? "white" : "#97bfb4"}
+            background={obj.isCut ? "#97bfb4" : "white"}
+            color={obj.isCut ? "white" : "#97bfb4"}
+            btnBackground={obj.isCut ? "#97bfb4" : "white"}
+            xColor={obj.isCut ? "white" : "#97bfb4"}
           />
         ))}
-        <div>삭제를 목표로 한다면 카드 이름을 클릭해주세요.</div>
       </FlexContainer>
       <Select
         label="카드 상환일"
@@ -234,22 +242,20 @@ function SignUpPage({ cardsList }) {
         margin="0"
       />
       {/* Button */}
-      <Link to="/login">
-        <BigButton
-          text="가입하기"
-          margin="28px auto 12px auto"
-          onClick={onSignUpClick}
-        />
-      </Link>
-      <Link to="/">
-        <BigButton
-          text="취소"
-          background="white"
-          color="#97BFB4"
-          border="1px solid #97BFB4"
-          margin="0 auto 50px auto"
-        />
-      </Link>
+
+      <BigButton
+        text="가입하기"
+        margin="28px auto 12px auto"
+        onClick={onSignUpClick}
+      />
+      <BigButton
+        text="취소"
+        background="white"
+        color="#97BFB4"
+        border="1px solid #97BFB4"
+        margin="0 auto 50px auto"
+        onClick={onCancelClick}
+      />
     </Container>
   );
 }

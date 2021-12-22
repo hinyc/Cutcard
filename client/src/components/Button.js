@@ -1,11 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-const ButtonStyle = styled.button`
+export const ButtonStyle = styled.button`
   color: ${(props) => props.color || "white"};
   width: ${(props) => props.width || "190px"};
   height: ${(props) => props.height || "40px"};
   margin: ${(props) => props.margin || "0"};
+  bottom: ${(props) => props.bottom || "0"};
+  position: ${(props) => props.position || "none"};
+
   box-sizing: border-box;
   outline: 0;
   border: ${(props) => props.border || 0};
@@ -43,6 +46,8 @@ export function SmallButton(props) {
     color,
     border,
     onClick,
+    position,
+    bottom,
   } = props;
   return (
     <ButtonStyle
@@ -53,6 +58,8 @@ export function SmallButton(props) {
       background={background}
       color={color}
       border={border}
+      position={position}
+      bottom={bottom}
     >
       {text}
     </ButtonStyle>

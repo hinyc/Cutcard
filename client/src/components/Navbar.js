@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
-import axios from "axios";
+import axios from 'axios';
 
 const Header = styled.header`
   box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.07);
@@ -40,8 +40,8 @@ const Menu = styled.button`
   box-sizing: border-box;
   font-size: 1rem;
   margin-left: 50px;
-  margin-right: ${(props) => props.marginRight || "90px"};
-  padding-top: ${(props) => props.paddingTop || "8px"};
+  margin-right: ${(props) => props.marginRight || '90px'};
+  padding-top: ${(props) => props.paddingTop || '8px'};
 
   &:hover {
     cursor: pointer;
@@ -50,22 +50,16 @@ const Menu = styled.button`
   }
 `;
 
-function Navbar({
-  isLogin,
-  setIsLogin,
-  accessToken,
-  setAccessToken,
-  setUserCards,
-  setUserInfo,
-}) {
+function Navbar({ isLogin, setIsLogin, accessToken, setAccessToken, setUserCards, setUserInfo, setTransaction }) {
   const onLogoutClick = () => {
     axios
-      .get("http://localhost:4000/users/logout")
+      .get('http://localhost:4000/users/logout')
       .then((res) => {
         console.log(res);
-        setAccessToken("");
+        setAccessToken('');
         setUserCards([]);
         setUserInfo({});
+        setTransaction([]);
       })
       .then(() => {
         setIsLogin(false);
@@ -74,10 +68,10 @@ function Navbar({
 
   const onMyPageClick = () => {
     axios
-      .get("http://localhost:4000/users/userinfo", {
+      .get('http://localhost:4000/users/userinfo', {
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       })
       .then((res) => console.log(res));
