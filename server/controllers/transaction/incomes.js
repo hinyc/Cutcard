@@ -1,12 +1,12 @@
-const { transactions, userCards } = require('./../../models');
-const { isAuthorized } = require('./../tokenFunctions');
+const { transactions, userCards } = require("./../../models");
+const { isAuthorized } = require("./../tokenFunctions");
 
 module.exports = async (req, res) => {
-  console.log('sever incomes------------');
-
   const accessTokenData = await isAuthorized(req, res);
   if (!accessTokenData) {
-    return res.status(401).json({ data: null, message: 'invalid access token!' });
+    return res
+      .status(401)
+      .json({ data: null, message: "invalid access token!" });
   } else {
     const { id } = accessTokenData;
     const { year, month, day, category, price, isIncome } = req.body;
@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
       include: [
         {
           model: userCards,
-          attributes: ['repaymentDay'],
+          attributes: ["repaymentDay"],
         },
       ],
       where: {

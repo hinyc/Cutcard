@@ -43,7 +43,7 @@ module.exports = async (req, res) => {
       //     cards: userCardInfos,
       //     transaction: transactionInfos,
       //   });
-
+      console.log(userInfo);
       const cardInfos = await userCards.findAll({
         include: cards,
         where: {
@@ -81,12 +81,14 @@ module.exports = async (req, res) => {
           userInfo: userInfo,
           cards: userCardInfos,
           transaction: transactionInfos,
+          accessToken: accessToken,
         });
       } else {
         return res.status(200).json({
           userInfo: userInfo,
           cards: userCardInfos,
           transaction: transactionInfos,
+          accessToken: accessToken,
           modal: cardInfos,
         });
       }

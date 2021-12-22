@@ -1,57 +1,44 @@
-const { transactions, userCards } = require("./../../models");
-const { isAuthorized } = require("./../tokenFunctions");
+const { transactions, userCards } = require('./../../models');
+const { isAuthorized } = require('./../tokenFunctions');
 
 module.exports = async (req, res) => {
   const accessTokenData = await isAuthorized(req, res);
   if (!accessTokenData) {
-    return res
-      .status(401)
-      .json({ data: null, message: "Invalid access token!" });
+    return res.status(401).json({ data: null, message: 'Invalid access token!' });
   } else {
     const { id } = accessTokenData;
-    const {
-      year,
-      month,
-      day,
-      newYear,
-      newMonth,
-      newDay,
-      category,
-      newCategory,
-      price,
-      newPrice,
-      isIncome,
-      outcomeIsCash,
-      userCardId,
-    } = req.body;
+    // 수정 필요 항목
+    const { year, month, day, category, newCategory, price, newPrice, outcomeIsCash, userCardId } = req.body;
+    // 수정 필요 항목
     let userCard;
+    console.log("correct body", req.body);
 
-    if (!cash) {
+    if (!outcomeIsCash && userCardId !== null) {
       userCard = await userCards.findOne({
         where: {
-          cardId: card,
+          cardId: userCardId,
+          userId: id,
         },
       });
-      userCard.dataValues.remainValue =
-        userCard.dataValues.remainValue - price + newPrice;
+      userCard.dataValues.remainValue = userCard.dataValues.remainValue - price + newPrice;
       await userCards.update(
         {
           remainValue: userCard.dataValues.remainValue,
         },
         {
           where: {
-            cardId: card,
+            cardId: userCardId,
+            userId: id,
           },
         }
       );
       await transactions.update(
         {
-          year: newYear,
-          month: newMonth,
-          day: newDay,
+          year,
+          month,
+          day,
           category: newCategory,
           price: newPrice,
-          isIncome,
         },
         {
           where: {
@@ -60,8 +47,8 @@ module.exports = async (req, res) => {
             day,
             category,
             price,
-            isIncome,
             userId: id,
+            userCardId,
           },
         }
       );
@@ -70,38 +57,21 @@ module.exports = async (req, res) => {
           year,
           month,
           userId: id,
-          isIncome,
         },
       });
+      console.log(correctDate);
       res.status(200).json({ transaction: correctDate });
     } else {
+      console.log("들어오니?");
       await transactions.update(
-        {
-          year: newYear,
-          month: newMonth,
-          day: newDay,
-          category: newCategory,
-          price: newPrice,
-          isIncome,
-        },
-        {
-          where: {
-            year,
-            month,
-            day,
-            category,
-            price,
-            isIncome,
-            userId: id,
-          },
-        }
+        { category: newCategory, price: newPrice },
+        { where: { year, month, day, category, price, userId: id } }
       );
       const correctDate = await transactions.findAll({
         where: {
           year,
           month,
           userId: id,
-          isIncome,
         },
       });
       res.status(200).json({ transaction: correctDate });
