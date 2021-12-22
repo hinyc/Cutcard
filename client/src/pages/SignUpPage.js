@@ -24,8 +24,7 @@ function SignUpPage({ cardsList }) {
   const [userCardList, setUserCardList] = useState([]);
   const [selected, setSelected] = useState("");
   const [wantCut, setWantCut] = useState(false);
-
-  const [repaymentday, setRepaymentday] = useState(0);
+  const [repaymentDay, setRepaymentDay] = useState(0);
 
   const onNicknameChange = (e) => {
     setNickname(e.target.value);
@@ -73,11 +72,14 @@ function SignUpPage({ cardsList }) {
   };
 
   const onCardChange = (e) => {
-    setSelected(e.target.value);
-    const newCards = cards.filter((obj) => e.target.value !== obj.name);
+    setSelected(e.target.value); // card name
+
+    const newCards = cards.filter((obj) => e.target.value !== obj.name); // 선택 옵션
     setCards(newCards);
-    const selectedData = cards.filter((obj) => obj.name === e.target.value);
-    const newUserCardList = userCardList.concat(selectedData);
+
+    const selectedData = cards.filter((obj) => obj.name === e.target.value); // [{id, name}]
+    const selectedDataUpdate = { ...selectedData[0], isCut: false };
+    const newUserCardList = userCardList.concat(selectedDataUpdate);
     setUserCardList(newUserCardList);
   };
 
@@ -94,11 +96,16 @@ function SignUpPage({ cardsList }) {
   const onRepaymentDaySelect = (e) => {
     const value = e.target.value;
     const repaymentDay = value.slice(0, value.length - 1);
-    setRepaymentday(Number(repaymentDay));
+    setRepaymentDay(Number(repaymentDay));
   };
 
-  const onWantCutCardSelect = () => {
-    setWantCut(!wantCut);
+  const onWantCutCardSelect = (e) => {
+    const value = e.target.innerText; // card name
+    const selected = userCardList.filter((obj) => obj.name === value)[0];
+    const index = userCardList.findIndex((obj) => obj.name === value);
+    selected.isCut = !selected.isCut;
+    userCardList[index] = selected;
+    setUserCardList([...userCardList]);
   };
 
   const onSignUpClick = () => {
@@ -109,11 +116,11 @@ function SignUpPage({ cardsList }) {
           email: email,
           password: password,
           nickname: nickname,
-          repaymentDay: repaymentday,
+          repaymentDay: repaymentDay,
           cards: userCardList.map((obj) => {
             return {
               id: obj.id,
-              isCut: wantCut,
+              isCut: obj.isCut,
             };
           }),
         },
@@ -211,10 +218,10 @@ function SignUpPage({ cardsList }) {
             text={obj.name}
             onTextClick={onWantCutCardSelect}
             onClick={() => onCardDelete(obj.id)}
-            background={wantCut === true ? "#97bfb4" : "white"}
-            color={wantCut === true ? "white" : "#97bfb4"}
-            btnBackground={wantCut === true ? "#97bfb4" : "white"}
-            xColor={wantCut === true ? "white" : "#97bfb4"}
+            background={obj.isCut === true ? "#97bfb4" : "white"}
+            color={obj.isCut === true ? "white" : "#97bfb4"}
+            btnBackground={obj.isCut === true ? "#97bfb4" : "white"}
+            xColor={obj.isCut === true ? "white" : "#97bfb4"}
           />
         ))}
         <div>삭제를 목표로 한다면 카드 이름을 클릭해주세요.</div>

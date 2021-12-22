@@ -90,6 +90,7 @@ module.exports = async (req, res) => {
           transaction: transactionInfos,
           accessToken: accessToken,
           modal: cardInfos,
+          accessToken: accessToken,
         });
       }
     }
