@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-import axios from 'axios';
+import axios from "axios";
 
 const Header = styled.header`
   box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.07);
@@ -40,8 +40,8 @@ const Menu = styled.button`
   box-sizing: border-box;
   font-size: 1rem;
   margin-left: 50px;
-  margin-right: ${(props) => props.marginRight || '90px'};
-  padding-top: ${(props) => props.paddingTop || '8px'};
+  margin-right: ${(props) => props.marginRight || "90px"};
+  padding-top: ${(props) => props.paddingTop || "8px"};
 
   &:hover {
     cursor: pointer;
@@ -61,10 +61,10 @@ function Navbar({
 }) {
   const onLogoutClick = () => {
     axios
-      .get('http://localhost:4000/users/logout')
+      .get("http://localhost:4000/users/logout")
       .then((res) => {
         console.log(res);
-        setAccessToken('');
+        setAccessToken("");
         setUserCards([]);
         setUserInfo({});
         setTransaction([]);
@@ -76,10 +76,10 @@ function Navbar({
 
   const onMyPageClick = () => {
     axios
-      .get('http://localhost:4000/users/userinfo', {
+      .get("http://localhost:4000/users/userinfo", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       })
       .then((res) => console.log(res));
@@ -91,9 +91,9 @@ function Navbar({
         <Link to="/main">
           <Logo>Cut Card</Logo>
         </Link>
-        <Link to="/about">
+        {/* <Link to="/about">
           <Menu paddingTop="0px">소개</Menu>
-        </Link>
+        </Link> */}
       </Nav>
       {isLogin ? (
         <>
