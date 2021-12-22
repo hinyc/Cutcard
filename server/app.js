@@ -10,14 +10,9 @@ const port = 4000;
 
 app.use(
   cors({
-<<<<<<< HEAD
     origin: ["https://localhost:3000"],
     credentials: true,
     methods: ["GET", "POST", "OPTIONS", "PATCH", "DELETE"],
-=======
-    credentials: true,
-    methods: "GET,PATCH,POST,DELETE,OPTIONS",
->>>>>>> e12a5220ba203a313cd163b7dd8e283e803c297d
   })
 );
 app.use(express.urlencoded({ extended: true }));

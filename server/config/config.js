@@ -3,26 +3,24 @@ dotenv.config();
 
 module.exports = {
   development: {
-    username: process.env.USERNAME,
+    username: "root",
     password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE_NAME,
+    database: "Cutcard_development",
     host: "127.0.0.1",
     dialect: "mysql",
   },
   test: {
-    username: process.env.DATABASE_RDS_USERNAME,
-    password: process.env.DATABASE_RDS_PASSWORD,
-    database: process.env.DATABASE_NAME,
-    port: process.env.PORT,
-    host: process.env.DATABASE_HOST,
+    username: "root",
+    password: process.env.DATABASE_PASSWORD,
+    database: "database_test",
+    host: "127.0.0.1",
     dialect: "mysql",
   },
   production: {
-    username: process.env.DATABASE_RDS_USERNAME,
-    password: process.env.DATABASE_RDS_PASSWORD,
-    database: process.env.DATABASE_NAME,
-    port: process.env.PORT,
-    host: process.env.DATABASE_HOST,
+    username: "root",
+    password: null,
+    database: "database_production",
+    host: "127.0.0.1",
     dialect: "mysql",
   },
 };
