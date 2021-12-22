@@ -119,12 +119,11 @@ module.exports = {
       if (notChangingCard.length !== 0) {
         notChangingCard.forEach(async (data) => {
           await userCards.update(
-            { isCut: data[1] },
+            { isCut: data[1], repaymentDay: repaymentDay },
             {
               where: {
-                id: userInfo.id,
+                userId: userInfo.id,
                 cardId: data[0],
-                repaymentDay: repaymentDay,
               },
             }
           );

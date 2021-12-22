@@ -31,17 +31,27 @@ function MyPage({
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
 
-  console.log("MY Page", userCards);
   const [selected, setSelected] = useState("");
   const notSelectedCards = cardsList.filter(
     (obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === false
   );
   const [cards, setCards] = useState(notSelectedCards);
+
   const selectedCards = cardsList.filter(
     (obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === true
   );
-  const [userCardList, setUserCardList] = useState(selectedCards);
-  const [repaymentday, setRepaymentday] = useState(0);
+  const selectedCardsIsCut = selectedCards.map((select) => {
+    return userCards
+      .filter((userCard) => select.id === userCard.cardId)
+      .map((userCard) => {
+        return {
+          ...select,
+          isCut: userCard.isCut,
+        };
+      })[0];
+  });
+  const [userCardList, setUserCardList] = useState(selectedCardsIsCut);
+  const [repaymentDay, setRepaymentDay] = useState(userCards[0].repaymentDay);
 
   const onNicknameChange = (e) => {
     setNickname(e.target.value);
@@ -56,27 +66,20 @@ function MyPage({
   };
 
   const onCardChange = (e) => {
-    //* 카드 옵션에서 선택된 옵션 제외
     setSelected(e.target.value); // card name
+
     const newCards = cards.filter((obj) => e.target.value !== obj.name);
     setCards(newCards);
 
-    //* 선택된 카드 유저 리스트에 추가
     const selectedData = cards.filter((obj) => obj.name === e.target.value);
-    const inputData = {
-      id: userCardList.length, //
-      cardId: selectedData[0].id,
-      cardName: selectedData[0].name,
-      isCut: false,
-    };
-    const newUserCardList = userCardList.concat(inputData);
+    const selectedDataUpdate = { ...selectedData[0], isCut: false };
+    const newUserCardList = userCardList.concat(selectedDataUpdate);
     setUserCardList(newUserCardList);
   };
 
   const onCardDelete = (cardId) => {
     const deletedCard = userCardList.filter((obj) => obj.cardId === cardId);
 
-    //* 삭제한 카드 리스트에 추가
     const updateCards = cards.concat({
       id: deletedCard[0].cardId,
       name: deletedCard[0].cardName,
@@ -84,7 +87,6 @@ function MyPage({
     updateCards.sort((a, b) => a.id - b.id);
     setCards(updateCards);
 
-    //* 삭제한 카드 유저 목록에서 제거
     const updateUserCardList = userCardList.filter(
       (obj) => obj.cardId !== cardId
     );
@@ -94,38 +96,53 @@ function MyPage({
   const onRepaymentDaySelect = (e) => {
     const value = e.target.value;
     const repaymentDay = value.slice(0, value.length - 1);
-    userCardList.map((obj) => (obj.repaymentDay = Number(repaymentDay)));
-    setRepaymentday(Number(repaymentDay));
+    setRepaymentDay(Number(repaymentDay));
+    console.log(repaymentDay);
   };
 
-  const onWantCutCardSelect = (obj) => {
-    obj.isCut = !obj.isCut;
-    setUserCardList(userCardList);
+  const onWantCutCardSelect = (e) => {
+    const value = e.target.innerText; // card name
+    const selected = userCardList.filter((obj) => obj.name === value)[0];
+    const index = userCardList.findIndex((obj) => obj.name === value);
+    selected.isCut = !selected.isCut;
+    userCardList[index] = selected;
+    setUserCardList([...userCardList]);
+    console.log("userCards ", userCards, "userCardList", userCardList);
   };
 
   const onUpdateClick = () => {
-    axios
-      .patch(
-        "http://localhost:4000/users/userinfo",
-        {
-          nickname: nickname,
-          password: password,
-          repaymentDay: repaymentday,
-          cards: userCardList.map((obj) => {
-            return {
-              id: obj.id,
-              isCut: false, //!
-            };
-          }),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
+    if (password === passwordCheck) {
+      axios
+        .patch(
+          "http://localhost:4000/users/userinfo",
+          {
+            nickname: nickname,
+            password: password,
+            repaymentDay: repaymentDay,
+            cards: userCardList.map((obj) => {
+              return {
+                id: obj.id,
+                isCut: obj.isCut,
+              };
+            }),
           },
-        }
-      )
-      .then((res) => console.log(res));
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          setAccessToken("");
+          setUserCards([]);
+          setUserInfo({});
+        })
+        .then(() => {
+          setIsLogin(false);
+        });
+    }
   };
 
   const onSignOutClick = () => {
@@ -205,7 +222,7 @@ function MyPage({
           <CardList
             key={obj.id}
             text={obj.name}
-            onTextClick={() => onWantCutCardSelect(obj)}
+            onTextClick={onWantCutCardSelect}
             onClick={() => onCardDelete(obj.cardId)}
             background={obj.isCut ? "#97bfb4" : "white"}
             color={obj.isCut ? "white" : "#97bfb4"}
@@ -217,7 +234,7 @@ function MyPage({
       <Select
         padding="25px 238px 9px 0"
         label="카드 상환일"
-        text="카드 상환일을 선택해주세요 (1개 선택 가능)"
+        text={`카드 상환일을 선택해주세요 (현재 ${userCards[0].repaymentDay}일)`}
         options={["1일", "5일", "10일", "15일", "20일", "25일"]} //! 해당없음?
         onChange={onRepaymentDaySelect}
       />
