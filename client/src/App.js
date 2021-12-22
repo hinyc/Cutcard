@@ -9,8 +9,6 @@ import AboutPage from './pages/AboutPage';
 import LoginPage from './pages/LoginPage';
 import MyPage from './pages/MyPage';
 import SignUpPage from './pages/SignUpPage';
-//!dummy
-import { newdumy } from './dummyData';
 
 function App() {
   //테스트중 초기상태 임의지정
@@ -28,16 +26,10 @@ function App() {
   const [userInfo, setUserInfo] = useState({});
   const [userCards, setUserCards] = useState([]);
   const [accessToken, setAccessToken] = useState('');
+  const [transaction, setTransaction] = useState([]);
   console.log('userCards', userCards);
   console.log('accessToken', accessToken);
   console.log('userInfo', userInfo);
-
-  // if (accessToken !== "") {
-  //   setIsLogin(true);
-  // }
-  useEffect(() => {
-    setIsLogin(true);
-  }, [accessToken]);
 
   const userCardList = userCards.map((el) => {
     return {
@@ -55,12 +47,23 @@ function App() {
 
   return (
     <>
-      <Navbar isLogin={isLogin} setIsLogin={setIsLogin} accessToken={accessToken} setAccessToken={setAccessToken} setUserCards={setUserCards} setUserInfo={setUserInfo} />
+      <Navbar
+        isLogin={isLogin}
+        setIsLogin={setIsLogin}
+        accessToken={accessToken}
+        setAccessToken={setAccessToken}
+        setUserCards={setUserCards}
+        setUserInfo={setUserInfo}
+        setTransaction={setTransaction}
+      />
       <Routes>
         <Route path="/" element={<Navigate to="/main" />} />
-        <Route path="/main" element={<Main isLogin={isLogin} userCards={userCardList} cardsId={cards} accessToken={accessToken} />} />
+        <Route path="/main" element={<Main isLogin={isLogin} userCards={userCardList} cardsId={cards} accessToken={accessToken} transaction={transaction} setTransaction={setTransaction} />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/login" element={<LoginPage setUserCards={setUserCards} setUserInfo={setUserInfo} setAccessToken={setAccessToken} />} />
+        <Route
+          path="/login"
+          element={<LoginPage setUserCards={setUserCards} isLogin={isLogin} setIsLogin={setIsLogin} setUserInfo={setUserInfo} setAccessToken={setAccessToken} setTransaction={setTransaction} />}
+        />
         <Route
           path="/mypage"
           element={
