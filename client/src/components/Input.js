@@ -130,34 +130,32 @@ export function Input(props) {
   );
 }
 
-export function LoginInput({ label, type, placeholder, readOnly, margin, onChange }) {
+export function LoginInput({ onChange }) {
   return (
     <>
-      <LabelStyle>{label}</LabelStyle>
+      <LabelStyle>이메일</LabelStyle>
       <InputStyle
-        type={type}
-        placeholder={placeholder}
+        type="text"
+        placeholder="이메일을 입력해주세요"
         spellCheck="false" // always
-        readOnly={readOnly}
         height="50px"
-        margin={margin}
+        margin="auto"
         onChange={onChange}
       />
     </>
   );
 }
 
-export function PasswordInput({ label, type, placeholder, readOnly, margin, onChange, onKeyPress }) {
+export function PasswordInput({ onChange, onKeyPress }) {
   return (
     <>
-      <LabelStyle>{label}</LabelStyle>
+      <LabelStyle marginLabel="18px 258px 0 0">비밀번호</LabelStyle>
       <InputStyle
-        type={type}
-        placeholder={placeholder}
+        type="password"
+        placeholder="비밀번호를 입력해주세요"
         spellCheck="false" // always
-        readOnly={readOnly}
         height="50px"
-        margin={margin}
+        margin="0 auto"
         onChange={onChange}
         onKeyPress={onKeyPress}
       />

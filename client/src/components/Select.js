@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Notification } from './Input';
 
 const SelectStyle = styled.select`
   box-sizing: border-box;
@@ -79,6 +80,12 @@ export function CardSelect(props) {
           </Option>
         ))}
       </SelectStyle>
+      <Notification color="#7c8986" margin="4px 35px 0 0">
+        * 삭제를 목표하는 카드 이름을 클릭하여 색을 채워주세요.
+      </Notification>
+      <Notification color="#7c8986" margin="0 97px 0 0">
+        삭제가 가능해지면 알림을 보내드립니다.
+      </Notification>
     </>
   );
 }
