@@ -173,6 +173,7 @@ export const Money = ({ money }) => {
 
 export const Content = (props) => {
   const {
+    id,
     item, //
     money,
     isCash,
@@ -192,7 +193,7 @@ export const Content = (props) => {
           isCash === undefined ? (
             <ContentContainerActive
               onClick={() => {
-                modifyStateHandler('income', item, money);
+                modifyStateHandler('income', id, item, money);
                 buttonStateHandler(true);
               }}
             >
@@ -202,7 +203,7 @@ export const Content = (props) => {
           ) : isCash ? (
             <ContentContainerActive
               onClick={() => {
-                modifyStateHandler('outcome', item, money, card, isCash);
+                modifyStateHandler('outcome', id, item, money, card, isCash);
                 buttonStateHandler(true);
               }}
             >
@@ -213,7 +214,7 @@ export const Content = (props) => {
           ) : (
             <ContentContainerActive
               onClick={() => {
-                modifyStateHandler('outcome', item, money, card, isCash);
+                modifyStateHandler('outcome', id, item, money, card, isCash);
                 buttonStateHandler(true);
               }}
             >
@@ -229,7 +230,7 @@ export const Content = (props) => {
           </ContentContainer>
         )}
 
-        {deleteBox ? <DeleteBox onClick={() => contentDeleter({ category: item, card, isCash: isCash, price: money, isIncome })}>×</DeleteBox> : null}
+        {deleteBox ? <DeleteBox onClick={() => contentDeleter({ category: item, card, isCash: isCash, price: money, isIncome, id })}>×</DeleteBox> : null}
       </ContantWrap>
     </>
   );
@@ -278,7 +279,6 @@ const InComeList = ({ year, month, inComes }) => {
 const DetailList = (props) => {
   const { year, month, date, detail, modifyStateHandler, buttonStateHandler, contentDeleter, mainState } = props;
   const { inComes, inComesTotal, outComes, outComesTotal } = detail;
-
   return (
     <>
       <ListContainer>
@@ -288,6 +288,7 @@ const DetailList = (props) => {
           {inComes.map((el, index) => (
             <Content
               key={index} //
+              id={el.id}
               item={el.category}
               money={el.price}
               deleteBox={true}
@@ -305,6 +306,7 @@ const DetailList = (props) => {
           {outComes.map((el, index) => (
             <Content
               key={index} //
+              id={el.id}
               item={el.category}
               money={el.price}
               isCash={el.isCash}
