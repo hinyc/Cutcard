@@ -257,9 +257,9 @@ function SignUpPage({ cardsList }) {
         margin="28px auto 12px auto"
         onClick={onSignUpClick}
         disabled={!canClick}
-        opacity={!canClick ? '50%' : 0} // 조건 ? "불허" : "허락"
-        hoverOpacity={!canClick ? '50%' : 0}
-        cursor={!canClick ? 'default' : 'pointer'}
+        opacity={!canClick ? "50%" : 0} // 조건 ? "불허" : "허락"
+        hoverOpacity={!canClick ? "50%" : 0}
+        cursor={!canClick ? "default" : "pointer"}
       />
       <BigButton
         text="취소"

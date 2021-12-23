@@ -245,9 +245,9 @@ function MyPage({
           margin="0px auto 12px auto"
           onClick={onUpdateClick}
           disabled={password !== passwordCheck}
-          opacity={password !== passwordCheck ? '50%' : 0}
-          hoverOpacity={password !== passwordCheck ? '50%' : 0}
-          cursor={password !== passwordCheck ? 'default' : 'pointer'}
+          opacity={password !== passwordCheck ? "50%" : 0}
+          hoverOpacity={password !== passwordCheck ? "50%" : 0}
+          cursor={password !== passwordCheck ? "default" : "pointer"}
         />
       </NavLink>
       <BigButton
@@ -256,7 +256,7 @@ function MyPage({
         color="#97BFB4"
         border="1px solid #97BFB4"
         margin="0 auto 50px auto"
-        onClick={() => navigate('/')}
+        onClick={() => navigate("/")}
       />
       <Container>
         <Link to="/">
