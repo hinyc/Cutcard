@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { LoginInput, PasswordInput } from "../components/Input";
-import { BigButton } from "../components/Button";
-import { Container, Title } from "../components/Common";
-import { Notification } from "../components/Input";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState } from 'react';
+import { LoginInput, PasswordInput } from '../components/Input';
+import { BigButton } from '../components/Button';
+import { Container, Title } from '../components/Common';
+import { Notification } from '../components/Input';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function LoginPage({
   setAccessToken,
@@ -13,9 +13,11 @@ function LoginPage({
   setIsLogin,
   isLogin,
   setTransaction,
+  setModalData,
+  setCardPrice,
 }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isBtnClick, setIsBtnClick] = useState(false);
 
   const navigate = useNavigate();
@@ -35,7 +37,7 @@ function LoginPage({
 
     axios
       .post(
-        "http://localhost:4000/users/login",
+        'http://localhost:4000/users/login',
         {
           email: email,
           password: password,
@@ -44,20 +46,21 @@ function LoginPage({
         },
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
+            withCredentials: true,
           },
-        }
+        },
       )
       .then((res) => {
-        console.log(res);
+        console.log('------------', res.data.modal[0].card);
         setIsLogin(true);
         setUserCards(res.data.cards);
         setAccessToken(res.data.accessToken);
         setUserInfo(res.data.userInfo);
         setTransaction(res.data.transaction);
-        // setTimeout(function () {
-        navigate("/");
-        // }, 800);
+        setModalData(res.data.modal);
+        setCardPrice(res.data.cardPrice);
+        navigate('/');
       })
       .catch((err) => {
         setIsBtnClick(true);
@@ -67,13 +70,13 @@ function LoginPage({
   };
 
   const onLoginPress = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       onLoginClick();
     }
   };
 
   const onSignUpClick = () => {
-    navigate("/signup");
+    navigate('/signup');
   };
 
   return (

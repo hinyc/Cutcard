@@ -91,7 +91,7 @@ export const newdumy = {
       month: 12,
       day: 25,
       category: '월급',
-      price: 5000000,
+      price: 2660000,
       isIncome: true,
       outcomeIsCash: false,
       userId: 1,

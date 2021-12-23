@@ -1,15 +1,15 @@
-const { transactions, userCards } = require("./../../models");
-const { isAuthorized } = require("./../tokenFunctions");
+const { transactions, userCards } = require('./../../models');
+const { isAuthorized } = require('./../tokenFunctions');
 
 module.exports = async (req, res) => {
   const accessTokenData = await isAuthorized(req, res);
   if (!accessTokenData) {
     return res
       .status(401)
-      .json({ data: null, message: "invalid access token!" });
+      .json({ data: null, message: 'invalid access token!' });
   } else {
     const { id } = accessTokenData;
-    const {
+    let {
       year,
       month,
       day,
@@ -38,7 +38,7 @@ module.exports = async (req, res) => {
             cardId: userCardId,
             userId: id,
           },
-        }
+        },
       );
       await transactions.destroy({
         where: {
@@ -56,7 +56,7 @@ module.exports = async (req, res) => {
         include: [
           {
             model: userCards,
-            attributes: ["repaymentDay"],
+            attributes: ['repaymentDay'],
           },
         ],
         where: {
@@ -65,7 +65,15 @@ module.exports = async (req, res) => {
           userId: id,
         },
       });
-      res.status(200).json({ transaction: deleteData });
+      const cardPrice = await transactions.findAll({
+        where: {
+          year,
+          month: month - 1,
+          userId: id,
+          outcomeIsCash: false,
+        },
+      });
+      res.status(200).json({ transaction: deleteData, cardPrice: cardPrice });
     } else {
       await transactions.destroy({
         where: {
@@ -82,7 +90,7 @@ module.exports = async (req, res) => {
         include: [
           {
             model: userCards,
-            attributes: ["repaymentDay"],
+            attributes: ['repaymentDay'],
           },
         ],
         where: {
@@ -91,7 +99,18 @@ module.exports = async (req, res) => {
           userId: id,
         },
       });
-      res.status(200).json({ transaction: deleteData });
+      if (month === 1) {
+        (year -= 1), (month = 13);
+      }
+      const cardPrice = await transactions.findAll({
+        where: {
+          year,
+          month: month - 1,
+          userId: id,
+          outcomeIsCash: false,
+        },
+      });
+      res.status(200).json({ transaction: deleteData, cardPrice: cardPrice });
     }
   }
 };

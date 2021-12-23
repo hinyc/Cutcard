@@ -230,7 +230,7 @@ export const Content = (props) => {
           </ContentContainer>
         )}
 
-        {deleteBox ? <DeleteBox onClick={() => contentDeleter({ category: item, card, isCash: isCash, price: money, isIncome })}>×</DeleteBox> : null}
+        {deleteBox ? <DeleteBox onClick={() => contentDeleter({ category: item, card, isCash: isCash, price: money, isIncome, id })}>×</DeleteBox> : null}
       </ContantWrap>
     </>
   );
