@@ -47,18 +47,23 @@ module.exports = async (req, res) => {
       delete userInfo.dataValues.password;
       const accessToken = generateAccessToken(userInfo.dataValues);
       sendAccessToken(res, accessToken);
-      const userCreateYear = userInfo.createdAt.getFullYear();
       const userCreateMonth =
         userInfo.createdAt.getMonth() === 11
           ? 1
           : userInfo.createdAt.getMonth() + 2;
-      console.log('cmonth', userCreateMonth);
+      const userCreateYear =
+        userCreateMonth === 1
+          ? userInfo.createdAt.getFullYear() + 1
+          : userInfo.createdAt.getFullYear();
       let userRepaymentDay = 0;
       userCardInfos.filter((user) => {
         if (userRepaymentDay !== user.dataValues.repaymentDay) {
           userRepaymentDay = user.dataValues.repaymentDay;
         }
       });
+      const testDate = new Date(
+        `${userCreateYear}/${userCreateMonth}/${userRepaymentDay + 1}`,
+      );
       const cardInfos = await userCards.findAll({
         include: cards,
         where: {
@@ -70,13 +75,10 @@ module.exports = async (req, res) => {
             [Op.is]: true,
           },
           createdAt: {
-            [Op.gte]: new Date(
-              `${userCreateYear}/${userCreateMonth}/${userRepaymentDay + 1}`,
-            ),
+            [Op.gt]: testDate,
           },
         },
       });
-      console.log('infos', cardInfos);
       if (!cardInfos) {
         return res.status(200).json({
           userInfo: userInfo,

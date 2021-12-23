@@ -29,7 +29,6 @@ module.exports = async (req, res) => {
           cardId: userCardId,
         },
       });
-      console.log('userCard', userCard.dataValues);
       userCard.dataValues.remainValue += price;
       await userCards.update(
         {

@@ -9,7 +9,6 @@ module.exports = async (req, res) => {
       .json({ data: null, message: 'Invalid access token!' });
   } else {
     const { id } = accessTokenData;
-    // 수정 필요 항목
     let {
       year,
       month,
@@ -21,9 +20,7 @@ module.exports = async (req, res) => {
       outcomeIsCash,
       userCardId,
     } = req.body;
-    // 수정 필요 항목
     let userCard;
-    console.log('correct body', req.body);
 
     if (!outcomeIsCash && userCardId !== null) {
       userCard = await userCards.findOne({

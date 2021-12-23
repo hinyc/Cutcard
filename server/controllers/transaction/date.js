@@ -2,8 +2,6 @@ const { transactions } = require('./../../models');
 const { isAuthorized } = require('./../tokenFunctions');
 
 module.exports = async (req, res) => {
-  // accessToken 확인
-  console.log(req.cookies);
   const accessTokenData = isAuthorized(req, res);
   if (!accessTokenData) {
     return res
