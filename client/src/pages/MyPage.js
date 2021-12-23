@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-import { Input, Notification } from "../components/Input";
-import { BigButton } from "../components/Button";
-import { Container, Title } from "../components/Common";
-import { Link } from "react-router-dom";
-import { CardSelect, Select } from "../components/Select";
-import CardList from "../components/CardList";
-import { FlexContainer } from "../components/Common";
-import styled from "styled-components";
-import axios from "axios";
-import { useBeforeunload } from "react-beforeunload";
+import React, { useState } from 'react';
+import { Input, Notification } from '../components/Input';
+import { BigButton } from '../components/Button';
+import { Container, Title } from '../components/Common';
+import { Link } from 'react-router-dom';
+import { CardSelect, Select } from '../components/Select';
+import CardList from '../components/CardList';
+import { FlexContainer } from '../components/Common';
+import styled from 'styled-components';
+import axios from 'axios';
+import { useBeforeunload } from 'react-beforeunload';
+import { useNavigate } from 'react-router-dom';
 
 const Text = styled.div`
   font-size: 14px;
@@ -26,19 +27,19 @@ function MyPage({
   userCards,
   setUserCards,
 }) {
-  const [nickname, setNickname] = useState("");
+  const [nickname, setNickname] = useState('');
 
-  const [password, setPassword] = useState("");
-  const [passwordCheck, setPasswordCheck] = useState("");
+  const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
 
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState('');
   const notSelectedCards = cardsList.filter(
-    (obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === false
+    (obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === false,
   );
   const [cards, setCards] = useState(notSelectedCards);
 
   const selectedCards = cardsList.filter(
-    (obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === true
+    (obj) => userCards.map((obj) => obj.cardId).includes(obj.id) === true,
   );
   const selectedCardsIsCut = selectedCards.map((select) => {
     return userCards
@@ -52,6 +53,8 @@ function MyPage({
   });
   const [userCardList, setUserCardList] = useState(selectedCardsIsCut);
   const [repaymentDay, setRepaymentDay] = useState(userCards[0].repaymentDay);
+
+  const navigate = useNavigate();
 
   const onNicknameChange = (e) => {
     setNickname(e.target.value);
@@ -109,7 +112,7 @@ function MyPage({
     if (password === passwordCheck) {
       axios
         .patch(
-          "http://localhost:4000/users/userinfo",
+          'https://localhost:4000/users/userinfo',
           {
             nickname: nickname,
             password: password,
@@ -124,15 +127,16 @@ function MyPage({
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
-          }
+          },
         )
         .then((res) => {
           console.log(res);
-          setAccessToken("");
+          setAccessToken('');
           setUserCards([]);
           setUserInfo({});
+          navigate('/');
         })
         .then(() => {
           setIsLogin(false);
@@ -142,17 +146,18 @@ function MyPage({
 
   const onSignOutClick = () => {
     axios
-      .delete("http://localhost:4000/users/userinfo", {
+      .delete('https://localhost:4000/users/userinfo', {
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       })
       .then((res) => {
         console.log(res);
-        setAccessToken("");
+        setAccessToken('');
         setUserCards([]);
         setUserInfo({});
+        navigate('/');
       })
       .then(() => {
         setIsLogin(false);
@@ -197,7 +202,7 @@ function MyPage({
         value={passwordCheck}
         onChange={onPasswordChangeCheck}
       />
-      {password === "" ? null : password === passwordCheck ? (
+      {password === '' ? null : password === passwordCheck ? (
         <Notification margin="4px 186px 0 0">
           * 비밀번호가 일치합니다.
         </Notification>
@@ -221,10 +226,10 @@ function MyPage({
             text={obj.name}
             onTextClick={onWantCutCardSelect}
             onClick={() => onCardDelete(obj.id)}
-            background={obj.isCut ? "#97bfb4" : "white"}
-            color={obj.isCut ? "white" : "#97bfb4"}
-            btnBackground={obj.isCut ? "#97bfb4" : "white"}
-            xColor={obj.isCut ? "white" : "#97bfb4"}
+            background={obj.isCut ? '#97bfb4' : 'white'}
+            color={obj.isCut ? 'white' : '#97bfb4'}
+            btnBackground={obj.isCut ? '#97bfb4' : 'white'}
+            xColor={obj.isCut ? 'white' : '#97bfb4'}
           />
         ))}
       </FlexContainer>
@@ -232,7 +237,7 @@ function MyPage({
         padding="25px 238px 9px 0"
         label="카드 상환일"
         text={`카드 상환일을 선택해주세요 (현재 ${userCards[0].repaymentDay}일)`}
-        options={["1일", "5일", "10일", "15일", "20일", "25일"]}
+        options={['1일', '5일', '10일', '15일', '20일', '25일']}
         onChange={onRepaymentDaySelect}
       />
       {/* Button */}

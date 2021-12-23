@@ -1,29 +1,31 @@
-import React, { useState } from "react";
-import { Input, EmailInput, Notification } from "../components/Input";
-import { BigButton } from "../components/Button";
-import { Container, Title } from "../components/Common";
-import { Link } from "react-router-dom";
-import { CardSelect, Select } from "../components/Select";
-import CardList from "../components/CardList";
-import { FlexContainer } from "../components/Common";
-import axios from "axios";
+import React, { useState } from 'react';
+import { Input, EmailInput, Notification } from '../components/Input';
+import { BigButton } from '../components/Button';
+import { Container, Title } from '../components/Common';
+import { Link, useNavigate } from 'react-router-dom';
+import { CardSelect, Select } from '../components/Select';
+import CardList from '../components/CardList';
+import { FlexContainer } from '../components/Common';
+import axios from 'axios';
 
 function SignUpPage({ cardsList }) {
-  const [nickname, setNickname] = useState("");
+  const [nickname, setNickname] = useState('');
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [emailFocused, setEmailFocused] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
   const [isEmailBtnClick, setIsEmailBtnClick] = useState(false);
   const [emailExists, setEmailExists] = useState(true);
 
-  const [password, setPassword] = useState("");
-  const [passwordCheck, setPasswordCheck] = useState("");
+  const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
 
   const [cards, setCards] = useState(cardsList);
   const [userCardList, setUserCardList] = useState([]);
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState('');
   const [repaymentDay, setRepaymentDay] = useState(0);
+
+  const navigate = useNavigate();
 
   const onNicknameChange = (e) => {
     setNickname(e.target.value);
@@ -46,13 +48,13 @@ function SignUpPage({ cardsList }) {
     setIsEmailBtnClick(true);
     axios
       .post(
-        "http://localhost:4000/users/exists",
+        'https://localhost:4000/users/exists',
         { email: email },
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-        }
+        },
       )
       .then((res) => {
         console.log(res);
@@ -111,7 +113,7 @@ function SignUpPage({ cardsList }) {
   const onSignUpClick = () => {
     axios
       .post(
-        "http://localhost:4000/users/signup",
+        'https://localhost:4000/users/signup',
         {
           email: email,
           password: password,
@@ -126,11 +128,18 @@ function SignUpPage({ cardsList }) {
         },
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-        }
+        },
       )
-      .then((res) => console.log(res));
+      .then((res) => {
+        console.log(res);
+        navigate('/login');
+      });
+  };
+
+  const onCancelClick = () => {
+    navigate('/');
   };
 
   return (
@@ -154,12 +163,12 @@ function SignUpPage({ cardsList }) {
         onFocus={onEmailFocus}
         onClick={emailExistsCheck}
         disabled={!isEmail}
-        opacity={!isEmail ? "50%" : 0}
-        hoverOpacity={!isEmail ? "50%" : 0}
-        cursor={!isEmail ? "default" : "pointer"}
+        opacity={!isEmail ? '50%' : 0}
+        hoverOpacity={!isEmail ? '50%' : 0}
+        cursor={!isEmail ? 'default' : 'pointer'}
       />
       {emailFocused ? (
-        email !== "" && isEmail ? (
+        email !== '' && isEmail ? (
           isEmailBtnClick ? (
             emailExists ? (
               <Notification color="#FF6B6B" margin="4px 160px 0 0">
@@ -194,7 +203,7 @@ function SignUpPage({ cardsList }) {
         value={passwordCheck}
         onChange={onPasswordChangeCheck}
       />
-      {password === "" ? null : password === passwordCheck ? (
+      {password === '' ? null : password === passwordCheck ? (
         <Notification margin="4px 186px 0 0">
           * 비밀번호가 일치합니다.
         </Notification>
@@ -218,37 +227,34 @@ function SignUpPage({ cardsList }) {
             text={obj.name}
             onTextClick={onWantCutCardSelect}
             onClick={() => onCardDelete(obj.id)}
-            background={obj.isCut ? "#97bfb4" : "white"}
-            color={obj.isCut ? "white" : "#97bfb4"}
-            btnBackground={obj.isCut ? "#97bfb4" : "white"}
-            xColor={obj.isCut ? "white" : "#97bfb4"}
+            background={obj.isCut ? '#97bfb4' : 'white'}
+            color={obj.isCut ? 'white' : '#97bfb4'}
+            btnBackground={obj.isCut ? '#97bfb4' : 'white'}
+            xColor={obj.isCut ? 'white' : '#97bfb4'}
           />
         ))}
       </FlexContainer>
       <Select
         label="카드 상환일"
         text="카드 상환일을 선택해주세요 (1개 선택 가능)"
-        options={["1일", "5일", "10일", "15일", "20일", "25일"]}
+        options={['1일', '5일', '10일', '15일', '20일', '25일']}
         onChange={onRepaymentDaySelect}
         margin="0"
       />
       {/* Button */}
-      <Link to="/login">
-        <BigButton
-          text="가입하기"
-          margin="28px auto 12px auto"
-          onClick={onSignUpClick}
-        />
-      </Link>
-      <Link to="/">
-        <BigButton
-          text="취소"
-          background="white"
-          color="#97BFB4"
-          border="1px solid #97BFB4"
-          margin="0 auto 50px auto"
-        />
-      </Link>
+      <BigButton
+        text="가입하기"
+        margin="28px auto 12px auto"
+        onClick={onSignUpClick}
+      />
+      <BigButton
+        text="취소"
+        background="white"
+        color="#97BFB4"
+        border="1px solid #97BFB4"
+        margin="0 auto 50px auto"
+        onClick={onCancelClick}
+      />
     </Container>
   );
 }

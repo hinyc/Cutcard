@@ -50,10 +50,18 @@ const Menu = styled.button`
   }
 `;
 
-function Navbar({ isLogin, setIsLogin, accessToken, setAccessToken, setUserCards, setUserInfo, setTransaction }) {
+function Navbar({
+  isLogin,
+  setIsLogin,
+  accessToken,
+  setAccessToken,
+  setUserCards,
+  setUserInfo,
+  setTransaction,
+}) {
   const onLogoutClick = () => {
     axios
-      .get('http://localhost:4000/users/logout')
+      .get('https://localhost:4000/users/logout')
       .then((res) => {
         console.log(res);
         setAccessToken('');
@@ -68,7 +76,7 @@ function Navbar({ isLogin, setIsLogin, accessToken, setAccessToken, setUserCards
 
   const onMyPageClick = () => {
     axios
-      .get('http://localhost:4000/users/userinfo', {
+      .get('https://localhost:4000/users/userinfo', {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
@@ -83,9 +91,9 @@ function Navbar({ isLogin, setIsLogin, accessToken, setAccessToken, setUserCards
         <Link to="/main">
           <Logo>Cut Card</Logo>
         </Link>
-        <Link to="/about">
+        {/* <Link to="/about">
           <Menu paddingTop="0px">소개</Menu>
-        </Link>
+        </Link> */}
       </Nav>
       {isLogin ? (
         <>

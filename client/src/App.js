@@ -9,6 +9,8 @@ import AboutPage from './pages/AboutPage';
 import LoginPage from './pages/LoginPage';
 import MyPage from './pages/MyPage';
 import SignUpPage from './pages/SignUpPage';
+import { Modal } from './components/Modal';
+import { newdumy } from './dummyData';
 
 function App() {
   //테스트중 초기상태 임의지정
@@ -26,7 +28,9 @@ function App() {
   const [userInfo, setUserInfo] = useState({});
   const [userCards, setUserCards] = useState([]);
   const [accessToken, setAccessToken] = useState('');
-  const [transaction, setTransaction] = useState([]);
+  const [transaction, setTransaction] = useState(newdumy.transaction);
+  const [modalData, setModalData] = useState([]);
+  const [cardPrice, setCardPrice] = useState([]);
   console.log('userCards', userCards);
   console.log('accessToken', accessToken);
   console.log('userInfo', userInfo);
@@ -56,13 +60,39 @@ function App() {
         setUserInfo={setUserInfo}
         setTransaction={setTransaction}
       />
+      {/* <Modal /> */}
       <Routes>
         <Route path="/" element={<Navigate to="/main" />} />
-        <Route path="/main" element={<Main isLogin={isLogin} userCards={userCardList} cardsId={cards} accessToken={accessToken} transaction={transaction} setTransaction={setTransaction} />} />
+        <Route
+          path="/main"
+          element={
+            <Main
+              isLogin={isLogin}
+              userCards={userCardList}
+              cardsId={cards}
+              accessToken={accessToken}
+              transaction={transaction}
+              setTransaction={setTransaction}
+              modalData={modalData}
+              cardPrice={cardPrice}
+            />
+          }
+        />
         <Route path="/about" element={<AboutPage />} />
         <Route
           path="/login"
-          element={<LoginPage setUserCards={setUserCards} isLogin={isLogin} setIsLogin={setIsLogin} setUserInfo={setUserInfo} setAccessToken={setAccessToken} setTransaction={setTransaction} />}
+          element={
+            <LoginPage
+              setUserCards={setUserCards}
+              isLogin={isLogin}
+              setIsLogin={setIsLogin}
+              setUserInfo={setUserInfo}
+              setAccessToken={setAccessToken}
+              setTransaction={setTransaction}
+              setModalData={setModalData}
+              setCardPrice={setCardPrice}
+            />
+          }
         />
         <Route
           path="/mypage"
