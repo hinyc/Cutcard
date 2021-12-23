@@ -1,5 +1,5 @@
-const { transactions, userCards } = require("./../../models");
-const { isAuthorized } = require("./../tokenFunctions");
+const { transactions, userCards } = require('./../../models');
+const { isAuthorized } = require('./../tokenFunctions');
 
 module.exports = async (req, res) => {
   // accessToken 확인
@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
   if (!accessTokenData) {
     return res
       .status(401)
-      .json({ data: null, message: "invalid access token!" });
+      .json({ data: null, message: 'invalid access token!' });
   } else {
     const { id } = accessTokenData;
     const {
@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
       isIncome,
     } = req.body;
     let userCard;
-    console.log("body", req.body);
+    console.log('body', req.body);
 
     if (!outcomeIsCash) {
       userCard = await userCards.findOne({
@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
           cardId: userCardId,
         },
       });
-      console.log("userCard", userCard.dataValues);
+      console.log('userCard', userCard.dataValues);
       userCard.dataValues.remainValue += price;
       await userCards.update(
         {
@@ -41,7 +41,7 @@ module.exports = async (req, res) => {
             userId: id,
             cardId: userCardId,
           },
-        }
+        },
       );
       await transactions.create({
         year,
@@ -58,7 +58,7 @@ module.exports = async (req, res) => {
         include: [
           {
             model: userCards,
-            attributes: ["repaymentDay"],
+            attributes: ['repaymentDay'],
           },
         ],
         where: {
@@ -67,6 +67,9 @@ module.exports = async (req, res) => {
           userId: id,
         },
       });
+      if (month === 1) {
+        (year -= 1), (month = 13);
+      }
       const cardPrice = await transactions.findAll({
         where: {
           year,
@@ -94,7 +97,7 @@ module.exports = async (req, res) => {
         include: [
           {
             model: userCards,
-            attributes: ["repaymentDay"],
+            attributes: ['repaymentDay'],
           },
         ],
         where: {

@@ -1,7 +1,7 @@
-const { users } = require("../../models");
-const { userCards } = require("../../models");
-const { transactions } = require("../../models");
-const { isAuthorized } = require("../tokenFunctions");
+const { users } = require('../../models');
+const { userCards } = require('../../models');
+const { transactions } = require('../../models');
+const { isAuthorized } = require('../tokenFunctions');
 
 module.exports = {
   get: async (req, res) => {
@@ -20,7 +20,7 @@ module.exports = {
     });
 
     if (!userInfo) {
-      return res.status(401).json({ message: "invalid access token!" });
+      return res.status(401).json({ message: 'invalid access token!' });
     } else {
       delete userInfo.dataValues.password;
 
@@ -44,7 +44,7 @@ module.exports = {
     });
 
     if (!userInfo) {
-      return res.status(401).json({ message: "invalid access token!" });
+      return res.status(401).json({ message: 'invalid access token!' });
     } else {
       // 유저가 현재 보유한 카드 id와 제거 여부
       const remainingCards = cards.map((data) => [data.id, data.isCut]);
@@ -59,15 +59,15 @@ module.exports = {
       const userCardId = userCardInfos.map((data) => data.cardId);
       // 회원가입시 기록했던 유저 카드 목록과 보유한 카드 목록에 중복으로 존재하는 카드의 정보
       const notChangingCard = userCardList.filter((data) =>
-        remainingCardId.includes(data[0])
+        remainingCardId.includes(data[0]),
       );
       // 회원가입시 기록했던 유저 카드 목록에서 보유한 카드 목록과 겹치는 부분을 filter = 할당되는 배열은 제거할 카드의 정보
       const deleteCardList = userCardList.filter(
-        (data) => !remainingCardId.includes(data[0])
+        (data) => !remainingCardId.includes(data[0]),
       );
       // 보유한 카드 목록에서 회원가입시 기록했던 유저 카드 목록과 겹치는 부분을 filter = 할당되는 배열은 추가할 카드의 정보
       const addedCardList = remainingCards.filter(
-        (data) => !userCardId.includes(data[0])
+        (data) => !userCardId.includes(data[0]),
       );
       // 수정할 nickname 존재할 때 수정
       if (nickname) {
@@ -78,7 +78,7 @@ module.exports = {
               id: userInfo.id,
               nickname: userInfo.nickname,
             },
-          }
+          },
         );
       }
       // 수정할 password가 존재할 때 수정
@@ -90,7 +90,7 @@ module.exports = {
               id: userInfo.id,
               password: userInfo.password,
             },
-          }
+          },
         );
       }
       // 지울 카드 목록 삭제
@@ -125,13 +125,13 @@ module.exports = {
                 userId: userInfo.id,
                 cardId: data[0],
               },
-            }
+            },
           );
         });
       }
     }
 
-    res.status(200).json({ message: "successfully changed" });
+    res.status(200).json({ message: 'successfully changed' });
   },
   delete: async (req, res) => {
     const accessToken = isAuthorized(req, res);
@@ -143,7 +143,7 @@ module.exports = {
     });
 
     if (!userInfo) {
-      return res.status(401).json({ message: "invalid access token!" });
+      return res.status(401).json({ message: 'invalid access token!' });
     } else {
       await userCards.destroy({
         where: {
@@ -163,7 +163,7 @@ module.exports = {
         },
       });
 
-      res.status(200).json({ message: "userinfo deleted" });
+      res.status(200).json({ message: 'userinfo deleted' });
     }
   },
 };
