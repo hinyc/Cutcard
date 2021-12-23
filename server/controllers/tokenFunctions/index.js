@@ -7,18 +7,16 @@ module.exports = {
   },
   sendAccessToken: (res, accessToken) => {
     res.cookie('accessToken', accessToken, {
-      // httpOnly: true,
-      // sameSite: 'None',
-      // // sercure: true,
+      httpOnly: true,
+      sameSite: 'None',
+      sercure: true,
     });
   },
   isAuthorized: (req, res) => {
     const authorization = req.headers['authorization'];
 
     if (!authorization) {
-      return res
-        .status(401)
-        .json({ data: null, message: 'access token not provided!' });
+      return res.status(401).json({ data: null, message: 'access token not provided!' });
     } else {
       const token = authorization.split(' ')[1];
 
