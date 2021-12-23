@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
       .json({ data: null, message: 'invalid access token!' });
   } else {
     const { id } = accessTokenData;
-    const {
+    let {
       year,
       month,
       day,

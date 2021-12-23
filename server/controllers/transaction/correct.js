@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
   } else {
     const { id } = accessTokenData;
     // 수정 필요 항목
-    const {
+    let {
       year,
       month,
       day,

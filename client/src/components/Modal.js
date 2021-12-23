@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { ButtonStyle } from "./Button";
+import styled from 'styled-components';
+import { ButtonStyle } from './Button';
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -21,8 +21,10 @@ const ModalContainer = styled.div`
 const ModalView = styled.div`
   border-radius: 20px;
   background-color: #ffffff;
-  width: 300px;
-  height: 150px;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   > div.desc {
     margin-top: 40px;
@@ -30,20 +32,71 @@ const ModalView = styled.div`
   }
 `;
 
-const Modal = ({ onBackgroundClick, messageText, onClick, buttonText }) => {
+const ModalTitle = styled.div`
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 10px;
+`;
+const ModalContent = styled.div`
+  font-weight: 600;
+  margin: 5px 0;
+`;
+const Wrap = styled.div`
+  color: #7c8986;
+  padding: 20px 0;
+  line-height: 20px;
+  border: 1px solid #7c8986;
+  border-radius: 10px;
+  margin: 5px 0;
+  width: 300px;
+`;
+
+const Link = styled.a`
+  color: #7c8986;
+  text-decoration: none;
+
+  &:hover {
+    cursor: pointer;
+    font-weight: 700;
+  }
+`;
+
+const Modal = ({
+  onBackgroundClick,
+  messageText,
+  onClick,
+  buttonText,
+  modalData,
+}) => {
+  console.log('m', modalData[0].card.name);
   return (
     <ModalContainer>
       <ModalBackdrop onClick={onBackgroundClick}>
         <ModalView>
-          <div className="desc">{messageText}</div>
+          <ModalTitle className="desc">Cut 가능한 카드 목록</ModalTitle>
+          {modalData.map((el) => {
+            return (
+              <Wrap>
+                <ModalContent>- {el.card.name} -</ModalContent>
+                <div style={{ lineHeight: '25px' }}>
+                  <Link href={el.card.address} target="_blank">
+                    {`${el.card.name} Cut 하기 `}
+                  </Link>
+                  <div
+                    style={{ lineHeight: '25px' }}
+                  >{`고객센터: ${el.card.phoneNumber}`}</div>
+                </div>
+              </Wrap>
+            );
+          })}
           <ButtonStyle
             width="100px"
-            margin="25px auto 0 auto"
-            fontSize="14px"
+            margin="15px auto 25px auto"
+            fontSize="16px"
             radius="30px"
             onClick={onClick}
           >
-            {buttonText}
+            확인
           </ButtonStyle>
         </ModalView>
       </ModalBackdrop>

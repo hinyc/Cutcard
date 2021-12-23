@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Calendar from './Calendar';
-import View from './View';
+import View, { Item } from './View';
 import Submit from './Submit';
 // dumydata
 import { newdumy } from '../../dummyData';
 import axios from 'axios';
 import { useBeforeunload } from 'react-beforeunload';
+import Modal from '../Modal';
 
 //asdfsafd
 export const MainContainer = styled.div`
@@ -62,6 +63,7 @@ const Main = ({
   transaction,
   setTransaction,
   modalData,
+  cardPrice,
 }) => {
   const [mainState, setMainState] = useState('outcome');
   const [modifyState, setModifyState] = useState(false);
@@ -70,11 +72,27 @@ const Main = ({
   const [temporaryData, setTemporaryData] = useState({});
   const [requestMessage, setRequestMessage] = useState('');
   const [savemode, setSavemode] = useState(true);
-  useBeforeunload((event) => event.preventDefault());
+  const [showModal, setShowModal] = useState(false);
 
-  console.log(`modaldata ${modalData}`);
+  useBeforeunload((event) => event.preventDefault());
+  //현제 월 수입-지출
+  //set 실행조건은 targetMonth가 이번달일 경우만 실행
+  console.log('transaction', transaction);
+
+  const targetMonthBalance = 0;
+  // transaction.forEach((el) => {
+  //   if (transaction.isIncome) {
+  //     targetMonthBalance += transaction.price;
+  //   }
+  //   targetMonthBalance -= transaction.price;
+  // });
+
+  const [thisMonthBalance, setthisMonthBalance] = useState(0);
+  //지난달 카드 사용금액
+  const lestMonthCardUsage = cardPrice.reduce((acc, cur) => acc + cur.price, 0);
+
   // Calendar
-  console.log('isLogin', isLogin);
+
   const [pickDate, setPickDate] = useState(new Date());
   // const [targetDate, setTargetDate] = useState(pickDate.getDate());
   const [targetDate, setTargetDate] = useState(25);
@@ -82,6 +100,12 @@ const Main = ({
   const targetMonth = pickDate.getMonth() + 1;
   const getDate = `${targetYear}-${targetMonth}-${targetDate}`;
 
+  useEffect(() => {
+    if (modalData.length > 0) {
+      setShowModal(true);
+    }
+  }, modalData);
+  console.log('isLogin', isLogin);
   console.log(mainState);
   console.log(modifyState);
   //Submit
@@ -192,13 +216,14 @@ const Main = ({
     if (!isLogin) {
       return setRequestMessage('* 로그인이 필요합니다.');
     }
-    console.log(`${url}date`);
 
     const resDate = {
       year,
       month,
     };
 
+    console.log(`${url}date`);
+    console.log('요청데이터', resData);
     axios
       .post(
         `${url}date`, //
@@ -213,7 +238,6 @@ const Main = ({
       )
       .then((res) => {
         setTransaction(res.data.transaction);
-        console.log('move 2');
       })
       .catch((err) => console.log(err));
   };
@@ -496,13 +520,16 @@ const Main = ({
   console.log(
     `Render! mainState:"${mainState}" modifyState:"${modifyState}" date:${getDate}`,
   );
-  const lestMonthCardUsage = 1789000;
+
   const leftMoney =
     inOutDataList.inComes.totalPrice - inOutDataList.outComes.totalPrice;
   const leftMoneyEceptLMCU = leftMoney - lestMonthCardUsage;
 
   return (
     <>
+      {showModal && isLogin ? (
+        <Modal modalData={modalData} onClick={() => setShowModal(false)} />
+      ) : null}
       <MainContainer>
         <View
           year={targetYear} //

@@ -14,6 +14,7 @@ function LoginPage({
   isLogin,
   setTransaction,
   setModalData,
+  setCardPrice,
 }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -58,6 +59,7 @@ function LoginPage({
         setUserInfo(res.data.userInfo);
         setTransaction(res.data.transaction);
         setModalData(res.data.modal);
+        setCardPrice(res.data.cardPrice);
         // setTimeout(function () {
         navigate('/');
         // }, 800);

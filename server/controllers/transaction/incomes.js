@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
       .json({ data: null, message: 'invalid access token!' });
   } else {
     const { id } = accessTokenData;
-    const { year, month, day, category, price, isIncome } = req.body;
+    let { year, month, day, category, price, isIncome } = req.body;
     await transactions.create({
       year,
       month,
