@@ -16,7 +16,9 @@ module.exports = {
     const authorization = req.headers['authorization'];
 
     if (!authorization) {
-      return res.status(401).json({ data: null, message: 'access token not provided!' });
+      return res
+        .status(401)
+        .json({ data: null, message: 'access token not provided!' });
     } else {
       const token = authorization.split(' ')[1];
 

@@ -1,12 +1,12 @@
-const { transactions, userCards } = require("./../../models");
-const { isAuthorized } = require("./../tokenFunctions");
+const { transactions, userCards } = require('./../../models');
+const { isAuthorized } = require('./../tokenFunctions');
 
 module.exports = async (req, res) => {
   const accessTokenData = await isAuthorized(req, res);
   if (!accessTokenData) {
     return res
       .status(401)
-      .json({ data: null, message: "invalid access token!" });
+      .json({ data: null, message: 'invalid access token!' });
   } else {
     const { id } = accessTokenData;
     const {
@@ -38,7 +38,7 @@ module.exports = async (req, res) => {
             cardId: userCardId,
             userId: id,
           },
-        }
+        },
       );
       await transactions.destroy({
         where: {
@@ -56,7 +56,7 @@ module.exports = async (req, res) => {
         include: [
           {
             model: userCards,
-            attributes: ["repaymentDay"],
+            attributes: ['repaymentDay'],
           },
         ],
         where: {
@@ -90,7 +90,7 @@ module.exports = async (req, res) => {
         include: [
           {
             model: userCards,
-            attributes: ["repaymentDay"],
+            attributes: ['repaymentDay'],
           },
         ],
         where: {
@@ -99,6 +99,9 @@ module.exports = async (req, res) => {
           userId: id,
         },
       });
+      if (month === 1) {
+        (year -= 1), (month = 13);
+      }
       const cardPrice = await transactions.findAll({
         where: {
           year,

@@ -1,12 +1,12 @@
-const { transactions, userCards } = require("./../../models");
-const { isAuthorized } = require("./../tokenFunctions");
+const { transactions, userCards } = require('./../../models');
+const { isAuthorized } = require('./../tokenFunctions');
 
 module.exports = async (req, res) => {
   const accessTokenData = await isAuthorized(req, res);
   if (!accessTokenData) {
     return res
       .status(401)
-      .json({ data: null, message: "Invalid access token!" });
+      .json({ data: null, message: 'Invalid access token!' });
   } else {
     const { id } = accessTokenData;
     // 수정 필요 항목
@@ -23,7 +23,7 @@ module.exports = async (req, res) => {
     } = req.body;
     // 수정 필요 항목
     let userCard;
-    console.log("correct body", req.body);
+    console.log('correct body', req.body);
 
     if (!outcomeIsCash && userCardId !== null) {
       userCard = await userCards.findOne({
@@ -43,7 +43,7 @@ module.exports = async (req, res) => {
             cardId: userCardId,
             userId: id,
           },
-        }
+        },
       );
       await transactions.update(
         {
@@ -63,7 +63,7 @@ module.exports = async (req, res) => {
             userId: id,
             userCardId,
           },
-        }
+        },
       );
       const correctDate = await transactions.findAll({
         where: {
@@ -84,7 +84,7 @@ module.exports = async (req, res) => {
     } else {
       await transactions.update(
         { category: newCategory, price: newPrice },
-        { where: { year, month, day, category, price, userId: id } }
+        { where: { year, month, day, category, price, userId: id } },
       );
       const correctDate = await transactions.findAll({
         where: {
@@ -93,6 +93,9 @@ module.exports = async (req, res) => {
           userId: id,
         },
       });
+      if (month === 1) {
+        (year -= 1), (month = 13);
+      }
       const cardPrice = await transactions.findAll({
         where: {
           year,

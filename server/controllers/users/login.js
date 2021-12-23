@@ -1,14 +1,14 @@
-const { users, cards } = require("../../models");
-const { userCards } = require("../../models");
-const { transactions } = require("../../models");
-const { Op } = require("sequelize");
-const { generateAccessToken, sendAccessToken } = require("../tokenFunctions");
+const { users, cards } = require('../../models');
+const { userCards } = require('../../models');
+const { transactions } = require('../../models');
+const { Op } = require('sequelize');
+const { generateAccessToken, sendAccessToken } = require('../tokenFunctions');
 
 module.exports = async (req, res) => {
   const { email, password, year, month } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ message: "bad Request!" });
+    return res.status(400).json({ message: 'bad Request!' });
   } else {
     const userInfo = await users.findOne({
       where: {
@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
       },
     });
     if (!userInfo) {
-      return res.status(404).json({ message: "account not exist" });
+      return res.status(404).json({ message: 'account not exist' });
     } else {
       const userCardInfos = await userCards.findAll({
         where: {
@@ -32,7 +32,9 @@ module.exports = async (req, res) => {
           month: month,
         },
       });
-
+      if (month === 1) {
+        (year -= 1), (month = 13);
+      }
       const cardPrice = await transactions.findAll({
         where: {
           year,
@@ -45,13 +47,6 @@ module.exports = async (req, res) => {
       delete userInfo.dataValues.password;
       const accessToken = generateAccessToken(userInfo.dataValues);
       sendAccessToken(res, accessToken);
-      // return res
-      //   .status(200)
-      //   .json({
-      //     userInfo: userInfo,
-      //     cards: userCardInfos,
-      //     transaction: transactionInfos,
-      //   });
       const userCreateYear = userInfo.createdAt.getFullYear();
       const userCreateMonth = userInfo.createdAt.getMonth() + 1;
       let userRepaymentDay = 0;
@@ -72,7 +67,7 @@ module.exports = async (req, res) => {
           },
           createdAt: {
             [Op.gte]: new Date(
-              `${userCreateYear}/${userCreateMonth}/${userRepaymentDay + 1}`
+              `${userCreateYear}/${userCreateMonth}/${userRepaymentDay + 1}`,
             ),
           },
         },
