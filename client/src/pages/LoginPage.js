@@ -13,6 +13,7 @@ function LoginPage({
   setIsLogin,
   isLogin,
   setTransaction,
+  setModalData,
 }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -56,6 +57,7 @@ function LoginPage({
         setAccessToken(res.data.accessToken);
         setUserInfo(res.data.userInfo);
         setTransaction(res.data.transaction);
+        setModalData(res.data.modal);
         // setTimeout(function () {
         navigate('/');
         // }, 800);

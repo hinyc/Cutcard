@@ -61,6 +61,7 @@ const Main = ({
   accessToken,
   transaction,
   setTransaction,
+  modalData,
 }) => {
   const [mainState, setMainState] = useState('outcome');
   const [modifyState, setModifyState] = useState(false);
@@ -71,7 +72,7 @@ const Main = ({
   const [savemode, setSavemode] = useState(true);
   useBeforeunload((event) => event.preventDefault());
 
-  console.log(transaction);
+  console.log(`modaldata ${modalData}`);
   // Calendar
   console.log('isLogin', isLogin);
   const [pickDate, setPickDate] = useState(new Date());

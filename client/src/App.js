@@ -29,6 +29,7 @@ function App() {
   const [userCards, setUserCards] = useState([]);
   const [accessToken, setAccessToken] = useState('');
   const [transaction, setTransaction] = useState(newdumy.transaction);
+  const [modalData, setModalData] = useState([]);
   console.log('userCards', userCards);
   console.log('accessToken', accessToken);
   console.log('userInfo', userInfo);
@@ -71,6 +72,7 @@ function App() {
               accessToken={accessToken}
               transaction={transaction}
               setTransaction={setTransaction}
+              modalData={modalData}
             />
           }
         />
@@ -85,6 +87,7 @@ function App() {
               setUserInfo={setUserInfo}
               setAccessToken={setAccessToken}
               setTransaction={setTransaction}
+              setModalData={setModalData}
             />
           }
         />
