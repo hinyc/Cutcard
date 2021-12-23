@@ -1,4 +1,3 @@
-// dummy data
 export const dummy = {
   inComes: [
     {

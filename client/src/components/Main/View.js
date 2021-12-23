@@ -31,7 +31,6 @@ export const ChangeButton = styled.button`
 
 //! ListContainer
 export const ListContainer = styled.div`
-  // border: solid 2px black;
   width: 300px;
   height: 470px;
   display: flex;
@@ -168,7 +167,9 @@ export const Item = ({ item }) => {
 };
 
 export const Money = ({ money }) => {
-  return <MoneyContainer>{`${money.toLocaleString('ko-KR')} 원`}</MoneyContainer>;
+  return (
+    <MoneyContainer>{`${money.toLocaleString('ko-KR')} 원`}</MoneyContainer>
+  );
 };
 
 export const Content = (props) => {
@@ -218,7 +219,9 @@ export const Content = (props) => {
                 buttonStateHandler(true);
               }}
             >
-              <CashCard backgroundColor={`blue`}>{card.name.slice(0, 2)}</CashCard>
+              <CashCard backgroundColor={`blue`}>
+                {card.name.slice(0, 2)}
+              </CashCard>
               <Item item={item} />
               <Money money={money} />
             </ContentContainerActive>
@@ -230,7 +233,22 @@ export const Content = (props) => {
           </ContentContainer>
         )}
 
-        {deleteBox ? <DeleteBox onClick={() => contentDeleter({ category: item, card, isCash: isCash, price: money, isIncome, id })}>×</DeleteBox> : null}
+        {deleteBox ? (
+          <DeleteBox
+            onClick={() =>
+              contentDeleter({
+                category: item,
+                card,
+                isCash: isCash,
+                price: money,
+                isIncome,
+                id,
+              })
+            }
+          >
+            ×
+          </DeleteBox>
+        ) : null}
       </ContantWrap>
     </>
   );
@@ -241,7 +259,11 @@ export const SubTitle = ({ title, top }) => {
 };
 
 export const TotalMoney = ({ totalMoney, top, color }) => {
-  return <TotalMoneyContainer top={top} color={color}>{`${totalMoney.toLocaleString('ko-KR')} 원`}</TotalMoneyContainer>;
+  return (
+    <TotalMoneyContainer top={top} color={color}>{`${totalMoney.toLocaleString(
+      'ko-KR',
+    )} 원`}</TotalMoneyContainer>
+  );
 };
 
 const OutComeList = ({ year, month, outComes }) => {
@@ -277,12 +299,20 @@ const InComeList = ({ year, month, inComes }) => {
 };
 
 const DetailList = (props) => {
-  const { year, month, date, detail, modifyStateHandler, buttonStateHandler, contentDeleter, mainState } = props;
+  const {
+    year,
+    month,
+    date,
+    detail,
+    modifyStateHandler,
+    buttonStateHandler,
+    contentDeleter,
+    mainState,
+  } = props;
   const { inComes, inComesTotal, outComes, outComesTotal } = detail;
   return (
     <>
       <ListContainer>
-        {/* 수입 */}
         <SubTitle title={`${year}.${month}.${date} 수입 내역`} />
         <ContentsContainer height={`75px`}>
           {inComes.map((el, index) => (
@@ -300,7 +330,7 @@ const DetailList = (props) => {
           ))}
         </ContentsContainer>
         <TotalMoney totalMoney={inComesTotal} top={`100px`} color={`skyblue`} />
-        {/* 지출 */}
+
         <SubTitle title={`${year}.${month}.${date} 지출 내역`} top={`200px`} />
         <ContentsContainer top={`230px`} height={`150px`}>
           {outComes.map((el, index) => (

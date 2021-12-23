@@ -58,7 +58,7 @@ function SignUpPage({ cardsList }) {
     setIsEmailBtnClick(true);
     axios
       .post(
-        'http://localhost:4000/users/exists',
+        `${process.env.REACT_APP_API_URL}users/exists`,
         { email: email },
         {
           headers: {
@@ -67,7 +67,6 @@ function SignUpPage({ cardsList }) {
         },
       )
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           setEmailExists(false);
         }
@@ -84,12 +83,12 @@ function SignUpPage({ cardsList }) {
   };
 
   const onCardChange = (e) => {
-    setSelected(e.target.value); // card name
+    setSelected(e.target.value);
 
-    const newCards = cards.filter((obj) => e.target.value !== obj.name); // 선택 옵션
+    const newCards = cards.filter((obj) => e.target.value !== obj.name);
     setCards(newCards);
 
-    const selectedData = cards.filter((obj) => obj.name === e.target.value); // [{id, name}]
+    const selectedData = cards.filter((obj) => obj.name === e.target.value);
     const selectedDataUpdate = { ...selectedData[0], isCut: false };
     const newUserCardList = userCardList.concat(selectedDataUpdate);
     setUserCardList(newUserCardList);
@@ -112,7 +111,7 @@ function SignUpPage({ cardsList }) {
   };
 
   const onWantCutCardSelect = (e) => {
-    const value = e.target.innerText; // card name
+    const value = e.target.innerText;
     const selected = userCardList.filter((obj) => obj.name === value)[0];
     const index = userCardList.findIndex((obj) => obj.name === value);
     selected.isCut = !selected.isCut;
@@ -123,7 +122,7 @@ function SignUpPage({ cardsList }) {
   const onSignUpClick = () => {
     axios
       .post(
-        'http://localhost:4000/users/signup',
+        `${process.env.REACT_APP_API_URL}users/signup`,
         {
           email: email,
           password: password,
@@ -143,7 +142,6 @@ function SignUpPage({ cardsList }) {
         },
       )
       .then((res) => {
-        console.log(res);
         navigate('/login');
       });
   };
@@ -162,7 +160,7 @@ function SignUpPage({ cardsList }) {
         margin="auto"
         onChange={onNicknameChange}
       />
-      {/* Email */}
+
       <EmailInput
         label="이메일"
         type="text"
@@ -194,7 +192,7 @@ function SignUpPage({ cardsList }) {
           </Notification>
         )
       ) : null}
-      {/* Password */}
+
       <Input
         marginLabel="18px 255px 0 0"
         label="비밀번호"
@@ -222,7 +220,7 @@ function SignUpPage({ cardsList }) {
           * 비밀번호가 일치하지 않습니다.
         </Notification>
       )}
-      {/* Card */}
+
       <CardSelect
         label="카드 등록"
         text="카드를 선택해주세요"
@@ -251,15 +249,15 @@ function SignUpPage({ cardsList }) {
         onChange={onRepaymentDaySelect}
         margin="0"
       />
-      {/* Button */}
+
       <BigButton
         text="가입하기"
         margin="28px auto 12px auto"
         onClick={onSignUpClick}
         disabled={!canClick}
-        opacity={!canClick ? "50%" : 0} // 조건 ? "불허" : "허락"
-        hoverOpacity={!canClick ? "50%" : 0}
-        cursor={!canClick ? "default" : "pointer"}
+        opacity={!canClick ? '50%' : 0}
+        hoverOpacity={!canClick ? '50%' : 0}
+        cursor={!canClick ? 'default' : 'pointer'}
       />
       <BigButton
         text="취소"

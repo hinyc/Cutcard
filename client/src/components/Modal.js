@@ -68,7 +68,6 @@ const Modal = ({
   buttonText,
   modalData,
 }) => {
-  console.log('m', modalData[0].card.name);
   return (
     <ModalContainer>
       <ModalBackdrop onClick={onBackgroundClick}>

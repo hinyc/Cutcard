@@ -3,7 +3,6 @@ import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Main from './components/Main/Main';
-// import AboutPage from "./pages/AboutPage";
 import LoginPage from './pages/LoginPage';
 import MyPage from './pages/MyPage';
 import SignUpPage from './pages/SignUpPage';
@@ -45,8 +44,7 @@ function App() {
   const [transaction, setTransaction] = useState(newdumy.transaction);
   const [modalData, setModalData] = useState([]);
   const [cardPrice, setCardPrice] = useState([]);
-  const [widthSize, setWidthSize] = useState(true);
-  
+
   const userCardList = userCards.map((el) => {
     return {
       cardId: el.cardId,
@@ -95,7 +93,7 @@ function App() {
             />
           }
         />
-        {/* <Route path="/about" element={<AboutPage />} /> */}
+
         <Route
           path="/login"
           element={

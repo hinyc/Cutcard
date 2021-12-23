@@ -1,27 +1,27 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const LabelStyle = styled.div`
   padding: 9px;
   font-size: 16px;
   font-weight: 700;
   color: #7c8986;
-  margin: ${(props) => props.marginLabel || "18px 270px 0 0"};
+  margin: ${(props) => props.marginLabel || '18px 270px 0 0'};
 `;
 
 const InputStyle = styled.input`
   box-sizing: border-box;
   display: block;
-  height: ${(props) => props.height || "40px"};
-  width: ${(props) => props.width || "335px"};
+  height: ${(props) => props.height || '40px'};
+  width: ${(props) => props.width || '335px'};
   padding-left: 13px;
   font-size: 16px;
   border: 1px solid #bfc5c4;
   border-radius: 5px;
   color: #7c8986;
-  margin: ${(props) => props.margin || "0"};
-  bottom: ${(props) => props.bottom || "0"};
-  position: ${(props) => props.position || "none"};
+  margin: ${(props) => props.margin || '0'};
+  bottom: ${(props) => props.bottom || '0'};
+  position: ${(props) => props.position || 'none'};
 
   ::-webkit-input-placeholder {
     color: #bfc5c4;
@@ -55,11 +55,11 @@ const EmailExist = styled.button`
   background-color: #97bfb4;
   font-size: 16px;
   border-radius: 5px;
-  opacity: ${(props) => props.opacity || "100%"};
+  opacity: ${(props) => props.opacity || '100%'};
 
   &:hover {
-    cursor: ${(props) => props.cursor || "pointer"};
-    opacity: ${(props) => props.hoverOpacity || "80%"};
+    cursor: ${(props) => props.cursor || 'pointer'};
+    opacity: ${(props) => props.hoverOpacity || '80%'};
   }
 
   &:active {
@@ -78,8 +78,8 @@ const EmailContainer = styled.div`
 export const Notification = styled.div`
   font-size: 12px;
   font-weight: 700;
-  color: ${(props) => props.color || "#6B95FF"};
-  margin: ${(props) => props.margin || "4px 170px 0 0"};
+  color: ${(props) => props.color || '#6B95FF'};
+  margin: ${(props) => props.margin || '4px 170px 0 0'};
 `;
 
 export function EmailInput(props) {
@@ -109,7 +109,7 @@ export function EmailInput(props) {
         <InputStyle
           type={type}
           placeholder={placeholder}
-          spellCheck="false" // always
+          spellCheck="false"
           readOnly={readOnly}
           width={width}
           height={height}
@@ -158,7 +158,7 @@ export function Input(props) {
         min={min}
         max={max}
         placeholder={placeholder}
-        spellCheck="false" // always
+        spellCheck="false"
         readOnly={readOnly}
         width={width}
         height={height}
@@ -179,7 +179,7 @@ export function LoginInput({ onChange }) {
       <InputStyle
         type="text"
         placeholder="이메일을 입력해주세요"
-        spellCheck="false" // always
+        spellCheck="false"
         height="50px"
         margin="auto"
         onChange={onChange}
@@ -195,7 +195,7 @@ export function PasswordInput({ onChange, onKeyPress }) {
       <InputStyle
         type="password"
         placeholder="비밀번호를 입력해주세요"
-        spellCheck="false" // always
+        spellCheck="false"
         height="50px"
         margin="0 auto"
         onChange={onChange}
@@ -226,7 +226,7 @@ export const PriceInput = (props) => {
       min={min}
       max={max}
       placeholder={placeholder}
-      spellCheck="false" // always
+      spellCheck="false"
       readOnly={readOnly}
       width={width}
       height={height}

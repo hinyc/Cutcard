@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import Adate from "./Adate";
+import styled from 'styled-components';
+import Adate from './Adate';
 
 export const CalendarContainer = styled.div`
   border: 2px solid #97bfb4;
@@ -79,7 +79,7 @@ export const Dates = styled.div`
   align-content: flex-start;
 `;
 
-const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const Calendar = (props) => {
   const {
@@ -94,11 +94,6 @@ const Calendar = (props) => {
     buttonStateHandler,
   } = props;
   //!
-
-  // console.log(`달력 데이터 테스트`);
-  // console.log(`${data}`);
-  // console.dir(data);
-  // console.log(data);
 
   //!
   //! calendar array generate
@@ -139,20 +134,20 @@ const Calendar = (props) => {
           <Nav>
             <Arrow onClick={() => moveMonthHandler(-1)}>&lt;</Arrow>
             <YearMonth>{`${targetYear}년 ${targetMonth}월`}</YearMonth>
-            {/* <Today>Today</Today> */}
+
             <Arrow onClick={() => moveMonthHandler(1)}>&gt;</Arrow>
           </Nav>
         </Head>
 
         <Days>
           {days.map((day, index) =>
-            day === "Sat" ? ( //
+            day === 'Sat' ? ( //
               <DaySat key={index}>{day}</DaySat>
-            ) : day === "Sun" ? (
+            ) : day === 'Sun' ? (
               <DaySun key={index}>{day}</DaySun>
             ) : (
               <Day key={index}>{day}</Day>
-            )
+            ),
           )}
         </Days>
 

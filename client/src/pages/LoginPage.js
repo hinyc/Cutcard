@@ -37,7 +37,7 @@ function LoginPage({
 
     axios
       .post(
-        'http://localhost:4000/users/login',
+        `${process.env.REACT_APP_API_URL}users/login`,
         {
           email: email,
           password: password,
@@ -52,13 +52,13 @@ function LoginPage({
         },
       )
       .then((res) => {
-        console.log('------------', res.data.modal[0].card);
         setIsLogin(true);
         setUserCards(res.data.cards);
         setAccessToken(res.data.accessToken);
         setUserInfo(res.data.userInfo);
         setTransaction(res.data.transaction);
         setModalData(res.data.modal);
+
         setCardPrice(res.data.cardPrice);
         navigate('/');
       })

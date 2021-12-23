@@ -68,7 +68,7 @@ function MyPage({
   };
 
   const onCardChange = (e) => {
-    setSelected(e.target.value); // card name
+    setSelected(e.target.value);
 
     const newCards = cards.filter((obj) => e.target.value !== obj.name);
     setCards(newCards);
@@ -99,8 +99,8 @@ function MyPage({
   };
 
   const onWantCutCardSelect = (e) => {
-    const value = e.target.innerText; // card name
-    const selected = userCardList.filter((obj) => obj.name === value)[0]; // {}
+    const value = e.target.innerText;
+    const selected = userCardList.filter((obj) => obj.name === value)[0];
     const index = userCardList.findIndex((obj) => obj.name === value);
     selected.isCut = !selected.isCut;
     userCardList[index] = selected;
@@ -111,7 +111,7 @@ function MyPage({
     if (password === passwordCheck) {
       await axios
         .patch(
-          'http://localhost:4000/users/userinfo',
+          `${process.env.REACT_APP_API_URL}users/userinfo`,
           {
             nickname: nickname,
             password: password,
@@ -131,7 +131,6 @@ function MyPage({
           },
         )
         .then((res) => {
-          console.log(res);
           setAccessToken('');
           setUserCards([]);
           setUserInfo({});
@@ -142,14 +141,13 @@ function MyPage({
 
   const onSignOutClick = () => {
     axios
-      .delete('http://localhost:4000/users/userinfo', {
+      .delete(`${process.env.REACT_APP_API_URL}users/userinfo`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
       })
       .then((res) => {
-        console.log(res);
         setAccessToken('');
         setUserCards([]);
         setUserInfo({});
@@ -178,7 +176,7 @@ function MyPage({
         readOnly={true}
         value={userInfo.email}
       />
-      {/* Password */}
+
       <Input
         marginLabel="18px 226px 0 0"
         label="비밀번호 수정"
@@ -206,7 +204,7 @@ function MyPage({
           * 비밀번호가 일치하지 않습니다.
         </Notification>
       )}
-      {/* Card */}
+
       <CardSelect
         label="카드 등록"
         text="카드를 선택해주세요"
@@ -235,7 +233,7 @@ function MyPage({
         options={['1일', '5일', '10일', '15일', '20일', '25일']}
         onChange={onRepaymentDaySelect}
       />
-      {/* Button */}
+
       <NavLink
         to="/login"
         style={{ textDecoration: 'none', cursor: 'default' }}
@@ -245,9 +243,9 @@ function MyPage({
           margin="0px auto 12px auto"
           onClick={onUpdateClick}
           disabled={password !== passwordCheck}
-          opacity={password !== passwordCheck ? "50%" : 0}
-          hoverOpacity={password !== passwordCheck ? "50%" : 0}
-          cursor={password !== passwordCheck ? "default" : "pointer"}
+          opacity={password !== passwordCheck ? '50%' : 0}
+          hoverOpacity={password !== passwordCheck ? '50%' : 0}
+          cursor={password !== passwordCheck ? 'default' : 'pointer'}
         />
       </NavLink>
       <BigButton
@@ -256,7 +254,7 @@ function MyPage({
         color="#97BFB4"
         border="1px solid #97BFB4"
         margin="0 auto 50px auto"
-        onClick={() => navigate("/")}
+        onClick={() => navigate('/')}
       />
       <Container>
         <Link to="/">

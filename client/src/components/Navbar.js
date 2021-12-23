@@ -68,9 +68,8 @@ function Navbar({
 }) {
   const onLogoutClick = () => {
     axios
-      .get('https://localhost:4000/users/logout')
+      .get(`${process.env.REACT_APP_API_URL}users/logout`)
       .then((res) => {
-        console.log(res);
         setAccessToken('');
         setUserCards([]);
         setUserInfo({});
@@ -82,14 +81,12 @@ function Navbar({
   };
 
   const onMyPageClick = () => {
-    axios
-      .get('https://localhost:4000/users/userinfo', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-      })
-      .then((res) => console.log(res));
+    axios.get(`${process.env.REACT_APP_API_URL}users/userinfo`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
   };
 
   return (
@@ -98,9 +95,6 @@ function Navbar({
         <Link to="/main">
           <Logo>Cut Card</Logo>
         </Link>
-        {/* <Link to="/about">
-          <Menu paddingTop="0px">소개</Menu>
-        </Link> */}
       </Nav>
       {isLogin ? (
         <>

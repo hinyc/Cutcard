@@ -142,8 +142,7 @@ const AddOutCome = (props) => {
     requestMessage,
   } = props;
   const cardsList = userCards.map((el) => el.cardName);
-  console.log(cash);
-  console.log(cash === '카드' ? `40px` : `0px`);
+
   return (
     <>
       <InputContainer>
@@ -168,7 +167,6 @@ const AddOutCome = (props) => {
           margin={`0 0 10px 0`}
           padding={`0`}
         />
-        {/* {cash === '카드' ? ( // */}
         <Select
           text="카드 목록" //
           width={`200px`}
@@ -181,7 +179,6 @@ const AddOutCome = (props) => {
           padding={`0`}
           transition={`.2s`}
         />
-        {/* ) : null} */}
       </InputContainer>
     </>
   );
@@ -262,17 +259,17 @@ const Submit = (props) => {
           max={`999999999`}
           labelHeight={`0px`}
           margin={`0 0 5px 0`}
-          // position={`absolute`}
-          // bottom={`170px`}
         />
         <RequestMessage>{requestMessage}</RequestMessage>
         <SmallButton //
           text={buttonModifyState ? '수정' : '입력'}
           width={`200px`}
           margin={`5px 0 0 0 `}
-          // position={`absolute`}
-          // bottom={`110px`}
-          onClick={buttonModifyState ? contentModifiyer : () => submitHandler(mainState)}
+          onClick={
+            buttonModifyState
+              ? contentModifiyer
+              : () => submitHandler(mainState)
+          }
         />
       </SubmitContainer>
     </>
