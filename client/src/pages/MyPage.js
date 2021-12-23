@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import { Input, Notification } from "../components/Input";
 import { BigButton } from "../components/Button";
 import { Container, Title } from "../components/Common";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 import { CardSelect, Select } from "../components/Select";
 import CardList from "../components/CardList";
 import { FlexContainer } from "../components/Common";
 import styled from "styled-components";
 import axios from "axios";
 import { useBeforeunload } from "react-beforeunload";
-import { useNavigate } from "react-router-dom";
 
 const Text = styled.div`
   font-size: 14px;
@@ -95,8 +94,8 @@ function MyPage({
 
   const onRepaymentDaySelect = (e) => {
     const value = e.target.value;
-    const repaymentDay = value.slice(0, value.length - 1);
-    setRepaymentDay(Number(repaymentDay));
+    const repaymentDate = value.slice(0, value.length - 1);
+    setRepaymentDay(Number(repaymentDate));
   };
 
   const onWantCutCardSelect = (e) => {
@@ -108,9 +107,9 @@ function MyPage({
     setUserCardList([...userCardList]);
   };
 
-  const onUpdateClick = () => {
+  const onUpdateClick = async () => {
     if (password === passwordCheck) {
-      axios
+      await axios
         .patch(
           "http://localhost:4000/users/userinfo",
           {
@@ -136,9 +135,6 @@ function MyPage({
           setAccessToken("");
           setUserCards([]);
           setUserInfo({});
-          navigate("/");
-        })
-        .then(() => {
           setIsLogin(false);
         });
     }
@@ -157,7 +153,6 @@ function MyPage({
         setAccessToken("");
         setUserCards([]);
         setUserInfo({});
-        navigate("/");
       })
       .then(() => {
         setIsLogin(false);
@@ -241,22 +236,28 @@ function MyPage({
         onChange={onRepaymentDaySelect}
       />
       {/* Button */}
-      <Link to="/login">
+      <NavLink
+        to="/login"
+        style={{ textDecoration: "none", cursor: "default" }}
+      >
         <BigButton
           text="수정하기"
-          margin="28px auto 12px auto"
+          margin="0px auto 12px auto"
           onClick={onUpdateClick}
+          disabled={password !== passwordCheck}
+          opacity={password !== passwordCheck ? "50%" : 0}
+          hoverOpacity={password !== passwordCheck ? "50%" : 0}
+          cursor={password !== passwordCheck ? "default" : "pointer"}
         />
-      </Link>
-      <Link to="/">
-        <BigButton
-          text="취소"
-          background="white"
-          color="#97BFB4"
-          border="1px solid #97BFB4"
-          margin="0 auto 50px auto"
-        />
-      </Link>
+      </NavLink>
+      <BigButton
+        text="취소"
+        background="white"
+        color="#97BFB4"
+        border="1px solid #97BFB4"
+        margin="0 auto 50px auto"
+        onClick={() => navigate("/")}
+      />
       <Container>
         <Link to="/">
           <Text onClick={onSignOutClick}>회원탈퇴</Text>

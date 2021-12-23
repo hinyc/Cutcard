@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Input, EmailInput, Notification } from "../components/Input";
 import { BigButton } from "../components/Button";
 import { Container, Title } from "../components/Common";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CardSelect, Select } from "../components/Select";
 import CardList from "../components/CardList";
 import { FlexContainer } from "../components/Common";
@@ -26,6 +26,16 @@ function SignUpPage({ cardsList }) {
   const [repaymentDay, setRepaymentDay] = useState(0);
 
   const navigate = useNavigate();
+
+  const canClick =
+    nickname !== "" &&
+    !emailExists &&
+    isEmail &&
+    isEmailBtnClick &&
+    password === passwordCheck &&
+    password !== "" &&
+    userCardList.length !== 0 &&
+    repaymentDay !== 0;
 
   const onNicknameChange = (e) => {
     setNickname(e.target.value);
@@ -246,6 +256,10 @@ function SignUpPage({ cardsList }) {
         text="가입하기"
         margin="28px auto 12px auto"
         onClick={onSignUpClick}
+        disabled={!canClick}
+        opacity={!canClick ? "50%" : 0} // 조건 ? "불허" : "허락"
+        hoverOpacity={!canClick ? "50%" : 0}
+        cursor={!canClick ? "default" : "pointer"}
       />
       <BigButton
         text="취소"

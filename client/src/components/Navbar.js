@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -30,6 +30,10 @@ const Logo = styled.button`
   &:hover {
     cursor: pointer;
   }
+
+  @media only screen and (max-width: 910px) {
+    background-color: rgba(0, 0, 0, 0);
+  }
 `;
 
 const Menu = styled.button`
@@ -47,6 +51,10 @@ const Menu = styled.button`
     cursor: pointer;
     font-weight: 700;
     color: #7c8986;
+  }
+
+  @media only screen and (max-width: 910px) {
+    background-color: rgba(0, 0, 0, 0);
   }
 `;
 

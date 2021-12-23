@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import Adate from './Adate';
+import styled from "styled-components";
+import Adate from "./Adate";
 
 export const CalendarContainer = styled.div`
   border: 2px solid #97bfb4;
@@ -39,6 +38,10 @@ export const Arrow = styled.button`
     cursor: pointer;
     opacity: 80%;
   }
+
+  @media only screen and (max-width: 910px) {
+    background-color: rgba(0, 0, 0, 0);
+  }
 `;
 export const Today = styled.button``;
 
@@ -76,7 +79,7 @@ export const Dates = styled.div`
   align-content: flex-start;
 `;
 
-const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const Calendar = (props) => {
   const {
@@ -143,9 +146,9 @@ const Calendar = (props) => {
 
         <Days>
           {days.map((day, index) =>
-            day === 'Sat' ? ( //
+            day === "Sat" ? ( //
               <DaySat key={index}>{day}</DaySat>
-            ) : day === 'Sun' ? (
+            ) : day === "Sun" ? (
               <DaySun key={index}>{day}</DaySun>
             ) : (
               <Day key={index}>{day}</Day>
