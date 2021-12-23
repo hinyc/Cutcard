@@ -10,7 +10,7 @@ export const Container = styled.div`
 
 export const FlexContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   text-align: center;
   flex-direction: row;

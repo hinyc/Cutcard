@@ -5,11 +5,26 @@ import Navbar from "./components/Navbar";
 
 import { Navigate, Route, Routes } from "react-router-dom";
 import Main from "./components/Main/Main";
-import AboutPage from "./pages/AboutPage";
+// import AboutPage from "./pages/AboutPage";
 import LoginPage from "./pages/LoginPage";
 import MyPage from "./pages/MyPage";
 import SignUpPage from "./pages/SignUpPage";
-import { Modal } from "./components/Modal";
+import styled from "styled-components";
+import MediaQuery from "./components/MediaQuery";
+
+const Container = styled.div`
+  @media only screen and (max-width: 910px) {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: grid;
+    place-items: center;
+  }
+`;
 
 function App() {
   //테스트중 초기상태 임의지정
@@ -28,10 +43,7 @@ function App() {
   const [userCards, setUserCards] = useState([]);
   const [accessToken, setAccessToken] = useState("");
   const [transaction, setTransaction] = useState([]);
-  console.log("userCards", userCards);
-  console.log("accessToken", accessToken);
-  console.log("userInfo", userInfo);
-
+  const [widthSize, setWidthSize] = useState(true);
   const userCardList = userCards.map((el) => {
     return {
       cardId: el.cardId,
@@ -46,8 +58,14 @@ function App() {
     };
   });
 
+  window.onresize = function () {
+    const width = window.innerWidth;
+    width >= 910 ? setWidthSize(true) : setWidthSize(false);
+  };
+
   return (
-    <>
+    <Container>
+      {widthSize ? null : <MediaQuery />}
       <Navbar
         isLogin={isLogin}
         setIsLogin={setIsLogin}
@@ -57,7 +75,6 @@ function App() {
         setUserInfo={setUserInfo}
         setTransaction={setTransaction}
       />
-      {/* <Modal /> */}
       <Routes>
         <Route path="/" element={<Navigate to="/main" />} />
         <Route
@@ -73,7 +90,7 @@ function App() {
             />
           }
         />
-        <Route path="/about" element={<AboutPage />} />
+        {/* <Route path="/about" element={<AboutPage />} /> */}
         <Route
           path="/login"
           element={
@@ -106,7 +123,7 @@ function App() {
         <Route path="/signup" element={<SignUpPage cardsList={cards} />} />
       </Routes>
       <Footer />
-    </>
+    </Container>
   );
 }
 
