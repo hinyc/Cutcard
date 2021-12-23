@@ -1,13 +1,10 @@
-import React, { useState } from "react";
-import { LoginInput, PasswordInput } from "../components/Input";
-import { BigButton } from "../components/Button";
-import { Container, Title } from "../components/Common";
-import { Link } from "react-router-dom";
-import { Notification } from "../components/Input";
-import { useNavigate } from "react-router-dom";
-
-import axios from "axios";
-import Modal from "../components/Modal";
+import React, { useState } from 'react';
+import { LoginInput, PasswordInput } from '../components/Input';
+import { BigButton } from '../components/Button';
+import { Container, Title } from '../components/Common';
+import { Notification } from '../components/Input';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function LoginPage({
   setAccessToken,
@@ -17,8 +14,8 @@ function LoginPage({
   isLogin,
   setTransaction,
 }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isBtnClick, setIsBtnClick] = useState(false);
 
   const navigate = useNavigate();
@@ -38,7 +35,7 @@ function LoginPage({
 
     axios
       .post(
-        "http://localhost:4000/users/login",
+        'https://localhost:4000/users/login',
         {
           email: email,
           password: password,
@@ -47,18 +44,21 @@ function LoginPage({
         },
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
+            withCredentials: true,
           },
-        }
+        },
       )
       .then((res) => {
-        console.log(res);
+        console.log('------------', res.data.modal[0].card);
         setIsLogin(true);
         setUserCards(res.data.cards);
         setAccessToken(res.data.accessToken);
         setUserInfo(res.data.userInfo);
         setTransaction(res.data.transaction);
-        navigate("/");
+        // setTimeout(function () {
+        navigate('/');
+        // }, 800);
       })
       .catch((err) => {
         setIsBtnClick(true);
@@ -68,13 +68,13 @@ function LoginPage({
   };
 
   const onLoginPress = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       onLoginClick();
     }
   };
 
   const onSignUpClick = () => {
-    navigate("/signup");
+    navigate('/signup');
   };
 
   return (
@@ -89,9 +89,6 @@ function LoginPage({
           </Notification>
         )
       ) : null}
-      {/* {isLogin ? null : (
-        <Modal messageText="message text!" buttonText="button text" />
-      )} */}
       <BigButton
         text="로그인"
         margin="62px auto 12px auto"

@@ -13,9 +13,9 @@ export const ButtonStyle = styled.button`
   outline: 0;
   border: ${(props) => props.border || 0};
   background-color: ${(props) => props.background || "#97BFB4"};
-  font-size: 16px;
+  font-size: ${(props) => props.fontSize || "16px"};
   font-weight: 700;
-  border-radius: 5px;
+  border-radius: ${(props) => props.radius || "5px"};
   display: block;
   /* text-decoration: none; */
 

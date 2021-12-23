@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import { ButtonStyle } from "./Button";
 
@@ -15,35 +14,37 @@ const ModalBackdrop = styled.div`
 `;
 
 const ModalContainer = styled.div`
-  height: 15rem;
   text-align: center;
   margin: 120px auto;
 `;
 
 const ModalView = styled.div`
-  border-radius: 10px;
+  border-radius: 20px;
   background-color: #ffffff;
-  width: 350px;
+  width: 300px;
   height: 150px;
 
-  > span.close-btn {
-    margin-top: 5px;
-    cursor: pointer;
-  }
-
   > div.desc {
-    margin-top: 50px;
+    margin-top: 40px;
     color: #7c8986;
   }
 `;
 
-const Modal = ({ onClick, messageText, buttonText }) => {
+const Modal = ({ onBackgroundClick, messageText, onClick, buttonText }) => {
   return (
     <ModalContainer>
-      <ModalBackdrop onClick={onClick}>
+      <ModalBackdrop onClick={onBackgroundClick}>
         <ModalView>
           <div className="desc">{messageText}</div>
-          <ButtonStyle>{buttonText}</ButtonStyle>
+          <ButtonStyle
+            width="100px"
+            margin="25px auto 0 auto"
+            fontSize="14px"
+            radius="30px"
+            onClick={onClick}
+          >
+            {buttonText}
+          </ButtonStyle>
         </ModalView>
       </ModalBackdrop>
     </ModalContainer>
